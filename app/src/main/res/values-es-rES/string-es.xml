@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GroomerLoc</string>
+    <!-- Strings logueo -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (opcional)</string>
+    <string name="action_sign_in">Identifíquese o regístrese</string>
+    <string name="action_sign_in_short">Identifíquese</string>
+    <string name="error_invalid_email">El Email es inválido</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo debe cumplimentarse</string>
+    <string name="permission_rationale">"Son necesarios los permisos de contacto para autocompletar Emails."
+    </string>
+</resources>

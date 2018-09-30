@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "650850237051",
+    "firebase_url": "https://groomerloc.firebaseio.com",
+    "project_id": "groomerloc",
+    "storage_bucket": "groomerloc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650850237051:android:1066698388e644cc",
+        "android_client_info": {
+          "package_name": "com.juanrajc.groomerloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650850237051-smjrr7vcm9f4a4tlni8up1o6cl5b6p54.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.juanrajc.groomerloc",
+            "certificate_hash": "0f37985b002d3f3a884cbe133e0e278f7fa5caad"
+          }
+        },
+        {
+          "client_id": "650850237051-rt71v6udmckn677mlfu2qc0m7ug13jur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbW0LN4XlWXzFHc10cDVW-yew2FtbCDgs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650850237051-rt71v6udmckn677mlfu2qc0m7ug13jur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
