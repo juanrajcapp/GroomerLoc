@@ -10,5 +10,15 @@
     <string name="error_autenticar">Authentication error</string>
     <string name="descLogo">Application logo.</string>
 
+    <!-- registro -->
+    <string name="rol">What are you?</string>
+    <string name="cliente">Customer</string>
+    <string name="peluquero">Groomer</string>
+    <string name="password2">Repeat password</string>
+    <string name="nombre">Name</string>
+    <string name="tlfn">Phone number</string>
+    <string name="botonAtras">Back</string>
+    <string name="botonSiguiente">Continue</string>
+
     <string name="title_activity_cliente">Map</string>
 </resources>

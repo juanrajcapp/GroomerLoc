@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    protected void login(final View view) {
+    protected void login(View view) {
 
         email = (EditText) findViewById(R.id.mail);
         pw = (EditText) findViewById(R.id.pw);
@@ -84,6 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
         }
+
+    }
+
+    protected void registro(View view){
+
+        startActivity(new Intent(this, RegistroActivity.class));
 
     }
 
