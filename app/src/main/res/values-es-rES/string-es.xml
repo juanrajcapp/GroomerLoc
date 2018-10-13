@@ -3,10 +3,13 @@
     <string name="app_name">GroomerLoc</string>
     <!-- login -->
     <string name="saludo">Bienvenido </string>
+    <string name="botonLogin">Iniciar sesión</string>
+    <string name="botonRegistro">Registrarse</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="toast_faltaMailPw">Se requieren un Email y Contraseña correctos</string>
     <string name="error_autenticar">Error de autenticación</string>
+    <string name="descLogo">Logo de la aplicación.</string>
 
     <string name="title_activity_cliente">Mapa</string>
 </resources>
