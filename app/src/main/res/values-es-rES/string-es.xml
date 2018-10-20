@@ -12,6 +12,7 @@
     <string name="descLogo">Logo de la aplicación.</string>
 
     <!-- registro -->
+    <string name="tituloRegistro">REGISTRO</string>
     <string name="rol">¿Qué eres?</string>
     <string name="cliente">Cliente</string>
     <string name="peluquero">Peluquero</string>
@@ -20,6 +21,13 @@
     <string name="tlfn">Teléfono</string>
     <string name="botonAtras">Atrás</string>
     <string name="botonSiguiente">Siguiente</string>
+
+    <!--registro2-->
+    <string name="tituloLoc">Pinche en su localización o...</string>
+    <string name="dir">Introduca su dirección</string>
+    <string name="botonBuscar">Buscar</string>
+    <string name="mensajeMarca">Localización: </string>
+    <string name="botonRegistrar">Completar registro</string>
 
     <string name="title_activity_cliente">Mapa</string>
 </resources>

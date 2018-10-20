@@ -11,6 +11,7 @@
     <string name="descLogo">Application logo.</string>
 
     <!-- registro -->
+    <string name="tituloRegistro">SIGN IN</string>
     <string name="rol">What are you?</string>
     <string name="cliente">Customer</string>
     <string name="peluquero">Groomer</string>
@@ -18,7 +19,14 @@
     <string name="nombre">Name</string>
     <string name="tlfn">Phone number</string>
     <string name="botonAtras">Back</string>
-    <string name="botonSiguiente">Continue</string>
+    <string name="botonSiguiente">Next</string>
+
+    <!--registro2-->
+    <string name="tituloLoc">Click on your localization or...</string>
+    <string name="dir">Type your address</string>
+    <string name="botonBuscar">Search</string>
+    <string name="mensajeMarca">Location: </string>
+    <string name="botonRegistrar">Complete registration</string>
 
     <string name="title_activity_cliente">Map</string>
 </resources>

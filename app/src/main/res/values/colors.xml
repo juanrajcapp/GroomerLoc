@@ -7,4 +7,7 @@
     <!-- colorFondoSplash -->
     <color name="fondoSplash">#f4de97</color>
 
+    <!-- colorRegistroLoc -->
+    <color name="tituloLoc">#000000</color>
+
 </resources>
