@@ -26,6 +26,8 @@
     <string name="dir">Type your address</string>
     <string name="botonBuscar">Search</string>
     <string name="mensajeMarca">Location: </string>
+    <string name="mensajeNoDireccion">Address not found</string>
+    <string name="mensajeDirVacia">You must type an address</string>
     <string name="botonRegistrar">Complete registration</string>
 
     <string name="title_activity_cliente">Map</string>
