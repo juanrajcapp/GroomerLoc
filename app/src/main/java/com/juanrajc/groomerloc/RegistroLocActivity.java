@@ -37,7 +37,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     //Coordenadas de la marca creada por el usuario.
     LatLng loc=null;
 
-    private EditText etDireccion;
+    private EditText etDireccion, etDatAdi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_registro_loc);
 
         etDireccion = (EditText) findViewById(R.id.etDireccion);
+        etDatAdi = (EditText) findViewById(R.id.etDatAdi);
 
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.regLoc);
         mapFragment.getMapAsync(this);

@@ -21,10 +21,15 @@
     <string name="tlfn">Teléfono</string>
     <string name="botonAtras">Atrás</string>
     <string name="botonSiguiente">Siguiente</string>
+    <string name="mensajeRol">Debes seleccionar un rol (cliente o peluquero)</string>
+    <string name="mensajeCampos">Debes completar todos los campos</string>
+    <string name="mensajeEmail">Debes introducir un Email válido</string>
+    <string name="mensajePw">Las contraseñas no son iguales</string>
 
     <!--registro2-->
     <string name="tituloLoc">Pinche en su localización o...</string>
     <string name="dir">Introduca su dirección</string>
+    <string name="datAdi">Indicaciones adicionales (piso, puerta, etc)</string>
     <string name="botonBuscar">Buscar</string>
     <string name="mensajeMarca">Localización: </string>
     <string name="mensajeNoDireccion">Dirección no encontrada</string>
