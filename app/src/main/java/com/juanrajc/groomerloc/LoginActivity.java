@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
 
     }
@@ -41,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
 
@@ -87,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    protected void registro(View view){
+    protected void activityRegistro(View view){
 
         startActivity(new Intent(this, RegistroActivity.class));
 
