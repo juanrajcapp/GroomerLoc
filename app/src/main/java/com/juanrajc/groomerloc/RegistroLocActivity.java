@@ -54,6 +54,22 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("recupLoc", loc);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        loc=(LatLng) savedInstanceState.getParcelable("recupLoc");
+
+    }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(final GoogleMap googleMap) {
