@@ -29,7 +29,6 @@
     <string name="tituloLoc">Click on your localization or...</string>
     <string name="dir">Type your address</string>
     <string name="datAdi">Additional indications (floor, door, etc)</string>
-    <string name="botonBuscar">Search</string>
     <string name="mensajeMarca">Location: </string>
     <string name="mensajeNoDireccion">Address not found</string>
     <string name="mensajeDirVacia">You must type an address</string>

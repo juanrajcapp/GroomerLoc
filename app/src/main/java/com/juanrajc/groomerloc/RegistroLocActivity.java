@@ -6,12 +6,16 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +51,16 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         etDireccion = (EditText) findViewById(R.id.etDireccion);
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
 
+        //Evento que detecta la pulsación del botón del teclado virtual (búsqueda) y ejecuta el método correspomndiente.
+        etDireccion.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    buscaCoordenadas();
+                }
+                return false;
+            }
+        });
+
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.regLoc);
         mapFragment.getMapAsync(this);
 
@@ -55,18 +69,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        outState.putParcelable("recupLoc", loc);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        loc=(LatLng) savedInstanceState.getParcelable("recupLoc");
+        finish();
+        startActivity(getIntent());
 
     }
 
@@ -79,11 +86,8 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
         if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
 
-            //Si es así, activamos y mostramos la localización del usuario.
-            googleMap.setMyLocationEnabled(true);
-
-            FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-            client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            //Listener que se encarga de marcar la localización GPS actual.
+            LocationServices.getFusedLocationProviderClient(this).getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if(location!=null) {
@@ -158,7 +162,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         return true;
     }
 
-    protected void buscaCoordenadas(View view){
+    protected void buscaCoordenadas(){
 
         try {
             direcciones = gc.getFromLocationName(etDireccion.getText().toString(), 1);
@@ -231,6 +235,20 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    @SuppressLint("MissingPermission")
+    protected void localizacion(View view) {
+
+        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
+        if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
+
+            Location location=LocationServices.getFusedLocationProviderClient(this).getLastLocation().getResult();
+            marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+
+        }
+
+
+    }
+
     protected void atras(View view){
 
         finish();
@@ -242,5 +260,6 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
 
     }
+
 
 }

@@ -30,7 +30,6 @@
     <string name="tituloLoc">Pinche en su localización o...</string>
     <string name="dir">Introduca su dirección</string>
     <string name="datAdi">Indicaciones adicionales (piso, puerta, etc)</string>
-    <string name="botonBuscar">Buscar</string>
     <string name="mensajeMarca">Localización: </string>
     <string name="mensajeNoDireccion">Dirección no encontrada</string>
     <string name="mensajeDirVacia">Debes introducir una dirección</string>

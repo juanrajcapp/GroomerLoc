@@ -49,7 +49,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistroActivity" />
-        <activity android:name=".RegistroLocActivity"></activity>
+        <activity android:name=".RegistroLocActivity"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>
