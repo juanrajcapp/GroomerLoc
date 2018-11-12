@@ -17,6 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.juanrajc.groomerloc.clasesBD.Cliente;
 
 import java.util.regex.Pattern;
 
@@ -28,6 +34,7 @@ public class RegistroActivity extends AppCompatActivity {
     private Button botonSiguiente;
 
     private FirebaseAuth auth;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,7 @@ public class RegistroActivity extends AppCompatActivity {
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
 
         auth = FirebaseAuth.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference();
 
     }
 
@@ -149,7 +157,12 @@ public class RegistroActivity extends AppCompatActivity {
 
                         auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().
                                 setDisplayName(etRegNombre.getText().toString()).build());
-                        
+
+                        dbRef.child("cliente").setValue(auth.getCurrentUser().getUid());
+
+                        dbRef.child("cliente").child(auth.getCurrentUser().getUid())
+                                .setValue(new Cliente(Integer.parseInt(etRegTlfn.getText().toString()),null));
+
                         startActivity(new Intent(getApplicationContext(), ClienteActivity.class));
 
                     }
