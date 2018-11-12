@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,14 +11,23 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
 import java.util.regex.Pattern;
 
 public class RegistroActivity extends AppCompatActivity {
 
-    RadioButton rbCliente, rbPeluquero;
-    EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
+    private RadioButton rbCliente, rbPeluquero;
+    private EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
 
     private Button botonSiguiente;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,8 @@ public class RegistroActivity extends AppCompatActivity {
 
         //Instancia el botón de siguiente.
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
+
+        auth = FirebaseAuth.getInstance();
 
     }
 
@@ -70,7 +82,16 @@ public class RegistroActivity extends AppCompatActivity {
                     //Comprueba que las contraseñas introducidas son idénticas.
                     if(etRegPw.getText().toString().equals(etRegPw2.getText().toString())){
 
-                        return true;
+                        //Comprueba que las contraseñas tienen al menos 6 caracteres de longitud.
+                        if(etRegPw.getText().toString().length()>=6 || etRegPw2.getText().toString().length()>=6){
+
+                            return true;
+
+                        }else {
+                            Toast.makeText(this, getString(R.string.mensajePw2), Toast.LENGTH_SHORT).show();
+                            etRegPw.setText("");
+                            etRegPw2.setText("");
+                        }
 
                     }else{
                         Toast.makeText(this, getString(R.string.mensajePw), Toast.LENGTH_SHORT).show();
@@ -118,7 +139,26 @@ public class RegistroActivity extends AppCompatActivity {
 
             //Se desactiva el botón de siguiente para evitar más de una pulsación.
             botonSiguiente.setEnabled(false);
-            startActivity(new Intent(this, RegistroLocActivity.class));
+
+            if(rbCliente.isChecked()){
+
+                auth.createUserWithEmailAndPassword(etRegEmail.getText().toString(), etRegPw.getText().toString())
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().
+                                setDisplayName(etRegNombre.getText().toString()).build());
+                        
+                        startActivity(new Intent(getApplicationContext(), ClienteActivity.class));
+
+                    }
+                });
+
+            }else if(rbPeluquero.isChecked()){
+                startActivity(new Intent(this, RegistroLocActivity.class));
+            }
+
         }
 
     }

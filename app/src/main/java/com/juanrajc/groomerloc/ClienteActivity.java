@@ -20,11 +20,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ClienteActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
     private LatLng loc=null;
+
+    private FirebaseAuth auth;
+    private FirebaseUser usuarioActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,18 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        auth=FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser()!=null){
+
+            //Si es así, lo instancia...
+            usuarioActual = auth.getCurrentUser();
+
+            //y le muestra un saludo con su nombre.
+            Toast.makeText(this, getString(R.string.saludo) + " " + usuarioActual.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override

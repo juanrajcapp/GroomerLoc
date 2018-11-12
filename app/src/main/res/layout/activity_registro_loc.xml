@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/maps_fragment" />
 
     <TextView
         android:id="@+id/tvRegPeluquero"
@@ -45,7 +46,8 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero"
+        android:importantForAutofill="no" tools:targetApi="o"/>
 
     <EditText
         android:id="@+id/etDatAdi"
@@ -60,7 +62,8 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDireccion" />
+        app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+        android:importantForAutofill="no" tools:targetApi="o"/>
 
     <ImageButton
         android:id="@+id/botonLoc"
@@ -73,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_mylocation"
-        android:onClick="localizacion"/>
+        tools:ignore="ContentDescription"/>
 
     <Button
         android:id="@+id/botonAtrasReg2"

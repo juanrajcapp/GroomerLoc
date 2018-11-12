@@ -24,6 +24,7 @@
     <string name="mensajeCampos">You must complete all the fields</string>
     <string name="mensajeEmail">You must type a valid Email</string>
     <string name="mensajePw">Passwords are not equals</string>
+    <string name="mensajePw2">The password must be at least 6 characters</string>
 
     <!--registro2-->
     <string name="tituloLoc">Click on your localization or...</string>

@@ -2,10 +2,13 @@ package com.juanrajc.groomerloc;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,9 +18,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +47,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     LatLng loc=null;
 
     private EditText etDireccion, etDatAdi;
+    private ImageButton botonLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,16 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
         etDireccion = (EditText) findViewById(R.id.etDireccion);
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
+
+        botonLoc = (ImageButton) findViewById(R.id.botonLoc);
+        botonLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                localizacion();
+            }
+        });
+        //Por defecto desactivado.
+        botonLoc.setClickable(false);
 
         //Evento que detecta la pulsación del botón del teclado virtual (búsqueda) y ejecuta el método correspomndiente.
         etDireccion.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -72,8 +88,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        finish();
-        startActivity(getIntent());
+        if((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+            finish();
+            startActivity(getIntent());
+        }
 
     }
 
@@ -85,6 +104,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
         //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
         if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
+
+            //Si los permisos están activos, se muestra el botón de localización.
+            botonLoc.setClickable(true);
 
             //Listener que se encarga de marcar la localización GPS actual.
             LocationServices.getFusedLocationProviderClient(this).getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -111,6 +133,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+     * Método que se encarga de generar la marca en el mapa.
+     *
+     * @param coordenadas LatLng con las coordenadas donde se va a generar la marca.
+     */
     private void marcarMapa (LatLng coordenadas){
 
         loc=coordenadas;
@@ -124,10 +151,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         //Se borra la marca anterior.
         map.clear();
         //Se anima el movimiento hacia la nueva marca.
-        map.animateCamera(CameraUpdateFactory.newLatLng(loc));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
         //Se posiciona la marca en el lugar seleccionado.
         map.addMarker(mo);
 
+        //Muestra la dirección postal en el campo correspondiente.
         obtieneDireccion();
 
     }
@@ -162,6 +190,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         return true;
     }
 
+    /**
+     * Método que se encarga de traducir la dirección introducida en coordenadas.
+     */
     protected void buscaCoordenadas(){
 
         try {
@@ -179,6 +210,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+     * Método que se encarga de traducir las coordenadas en una dirección postal.
+     */
     protected void obtieneDireccion() {
 
         try {
@@ -197,6 +231,12 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    /**
+     * Método que se encarga de generar una dirección postal más comprensible.
+     *
+     * @param direccion Objeto Address con la dirección postal.
+     * @return Devuelve una cadena con la dirección postal simplificada.
+     */
     protected String muestraDireccion(Address direccion) {
 
         String numero=direccion.getSubThoroughfare(),
@@ -236,16 +276,15 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     }
 
     @SuppressLint("MissingPermission")
-    protected void localizacion(View view) {
+    /**
+     * Método que se encarga de marcar la localización actual del dispositivo en el mapa.
+     */
+    protected void localizacion() {
 
-        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
-        if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
-
-            Location location=LocationServices.getFusedLocationProviderClient(this).getLastLocation().getResult();
-            marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
-
-        }
-
+        LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        Location location = locMan.getLastKnownLocation(locMan.getBestProvider(criteria, false));
+        marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
 
     }
 
@@ -260,6 +299,5 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
 
     }
-
 
 }

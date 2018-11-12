@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,12 +57,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //Comprueba si hay un usuario autenticado.
         if (auth.getCurrentUser() != null) {
-
-            //Si es así, lo instancia...
-            FirebaseUser usuarioActual = auth.getCurrentUser();
-
-            //y le muestra un saludo con su nombre.
-            Toast.makeText(this, getString(R.string.saludo) + usuarioActual.getDisplayName(), Toast.LENGTH_SHORT).show();
 
             //Inicia la activity del cliente.
             activityCliente();

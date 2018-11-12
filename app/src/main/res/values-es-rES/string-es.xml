@@ -25,6 +25,7 @@
     <string name="mensajeCampos">Debes completar todos los campos</string>
     <string name="mensajeEmail">Debes introducir un Email válido</string>
     <string name="mensajePw">Las contraseñas no son iguales</string>
+    <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres</string>
 
     <!--registro2-->
     <string name="tituloLoc">Pinche en su localización o...</string>
