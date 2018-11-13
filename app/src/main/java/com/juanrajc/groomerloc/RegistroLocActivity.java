@@ -29,9 +29,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.clasesBD.Cliente;
+import com.juanrajc.groomerloc.clasesBD.Peluquero;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,8 +51,14 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     Geocoder gc;
     List<Address> direcciones;
 
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
+
     //Coordenadas de la marca creada por el usuario.
     LatLng loc=null;
+
+    private String email, pw, nombre;
+    private int telefono;
 
     private EditText etDireccion, etDatAdi;
     private ImageButton botonLoc;
@@ -81,6 +95,15 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         mapFragment.getMapAsync(this);
 
         gc=new Geocoder(this);
+
+        //Instancias de la autenticación y la base de datos de Firebase.
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
+        email=getIntent().getStringExtra("email");
+        pw=getIntent().getStringExtra("pw");
+        nombre=getIntent().getStringExtra("nombre");
+        telefono=getIntent().getIntExtra("telefono", 0);
 
     }
 
@@ -296,7 +319,27 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     protected void registro(View view){
 
+        //crea el usuario cliente con su email y contraseña...
+        auth.createUserWithEmailAndPassword(email, pw)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
 
+                //cuando se ha creado, añade el nombre introducido a la cuenta creada (y loqueada)...
+                auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre).build());
+
+                /*
+                crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
+                con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
+                */
+                firestore.collection("peluqueros")
+                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(telefono, loc));
+
+                //finalmente se cierra la activity.
+                finish();
+
+                }
+        });
 
     }
 

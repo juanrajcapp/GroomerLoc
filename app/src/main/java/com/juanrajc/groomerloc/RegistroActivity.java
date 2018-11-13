@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,19 +24,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
 
 import java.util.regex.Pattern;
 
 public class RegistroActivity extends AppCompatActivity {
 
+    private RadioGroup rgRegistro;
     private RadioButton rbCliente, rbPeluquero;
     private EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
 
     private Button botonSiguiente;
 
     private FirebaseAuth auth;
-    private DatabaseReference dbRef;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,27 @@ public class RegistroActivity extends AppCompatActivity {
         //Instancia el botón de siguiente.
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
 
+        //Instancia del grupo de botones de radio.
+        rgRegistro=(RadioGroup) findViewById(R.id.rgRegistro);
+
+        //Listener para el grupo de botones de radio que se encarga de cambiar el texto del botón para seguir dependiendo del rol seleccionado.
+        rgRegistro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                //Dependiendo del rol, muestra un texto u otro.
+                if(i==R.id.rbCliente){
+                    botonSiguiente.setText(R.string.botonRegistrar);
+                }else if(i==R.id.rbPeluquero){
+                    botonSiguiente.setText(R.string.botonSiguiente);
+                }
+
+            }
+        });
+
+        //Instancias de la autenticación y la base de datos de Firebase.
         auth = FirebaseAuth.getInstance();
-        dbRef = FirebaseDatabase.getInstance().getReference();
+        firestore = FirebaseFirestore.getInstance();
 
     }
 
@@ -66,6 +89,16 @@ public class RegistroActivity extends AppCompatActivity {
         //Si se vuelve a la activity, se reactivan los botones de la misma.
         botonSiguiente.setEnabled(true);
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==1){
+            finish();
+        }
 
     }
 
@@ -148,28 +181,43 @@ public class RegistroActivity extends AppCompatActivity {
             //Se desactiva el botón de siguiente para evitar más de una pulsación.
             botonSiguiente.setEnabled(false);
 
+            //Si el rol seleccionado es el de cliente...
             if(rbCliente.isChecked()){
 
+                //crea el usuario cliente con su email y contraseña...
                 auth.createUserWithEmailAndPassword(etRegEmail.getText().toString(), etRegPw.getText().toString())
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
+                        //cuando se ha creado, añade el nombre introducido a la cuenta creada (y loqueada)...
                         auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().
                                 setDisplayName(etRegNombre.getText().toString()).build());
 
-                        dbRef.child("cliente").setValue(auth.getCurrentUser().getUid());
+                        /*
+                        crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
+                        con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
+                        */
+                        firestore.collection("clientes").document(auth.getCurrentUser()
+                                .getUid()).set(new Cliente(Integer.parseInt(etRegTlfn.getText().toString())));
 
-                        dbRef.child("cliente").child(auth.getCurrentUser().getUid())
-                                .setValue(new Cliente(Integer.parseInt(etRegTlfn.getText().toString()),null));
-
-                        startActivity(new Intent(getApplicationContext(), ClienteActivity.class));
+                        //finalmente se cierra la activity.
+                        finish();
 
                     }
                 });
 
             }else if(rbPeluquero.isChecked()){
-                startActivity(new Intent(this, RegistroLocActivity.class));
+
+                Intent intentPeluquero = new Intent(this, RegistroLocActivity.class);
+
+                intentPeluquero.putExtra("email", etRegEmail.getText().toString());
+                intentPeluquero.putExtra("pw", etRegPw.getText().toString());
+                intentPeluquero.putExtra("nombre", etRegNombre.getText().toString());
+                intentPeluquero.putExtra("telefono", Integer.parseInt(etRegTlfn.getText().toString()));
+
+                startActivityForResult(intentPeluquero, 1);
+
             }
 
         }
