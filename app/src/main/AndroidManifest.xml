@@ -41,6 +41,7 @@
 
         <activity
             android:name=".ClienteActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_cliente">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,8 +50,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistroActivity" />
-        <activity android:name=".RegistroLocActivity"
-            android:configChanges="orientation|screenSize"></activity>
+        <activity
+            android:name=".RegistroLocActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".RegPerroActivity"></activity>
     </application>
 
 </manifest>

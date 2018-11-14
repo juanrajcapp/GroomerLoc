@@ -9,6 +9,15 @@
     <!-- cliente -->
     <string name="saludo">Bienvenido</string>
 
+    <!-- perro -->
+    <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>
+    <string name="raza">Raza</string>string>
+    <string name="peso">Peso</string>
+    <string name="kg">Kg</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="cajaComentarios">Problemas de salud, alergias...</string>
+    <string name="botonFoto">Añadir fotografía...</string>
+
     <!-- login -->
     <string name="botonLogin">Iniciar sesión</string>
     <string name="botonRegistro">Registrarse</string>
