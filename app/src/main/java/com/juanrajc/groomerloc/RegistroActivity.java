@@ -1,7 +1,6 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,13 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
 
@@ -31,12 +24,14 @@ import java.util.regex.Pattern;
 
 public class RegistroActivity extends AppCompatActivity {
 
+    //Objetos de la vista de la activity.
     private RadioGroup rgRegistro;
     private RadioButton rbCliente, rbPeluquero;
     private EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
 
     private Button botonSiguiente;
 
+    //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
@@ -45,7 +40,7 @@ public class RegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        //Instanciamos los campos de registro.
+        //Instancia de los campos de registro.
         rbCliente=(RadioButton) findViewById(R.id.rbCliente);
         rbPeluquero=(RadioButton) findViewById(R.id.rbPeluquero);
 
@@ -96,7 +91,9 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //Si el intent devuelto proviene de la activity "RegistroLocActivity"...
         if(requestCode==1){
+            //cierra la activity actual.
             finish();
         }
 
@@ -126,22 +123,29 @@ public class RegistroActivity extends AppCompatActivity {
                         //Comprueba que las contraseñas tienen al menos 6 caracteres de longitud.
                         if(etRegPw.getText().toString().length()>=6 || etRegPw2.getText().toString().length()>=6){
 
+                            //Devuelve verdadero cuando el formulario está correcto.
                             return true;
 
                         }else {
                             Toast.makeText(this, getString(R.string.mensajePw2), Toast.LENGTH_SHORT).show();
+
+                            //Se borran los campos a corregir.
                             etRegPw.setText("");
                             etRegPw2.setText("");
                         }
 
                     }else{
                         Toast.makeText(this, getString(R.string.mensajePw), Toast.LENGTH_SHORT).show();
+
+                        //Se borran los campos a corregir.
                         etRegPw.setText("");
                         etRegPw2.setText("");
                     }
 
                 }else{
                     Toast.makeText(this, getString(R.string.mensajeEmail), Toast.LENGTH_SHORT).show();
+
+                    //Se borran los campos a corregir.
                     etRegEmail.setText("");
                 }
 
@@ -164,8 +168,7 @@ public class RegistroActivity extends AppCompatActivity {
      * @return Devuelve true si el email es válido o false si no lo es.
      */
     private boolean validarEmail(String email) {
-        Pattern pattern = Patterns.EMAIL_ADDRESS;
-        return pattern.matcher(email).matches();
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     /**
@@ -199,7 +202,7 @@ public class RegistroActivity extends AppCompatActivity {
                         con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
                         */
                         firestore.collection("clientes").document(auth.getCurrentUser()
-                                .getUid()).set(new Cliente(Integer.parseInt(etRegTlfn.getText().toString())));
+                                .getUid()).set(new Cliente(etRegNombre.getText().toString(), Integer.parseInt(etRegTlfn.getText().toString())));
 
                         //finalmente se cierra la activity.
                         finish();
@@ -207,8 +210,10 @@ public class RegistroActivity extends AppCompatActivity {
                     }
                 });
 
+            //Si el rol es el de peluquero...
             }else if(rbPeluquero.isChecked()){
 
+                //envía un intent a la activity "RegistroLocActivity" con los datos recogidos en esta activity.
                 Intent intentPeluquero = new Intent(this, RegistroLocActivity.class);
 
                 intentPeluquero.putExtra("email", etRegEmail.getText().toString());
@@ -216,6 +221,7 @@ public class RegistroActivity extends AppCompatActivity {
                 intentPeluquero.putExtra("nombre", etRegNombre.getText().toString());
                 intentPeluquero.putExtra("telefono", Integer.parseInt(etRegTlfn.getText().toString()));
 
+                //Requerida respuesta de vuelta.
                 startActivityForResult(intentPeluquero, 1);
 
             }

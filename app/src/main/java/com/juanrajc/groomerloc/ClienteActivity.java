@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,17 +18,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.juanrajc.groomerloc.clasesBD.Peluquero;
 
 public class ClienteActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    //Objeto del mapa que se muestra en la activity.
     private GoogleMap map;
-    private LatLng loc=null;
 
+    //Objetos de Firebase (Autenticación, usuario actual y BD Firestore).
     private FirebaseAuth auth;
     private FirebaseUser usuarioActual;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +47,35 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Instancias de la autenticación y la base de datos de Firebase.
         auth=FirebaseAuth.getInstance();
+        firestore=FirebaseFirestore.getInstance();
 
+        //Si existe algún usuario autenticado...
         if(auth.getCurrentUser()!=null){
 
-            //Si es así, lo instancia...
+            //lo instancia...
             usuarioActual = auth.getCurrentUser();
 
             //y le muestra un saludo con su nombre.
             Toast.makeText(this, getString(R.string.saludo) + " " + usuarioActual.getDisplayName(), Toast.LENGTH_SHORT).show();
 
         }
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        finish();
-        startActivity(getIntent());
+        //Si se aceptan los permisos de localización...
+        if((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+
+            //se recarga la activity para que muestre la localización actual del usuario.
+            finish();
+            startActivity(getIntent());
+        }
 
     }
 
@@ -75,6 +92,7 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        //Instancia del mapa.
         map=googleMap;
 
         //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
@@ -83,13 +101,18 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
             //Si es así, activamos y mostramos la localización del usuario.
             googleMap.setMyLocationEnabled(true);
 
-            FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-            client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            //Listener que se encarga de mostrar la localización GPS actual.
+            LocationServices.getFusedLocationProviderClient(this).getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if(location!=null) {
 
-                        marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+                        //Si se muestra con éxito, se hace zoom sobre dicha localización...
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+
+                        //y ejecuta el método que muestra los peluqueros de alrededor,
+                        buscaPeluqueros();
 
                     }
                 }
@@ -128,20 +151,51 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
         return true;
     }
 
-    private void marcarMapa (LatLng coordenadas){
+    /**
+     * Método que marca en mapa los peluqueros existentes en la base de datos.
+     */
+    private void buscaPeluqueros(){
 
-        loc=coordenadas;
+        //Listener que obtiene los peluqueros existentes en la base de datos.
+        firestore.collection("peluqueros").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                //Si se ha completado la búsqueda con éxito...
+                if(task.isSuccessful()){
+
+                    //por cada peluquero obtenido...
+                    for(DocumentSnapshot doc : task.getResult()){
+
+                        //marca en el mapa su posición con su nombre.
+                        marcarMapa(new LatLng(doc.toObject(Peluquero.class).getLoc().getLatitude()
+                                , doc.toObject(Peluquero.class).getLoc().getLongitude()), doc.toObject(Peluquero.class).getNombre());
+
+                    }
+
+                }
+            }
+        });
+
+
+
+    }
+
+
+    /**
+     * Método que se encarga de generar una marca con nombre en el mapa.
+     *
+     * @param coordenadas LatLng con las coordenadas donde se va a generar la marca.
+     * @param peluquero Cadena con el nombre del peluquero.
+     */
+    private void marcarMapa (LatLng coordenadas, String peluquero){
 
         //Se crea una marca.
         MarkerOptions mo=new MarkerOptions();
         //Se le pasa la posición seleccionada.
-        mo.position(loc);
+        mo.position(coordenadas);
         //Se le añade un título a la marca.
-        mo.title(getString(R.string.mensajeMarca)+loc.latitude+", "+loc.longitude);
-        //Se borra la marca anterior.
-        map.clear();
-        //Se anima el movimiento hacia la nueva marca.
-        map.animateCamera(CameraUpdateFactory.newLatLng(loc));
+        mo.title(peluquero);
         //Se posiciona la marca en el lugar seleccionado.
         map.addMarker(mo);
 

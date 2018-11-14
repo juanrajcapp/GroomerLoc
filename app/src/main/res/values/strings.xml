@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">GroomerLoc</string>
+
+    <!-- general -->
+    <string name="botonAtras">Back</string>
+    <string name="botonSiguiente">Next</string>
+
+    <!-- cliente -->
+    <string name="saludo">Welcome</string>
+
     <!-- login -->
-    <string name="saludo">Welcome </string>
     <string name="botonLogin">Log in</string>
     <string name="botonRegistro">Sign in</string>
     <string name="email">Email</string>
@@ -18,19 +25,17 @@
     <string name="password2">Repeat password</string>
     <string name="nombre">Name</string>
     <string name="tlfn">Phone number</string>
-    <string name="botonAtras">Back</string>
-    <string name="botonSiguiente">Next</string>
     <string name="mensajeRol">You must select a role (customer or groomer)</string>
     <string name="mensajeCampos">You must complete all the fields</string>
     <string name="mensajeEmail">You must type a valid Email</string>
     <string name="mensajePw">Passwords are not equals</string>
     <string name="mensajePw2">The password must be at least 6 characters</string>
 
-    <!--registro2-->
+    <!-- registro2 -->
     <string name="tituloLoc">Click on your localization or...</string>
     <string name="dir">Type your address</string>
     <string name="datAdi">Additional indications (floor, door, etc)</string>
-    <string name="mensajeMarca">Location: </string>
+    <string name="mensajeMarca">Location:</string>
     <string name="mensajeNoDireccion">Address not found</string>
     <string name="mensajeDirVacia">You must type an address</string>
     <string name="botonRegistrar">Complete registration</string>

@@ -22,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,35 +30,40 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.juanrajc.groomerloc.clasesBD.Cliente;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
+import com.juanrajc.groomerloc.recursos.MiLatLng;
 
 import java.io.IOException;
 import java.util.List;
 
 public class RegistroLocActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    //Objeto del mapa que se muestra en la activity.
     GoogleMap map;
 
+    //Geocoder para la traducción de coordenadas en direciones y viceversa.
     Geocoder gc;
+    //Lista de direcciones obtenidas mediante el Geocoder.
     List<Address> direcciones;
 
+    //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
     //Coordenadas de la marca creada por el usuario.
     LatLng loc=null;
 
+    //Datos obtenidos de la activity anterior para el registro del usuario.
     private String email, pw, nombre;
     private int telefono;
 
+    //Objetos de la vista de la activity.
     private EditText etDireccion, etDatAdi;
     private ImageButton botonLoc;
 
@@ -68,9 +72,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_loc);
 
+        //Instancia de los campos de dirección.
         etDireccion = (EditText) findViewById(R.id.etDireccion);
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
 
+        //Botón de localización personalizado con su listener, que se ejecuta cuando se pulsa.
         botonLoc = (ImageButton) findViewById(R.id.botonLoc);
         botonLoc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,15 +97,18 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
             }
         });
 
+        //Carga del fragment con el mapa.
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.regLoc);
         mapFragment.getMapAsync(this);
 
+        //Instancia del Geocoder.
         gc=new Geocoder(this);
 
         //Instancias de la autenticación y la base de datos de Firebase.
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        //Carga y guardado de los parámetros pasados desde la activity "RegistroActivity" mediante intent.
         email=getIntent().getStringExtra("email");
         pw=getIntent().getStringExtra("pw");
         nombre=getIntent().getStringExtra("nombre");
@@ -111,8 +120,11 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        //Si se aceptan los permisos de localización...
         if((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                 && (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+
+            //se recarga la activity para que muestre la localización actual del usuario.
             finish();
             startActivity(getIntent());
         }
@@ -123,20 +135,22 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(final GoogleMap googleMap) {
 
+        //Instancia del mapa.
         map=googleMap;
 
-        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
+        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación.
         if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
 
             //Si los permisos están activos, se muestra el botón de localización.
             botonLoc.setClickable(true);
 
-            //Listener que se encarga de marcar la localización GPS actual.
+            //Listener que se encarga de mostrar la localización GPS actual.
             LocationServices.getFusedLocationProviderClient(this).getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if(location!=null) {
 
+                        //Marca la localización actual en el mapa.
                         marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
 
                     }
@@ -170,7 +184,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         //Se le pasa la posición seleccionada.
         mo.position(loc);
         //Se le añade un título a la marca.
-        mo.title(getString(R.string.mensajeMarca)+loc.latitude+", "+loc.longitude);
+        mo.title(getString(R.string.mensajeMarca)+" "+loc.latitude+", "+loc.longitude);
         //Se borra la marca anterior.
         map.clear();
         //Se anima el movimiento hacia la nueva marca.
@@ -219,14 +233,18 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     protected void buscaCoordenadas(){
 
         try {
+            //Obtiene la primera dirección obtenida.
             direcciones = gc.getFromLocationName(etDireccion.getText().toString(), 1);
 
+            //Comprueba que se ha guardado una dirección.
             if(direcciones.size() > 0) {
+                //Si es así, crea la marca en el mapa con las coordenadas obtenidas de la dirección.
                 marcarMapa(new LatLng(direcciones.get(0).getLatitude(), direcciones.get(0).getLongitude()));
             }else{
                 Toast.makeText(this, getString(R.string.mensajeNoDireccion), Toast.LENGTH_SHORT).show();
             }
 
+        //Si el campo está vacío, salta la excepción que lo avisa.
         }catch(IOException ioe) {
             Toast.makeText(this, getString(R.string.mensajeDirVacia), Toast.LENGTH_SHORT).show();
         }
@@ -240,16 +258,20 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
         try {
 
+            //Obtiene la dirección mediante las coordenadas guardadas en la variable de la clase.
             direcciones = gc.getFromLocation(loc.latitude, loc.longitude, 1);
 
+            //Comprueba que se ha guardado al menos una dirección.
             if(direcciones.size()>0){
+                //Si es así, lo muestra en el EditText de dirección.
                 etDireccion.setText(muestraDireccion(direcciones.get(0)));
             }else{
+                //Si no, borra su contenido.
                 etDireccion.setText("");
             }
 
         }catch (IOException ioe){
-
+            Toast.makeText(this, getString(R.string.mensajeDirVacia), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -305,18 +327,27 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     protected void localizacion() {
 
         LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        Location location = locMan.getLastKnownLocation(locMan.getBestProvider(criteria, false));
+        Location location = locMan.getLastKnownLocation(locMan.getBestProvider(new Criteria(), false));
         marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
 
     }
 
+    /**
+     * Método que cierra la activity.
+     *
+     * @param view
+     */
     protected void atras(View view){
 
         finish();
 
     }
 
+    /**
+     * Método que, al pulsar el botón que finaliza el registro, crea el usuario e introduce su datos en la base de datos.
+     *
+     * @param view
+     */
     protected void registro(View view){
 
         //crea el usuario cliente con su email y contraseña...
@@ -333,7 +364,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                 con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
                 */
                 firestore.collection("peluqueros")
-                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(telefono, loc));
+                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
 
                 //finalmente se cierra la activity.
                 finish();
