@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/maps_fragment" />
 
     <TextView
         android:id="@+id/tvRegPeluquero"
@@ -22,10 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/tituloLoc"
         android:textColor="@color/tituloLoc"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/botonLoc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,11 +41,13 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/dir"
+        android:imeOptions="actionSearch"
         android:inputType="textPostalAddress"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/botonBuscar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero"
+        android:importantForAutofill="no" tools:targetApi="o"/>
 
     <EditText
         android:id="@+id/etDatAdi"
@@ -57,18 +62,21 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDireccion" />
+        app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+        android:importantForAutofill="no" tools:targetApi="o"/>
 
-    <Button
-        android:id="@+id/botonBuscar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/botonLoc"
+        android:layout_width="45dp"
+        android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/botonBuscar"
-        android:onClick="buscaCoordenadas"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_mylocation"
+        tools:ignore="ContentDescription"/>
 
     <Button
         android:id="@+id/botonAtrasReg2"
