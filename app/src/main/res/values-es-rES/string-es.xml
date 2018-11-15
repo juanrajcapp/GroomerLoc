@@ -5,9 +5,21 @@
     <!-- general -->
     <string name="botonAtras">Atrás</string>
     <string name="botonSiguiente">Siguiente</string>
+    <string name="menuCabeceraMenu">Menú</string>
+    <string name="menuCabeceraInfo">Información</string>
+    <string name="menuCabeceraOpcion">Opciones</string>
+    <string name="menuAyuda">Ayuda</string>
+    <string name="menuAcercaDe">Acerca de...</string>
+    <string name="menuPreferencias">Preferencias</string>
+    <string name="menuSesion">Cerrar sesión</string>
+    <string name="menuSalir">Salir de la aplicación</string>
 
     <!-- cliente -->
     <string name="saludo">Bienvenido</string>
+    <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
+    <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <!-- menu cliente -->
+    <string name="menuCliPerro">Mascotas</string>
 
     <!-- perro -->
     <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>

@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         //Le asigna el tema que mostrará la pantalla de carga.
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.AppThemeSinAB);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -83,32 +83,40 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.mail);
         pw = (EditText) findViewById(R.id.pw);
 
-
+        //Si los campos de login no están correctamente rellenados...
         if (email.length() < 1 || pw.length() < 1 || !validarEmail(email.getText().toString())) {
 
+            //se muestra un toast.
             Toast.makeText(this, getString(R.string.toast_faltaMailPw), Toast.LENGTH_SHORT).show();
 
+        //Si están correctos...
         } else {
 
+            //intenta loguear con esos datos.
             auth.signInWithEmailAndPassword(email.getText().toString(), pw.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                activityCliente();
+                    //Si los datos coinciden con los de algún usuario de Firebase, se loguea...
+                    if (task.isSuccessful()) {
 
-                            } else {
+                        //borra completamente el campo de contraseña...
+                        pw.setText("");
 
-                                Toast.makeText(getApplicationContext(), getString(R.string.error_autenticar), Toast.LENGTH_SHORT).show();
+                        //e inicia la activity del cliente.
+                        activityCliente();
 
-                            }
+                    //Si no...
+                    } else {
 
-                        }
-                    });
+                        //muestra un toast.
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_autenticar), Toast.LENGTH_SHORT).show();
 
+                    }
+                }
+            });
         }
-
     }
 
     /**
