@@ -29,6 +29,7 @@ public class RegistroActivity extends AppCompatActivity {
     private RadioButton rbCliente, rbPeluquero;
     private EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
 
+    //Objeto del botón siguiente de la vista.
     private Button botonSiguiente;
 
     //Objetos de Firebase (Autenticación y BD Firestore).
@@ -181,7 +182,7 @@ public class RegistroActivity extends AppCompatActivity {
         //Comprueba que los campos están correctamente completados.
         if(compruebaCampos()){
 
-            //Se desactiva el botón de siguiente para evitar más de una pulsación.
+            //Se desactiva el botón de siguiente (o completar registro) para evitar más de una pulsación.
             botonSiguiente.setEnabled(false);
 
             //Si el rol seleccionado es el de cliente...
@@ -193,19 +194,36 @@ public class RegistroActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        //cuando se ha creado, añade el nombre introducido a la cuenta creada (y loqueada)...
-                        auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().
-                                setDisplayName(etRegNombre.getText().toString()).build());
+                        //Si se ha creado correctamente el usuario...
+                        if(task.isSuccessful()) {
 
-                        /*
-                        crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
-                        con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
-                        */
-                        firestore.collection("clientes").document(auth.getCurrentUser()
-                                .getUid()).set(new Cliente(etRegNombre.getText().toString(), Integer.parseInt(etRegTlfn.getText().toString())));
+                            //añade el nombre introducido a la cuenta creada (y loqueada)...
+                            auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().
+                                    setDisplayName(etRegNombre.getText().toString()).build());
 
-                        //finalmente se cierra la activity.
-                        finish();
+                            /*
+                            crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
+                            con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
+                            */
+                            firestore.collection("clientes").document(auth.getCurrentUser()
+                                    .getUid()).set(new Cliente(etRegNombre.getText().toString(), Integer.parseInt(etRegTlfn.getText().toString())));
+
+                            //y le muestra un saludo con su nombre.
+                            Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();
+
+
+                            //Finalmente se cierra la activity.
+                            finish();
+
+                        //Si no...
+                        } else {
+                            //muestra un toast...
+                            Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+
+                            //y vuelve a activar el botón de siguiente.
+                            botonSiguiente.setEnabled(true);
+
+                        }
 
                     }
                 });

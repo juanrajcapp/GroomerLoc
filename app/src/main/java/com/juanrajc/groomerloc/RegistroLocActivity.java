@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     //Objetos de la vista de la activity.
     private EditText etDireccion, etDatAdi;
     private ImageButton botonLoc;
+    private Button botonFinReg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         //Instancia de los campos de dirección.
         etDireccion = (EditText) findViewById(R.id.etDireccion);
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
+
+        //Instancia del botón de registro.
+        botonFinReg = (Button) findViewById(R.id.botonFinRegPel);
 
         //Botón de localización personalizado con su listener, que se ejecuta cuando se pulsa.
         botonLoc = (ImageButton) findViewById(R.id.botonLoc);
@@ -350,26 +355,45 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      */
     protected void registro(View view){
 
-        //crea el usuario cliente con su email y contraseña...
+        //Se desactiva el botón de registro para evitar varias pulsaciones simultáneas.
+        botonFinReg.setEnabled(false);
+
+        //Crea el usuario cliente con su email y contraseña...
         auth.createUserWithEmailAndPassword(email, pw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                //cuando se ha creado, añade el nombre introducido a la cuenta creada (y loqueada)...
-                auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre).build());
+                //Si se ha creado correctamente el usuario...
+                if(task.isSuccessful()) {
 
-                /*
-                crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
-                con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
-                */
-                firestore.collection("peluqueros")
-                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
+                    //añade el nombre introducido a la cuenta creada (y loqueada)...
+                    auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre).build());
 
-                //finalmente se cierra la activity.
-                finish();
+                    /*
+                    crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
+                    con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
+                    */
+                    firestore.collection("peluqueros")
+                            .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
+
+                    //y le muestra un saludo con su nombre.
+                    Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();
+
+                    //Finalmente se cierra la activity.
+                    finish();
+
+                //Si no...
+                } else {
+                    //muestra un toast...
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_registro), Toast.LENGTH_SHORT).show();
+
+                    //y vuelve a activar el botón de registro.
+                    botonFinReg.setEnabled(true);
 
                 }
+
+            }
         });
 
     }

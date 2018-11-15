@@ -43,10 +43,11 @@
                 android:id="@+id/etRegNombrePerro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:layout_span="2"
+                android:autofillHints="@string/nombre"
+                android:ems="10"
                 android:inputType="textPersonName"
-                android:autofillHints="@string/nombre" tools:targetApi="o"/>
+                tools:targetApi="o" />
         </TableRow>
 
         <TableRow
@@ -63,10 +64,11 @@
                 android:id="@+id/etRegRaza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:layout_span="2"
+                android:autofillHints="@string/raza"
+                android:ems="10"
                 android:inputType="text"
-                android:autofillHints="@string/raza" tools:targetApi="o"/>
+                tools:targetApi="o" />
         </TableRow>
 
         <TableRow
@@ -83,9 +85,12 @@
                 android:id="@+id/etRegPeso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autofillHints="@string/password2"
                 android:ems="10"
+                android:hint="@string/cajaPeso"
                 android:inputType="numberDecimal"
-                android:autofillHints="@string/password2" tools:targetApi="o"/>
+                android:textAlignment="textEnd"
+                tools:targetApi="o" />
 
             <TextView
                 android:id="@+id/tvRegKg"
@@ -102,8 +107,8 @@
                 android:id="@+id/tvRegNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_span="3"
                 android:layout_gravity="center"
+                android:layout_span="3"
                 android:text="@string/comentarios" />
 
         </TableRow>
@@ -116,11 +121,14 @@
                 android:id="@+id/editText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:layout_span="3"
+                android:ems="10"
                 android:hint="@string/cajaComentarios"
+                android:importantForAutofill="no"
                 android:inputType="textMultiLine"
-                android:importantForAutofill="no" tools:targetApi="o"/>
+                android:lines="2"
+                android:singleLine="true"
+                tools:targetApi="o" />
         </TableRow>
 
         <TableRow
@@ -140,24 +148,26 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/botonAtrasReg"
+        android:id="@+id/botonAtrasRegPerro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:onClick="atras"
         android:text="@string/botonAtras"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablaRegistroPerro" />
 
     <Button
-        android:id="@+id/botonSiguienteReg"
+        android:id="@+id/botonRegPerro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:onClick="regPerro"
         android:text="@string/botonRegistrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

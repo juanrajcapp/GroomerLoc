@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,9 +37,8 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     //Objeto del mapa que se muestra en la activity.
     private GoogleMap map;
 
-    //Objetos de Firebase (Autenticación, usuario actual y BD Firestore).
+    //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
-    private FirebaseUser usuarioActual;
     private FirebaseFirestore firestore;
 
     //Objeto del panel lateral (menú).
@@ -72,17 +69,6 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //Si existe algún usuario autenticado...
-        if(auth.getCurrentUser()!=null){
-
-            //lo instancia...
-            usuarioActual = auth.getCurrentUser();
-
-            //y le muestra un saludo con su nombre.
-            Toast.makeText(this, getString(R.string.saludo) + " " + usuarioActual.getDisplayName(), Toast.LENGTH_SHORT).show();
-
-        }
 
     }
 

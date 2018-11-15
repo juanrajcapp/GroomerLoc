@@ -26,6 +26,7 @@
     <string name="raza">Raza</string>string>
     <string name="peso">Peso</string>
     <string name="kg">Kg</string>
+    <string name="cajaPeso">Por ejemplo: 12.5</string>
     <string name="comentarios">Comentarios</string>
     <string name="cajaComentarios">Problemas de salud, alergias...</string>
     <string name="botonFoto">Añadir fotografía...</string>
@@ -52,6 +53,8 @@
     <string name="mensajeEmail">Debes introducir un Email válido</string>
     <string name="mensajePw">Las contraseñas no son iguales</string>
     <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres</string>
+    <string name="regCompletado">Registro completado</string>
+    <string name="error_registro">Error al registrarse</string>
 
     <!-- registro2 -->
     <string name="tituloLoc">Pinche en su localización o...</string>
