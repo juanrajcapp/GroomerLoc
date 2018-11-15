@@ -26,9 +26,14 @@
     <string name="peso">Weight</string>
     <string name="kg">Kg</string>
     <string name="cajaPeso">For example: 12.5</string>
+    <string name="sexo">Sex</string>
+    <string name="macho">MALE</string>
+    <string name="hembra">FEMALE</string>
     <string name="comentarios">Comments</string>
     <string name="cajaComentarios">Health problems, allergies...</string>
     <string name="botonFoto">Add photo...</string>
+    <string name="mensajeCamposPerro">The fields \'Name\', \'Breed\' and \'Weight\' are required.</string>
+    <string name="mensajeSexo">You must select the sex of your pet</string>
 
     <!-- login -->
     <string name="botonLogin">Log in</string>

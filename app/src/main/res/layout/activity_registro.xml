@@ -59,6 +59,7 @@
                     android:layout_weight="1"
                     android:text="@string/peluquero" />
             </RadioGroup>
+
         </TableRow>
 
         <TableRow

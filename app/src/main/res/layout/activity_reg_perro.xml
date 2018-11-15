@@ -104,7 +104,41 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tvRegNombre"
+                android:id="@+id/tvRegSexo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/sexo"/>
+
+            <RadioGroup
+                android:id="@+id/rgRegSexo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_span="2">
+
+                <RadioButton
+                    android:id="@+id/rbRegMacho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/macho" />
+
+                <RadioButton
+                    android:id="@+id/rbRegHembra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/hembra" />
+            </RadioGroup>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvRegComent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -118,7 +152,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/etRegComent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="3"

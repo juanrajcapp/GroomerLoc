@@ -41,7 +41,10 @@ public class RegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        //Instancia de los campos de registro.
+        //Instancia del grupo de botones de radio.
+        rgRegistro=(RadioGroup) findViewById(R.id.rgRegistro);
+
+        //Instancia de los campos de registro de la vista.
         rbCliente=(RadioButton) findViewById(R.id.rbCliente);
         rbPeluquero=(RadioButton) findViewById(R.id.rbPeluquero);
 
@@ -53,9 +56,6 @@ public class RegistroActivity extends AppCompatActivity {
 
         //Instancia el botón de siguiente.
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
-
-        //Instancia del grupo de botones de radio.
-        rgRegistro=(RadioGroup) findViewById(R.id.rgRegistro);
 
         //Listener para el grupo de botones de radio que se encarga de cambiar el texto del botón para seguir dependiendo del rol seleccionado.
         rgRegistro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
