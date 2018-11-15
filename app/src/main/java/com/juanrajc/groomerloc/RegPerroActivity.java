@@ -65,22 +65,18 @@ public class RegPerroActivity extends AppCompatActivity {
         if(nombrePerro.getText().toString().length()>0 && razaPerro.getText().toString().length()>0
                 && pesoPerro.getText().toString().length()>0){
 
-            //Comprueba que uno de los botones de radio esté marcado.
+            //Comprueba que se ha seleccionado uno de los dos sexos.
             if(perroMacho.isChecked() || perroHembra.isChecked()){
 
-                //Si el formulario está bien cumplimentado, 
+                //Devuelve verdadero cuando el formulario está correcto.
                 return true;
 
             } else {
-
                 Toast.makeText(this, getString(R.string.mensajeSexo), Toast.LENGTH_SHORT).show();
-
             }
 
         } else {
-
             Toast.makeText(this, getString(R.string.mensajeCamposPerro), Toast.LENGTH_SHORT).show();
-
         }
 
         return false;
