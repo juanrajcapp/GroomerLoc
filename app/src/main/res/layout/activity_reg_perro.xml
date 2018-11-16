@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegPerroActivity">
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvRegistroPerro"
@@ -160,7 +166,7 @@
                 android:hint="@string/cajaComentarios"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
-                android:lines="2"
+                android:lines="3"
                 android:singleLine="true"
                 tools:targetApi="o" />
         </TableRow>
@@ -169,7 +175,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <Button
                 android:id="@+id/botonRegImg"
                 android:layout_width="wrap_content"
@@ -177,6 +182,21 @@
                 android:layout_span="3"
                 android:onClick="dialogoImagen"
                 android:text="@string/botonFoto" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/ivPerro"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_span="3"
+                android:src="@drawable/splash"
+                android:contentDescription="@string/descFotoPerro" />
 
         </TableRow>
 
@@ -209,3 +229,5 @@
         app:layout_constraintTop_toBottomOf="@+id/tablaRegistroPerro" />
 
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -54,7 +58,9 @@
         <activity
             android:name=".RegistroLocActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".RegPerroActivity"></activity>
+        <activity
+            android:name=".RegPerroActivity"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@
         <!-- menu cliente -->
     <string name="menuCliPerro">Pets</string>
 
-    <!-- perro -->
+    <!-- registro perro -->
     <string name="tituloRegPerro">REGISTER YOUR PET</string>
     <string name="raza">Breed</string>string>
     <string name="peso">Weight</string>
@@ -32,8 +32,14 @@
     <string name="comentarios">Comments</string>
     <string name="cajaComentarios">Health problems, allergies...</string>
     <string name="botonFoto">Add photo...</string>
+    <string name="descFotoPerro">Photo of your pet.</string>
     <string name="mensajeCamposPerro">The fields \'Name\', \'Breed\' and \'Weight\' are required.</string>
     <string name="mensajeSexo">You must select the sex of your pet</string>
+        <!-- dialog perro -->
+    <string name="tituloDialog">Select an option:</string>
+    <string name="opCamara">Take a photo...</string>
+    <string name="opGaleria">Choose from gallery...</string>
+    <string name="opCancelar">Cancel</string>
 
     <!-- login -->
     <string name="botonLogin">Log in</string>

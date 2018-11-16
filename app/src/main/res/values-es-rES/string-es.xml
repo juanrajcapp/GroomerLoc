@@ -21,7 +21,7 @@
     <!-- menu cliente -->
     <string name="menuCliPerro">Mascotas</string>
 
-    <!-- perro -->
+    <!-- registro perro -->
     <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>
     <string name="raza">Raza</string>string>
     <string name="peso">Peso</string>
@@ -33,8 +33,14 @@
     <string name="comentarios">Comentarios</string>
     <string name="cajaComentarios">Problemas de salud, alergias...</string>
     <string name="botonFoto">Añadir fotografía...</string>
+    <string name="descFotoPerro">Fotografía de tu mascota.</string>
     <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios</string>
     <string name="mensajeSexo">Debe seleccionar el sexo de su mascota</string>
+        <!--dialog perro-->
+    <string name="tituloDialog">Seleccione una opción:</string>
+    <string name="opCamara">Haga una foto...</string>
+    <string name="opGaleria">Seleccione desde la galería...</string>
+    <string name="opCancelar">Cancelar</string>
 
     <!-- login -->
     <string name="botonLogin">Iniciar sesión</string>

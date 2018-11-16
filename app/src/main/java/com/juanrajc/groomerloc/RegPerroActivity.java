@@ -1,7 +1,15 @@
 package com.juanrajc.groomerloc;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -24,6 +33,7 @@ public class RegPerroActivity extends AppCompatActivity {
     private RadioGroup grupoSexo;
     private RadioButton perroMacho, perroHembra;
     private EditText nombrePerro, razaPerro, pesoPerro, comentPerro;
+    private ImageView ivPerro;
 
     //Objeto del botón registro de perro de la vista.
     private Button botonRegPerro;
@@ -31,6 +41,8 @@ public class RegPerroActivity extends AppCompatActivity {
     //Objeto del usuario actual.
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
+
+    private static final int REQUEST_CAMARA=1, REQUEST_GALERIA=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +66,41 @@ public class RegPerroActivity extends AppCompatActivity {
         pesoPerro = (EditText) findViewById(R.id.etRegPeso);
         comentPerro = (EditText) findViewById(R.id.etRegComent);
 
+        ivPerro = (ImageView) findViewById(R.id.ivPerro);
+
         //Instancia del botón de registro del perro de la vista.
         botonRegPerro = (Button) findViewById(R.id.botonRegPerro);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Controla que si no se hace o se selecciona una imagen, al volver no produzca una excepción de valor nulo.
+        if(data!=null && data.getExtras()!=null) {
+
+            if (requestCode == REQUEST_CAMARA) {
+
+                Bundle extras = data.getExtras();
+                Bitmap bm = (Bitmap) extras.get("data");
+                ivPerro.setImageBitmap(bm);
+
+            } else if (requestCode == REQUEST_GALERIA) {
+
+
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //Después de una patición de permisos, se recarga el dialog.
+        dialogoImagen(null);
 
     }
 
@@ -67,14 +112,14 @@ public class RegPerroActivity extends AppCompatActivity {
     protected void dialogoImagen(View view){
 
         //Array con las opciones mostradas en el dialog.
-        final CharSequence[] opciones = {"Cámara", "Galería", "Cancelar"};
+        final CharSequence[] opciones = {getString(R.string.opCamara), getString(R.string.opGaleria), getString(R.string.opCancelar)};
 
         //Instancia del dialog con el estilo definido en "styles".
         AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.AppTheme_Dialog);
 
         //Crea un TV para personalizar el título del dialog.
         TextView tituloDialog = new TextView(this);
-        tituloDialog.setText("¿Qué desea utilizar?");
+        tituloDialog.setText(getString(R.string.tituloDialog));
         tituloDialog.setGravity(Gravity.CENTER);
         tituloDialog.setBackgroundColor(Color.GRAY);
         tituloDialog.setTextColor(Color.WHITE);
@@ -89,11 +134,11 @@ public class RegPerroActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                if (opciones[i].equals("Cámara")) {
-
-                } else if (opciones[i].equals("Galería")) {
-
-                } else if (opciones[i].equals("Cancelar")) {
+                if (opciones[i].equals(getString(R.string.opCamara))) {
+                    opcionCamara();
+                } else if (opciones[i].equals(getString(R.string.opGaleria))) {
+                    opcionGaleria();
+                } else if (opciones[i].equals(getString(R.string.opCancelar))) {
                     dialogInterface.dismiss();
                 }
 
@@ -102,6 +147,70 @@ public class RegPerroActivity extends AppCompatActivity {
 
         //Muestra el dialog.
         ad.show();
+
+    }
+
+    /**
+     *
+     */
+    private void opcionCamara(){
+
+        if(permisosCamara()) {
+
+            Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intentCamara, REQUEST_CAMARA);
+
+        }
+
+    }
+
+    /**
+     *
+     */
+    private void opcionGaleria(){
+
+        if(permisosGaleria()) {
+
+            Intent intentGaleria = new Intent(MediaStore.INTENT_ACTION_MEDIA_SEARCH);
+            getParent().startActivityForResult(intentGaleria, REQUEST_GALERIA);
+
+        }
+
+    }
+
+    /**
+     * Método que comprueba y pide los permisos para usar la cámara del dispositivo.
+     *
+     * @return Devuelve un booleano verdadero si los permisos están aceptados, o falso si no los están.
+     */
+    private boolean permisosCamara(){
+
+        //Comprueba si tenemos permisos para acceder a la cámara.
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+            // Solicita permiso en caso de que no disponga.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+            return false;
+        }
+
+        return true;
+
+    }
+
+    /**
+     * Método que comprueba y pide los permisos para acceder al almacenamiento externo.
+     *
+     * @return Devuelve un booleano verdadero si los permisos están aceptados, o falso si no los están
+     */
+    private boolean permisosGaleria(){
+
+        //Comprueba si tenemos permisos para acceder a la galería.
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+            // Solicita permiso en caso de que no disponga.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -134,6 +243,11 @@ public class RegPerroActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que se ejecuta cuando se pulsa el botón de registro del perro.
+     *
+     * @param view
+     */
     protected  void regPerro (View view){
 
         if(compruebaCampos()){
@@ -144,6 +258,11 @@ public class RegPerroActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que controla el retroceso a la activity anterior.
+     *
+     * @param view
+     */
     protected void atras (View view){
 
         finish();
