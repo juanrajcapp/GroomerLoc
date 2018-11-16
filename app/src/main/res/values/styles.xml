@@ -19,4 +19,9 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <!-- Tema dialog -->
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>
