@@ -133,20 +133,28 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         //Según el elemento del panel lateral pulsado...
-        if(item.getItemId()==R.id.nav_perro){
-            startActivity(new Intent(this, RegPerroActivity.class));
-            return true;
-        } else if(item.getItemId()==R.id.nav_log_off){
-            //Desloguea al usuario actual.
-            auth.signOut();
-            finish();
-            return true;
-        } else if(item.getItemId()==R.id.nav_salir) {
-            //Cierra la aplicación completamente.
-            finishAffinity();
-            return true;
+        switch (item.getItemId()){
+
+            case R.id.nav_perro:
+                startActivity(new Intent(this, RegPerroActivity.class));
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_log_off:
+                //Desloguea al usuario actual.
+                auth.signOut();
+                finish();
+                return true;
+
+            case R.id.nav_salir:
+                //Cierra la aplicación completamente.
+                finishAffinity();
+                return true;
+
+                default:
+                    return false;
+
         }
-        return false;
 
     }
 
@@ -218,15 +226,10 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                                 , doc.toObject(Peluquero.class).getLoc().getLongitude()), doc.toObject(Peluquero.class).getNombre());
 
                     }
-
                 }
             }
         });
-
-
-
     }
-
 
     /**
      * Método que se encarga de generar una marca con nombre en el mapa.

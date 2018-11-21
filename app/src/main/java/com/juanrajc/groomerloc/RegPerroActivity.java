@@ -4,10 +4,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -88,29 +86,21 @@ public class RegPerroActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode){
+        if(resultCode==RESULT_OK) {
 
-            case REQUEST_CAMARA:
+            switch (requestCode) {
 
-                if(resultCode==RESULT_OK){
+                case REQUEST_CAMARA:
+
                     ivPerro.setImageBitmap(BitmapFactory.decodeFile(rutaFoto));
-                }
 
-                break;
+                    break;
 
-            case REQUEST_GALERIA:
+                case REQUEST_GALERIA:
 
-                //Controla que si no se hace o se selecciona una imagen, al volver no produzca una excepción de valor nulo.
-                if(data!=null && data.getExtras()!=null && resultCode ==RESULT_OK){
+                    ivPerro.setImageURI(data.getData());
 
-                    Bundle extras = data.getExtras();
-                    Bitmap bm = (Bitmap) extras.get("data");
-                    ivPerro.setImageBitmap(bm);
-
-                }
-
-                break;
-
+            }
         }
     }
 
@@ -120,25 +110,6 @@ public class RegPerroActivity extends AppCompatActivity {
 
         //Después de una patición de permisos, se recarga el dialog.
         dialogoImagen(null);
-
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        rutaFoto = image.getAbsolutePath();
-        return image;
-
 
     }
 
@@ -185,55 +156,6 @@ public class RegPerroActivity extends AppCompatActivity {
 
         //Muestra el dialog.
         ad.show();
-
-    }
-
-    /**
-     *
-     */
-    private void opcionCamara(){
-
-        if(permisosCamara()) {
-
-            Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            if(intentCamara.resolveActivity(getPackageManager())!=null){
-
-                File archivoFoto =null;
-
-                try{
-                    archivoFoto=createImageFile();
-                }catch (IOException ioe){
-
-                }
-
-                if(archivoFoto!=null){
-
-                    Uri URIFoto = FileProvider.getUriForFile(this, "com.example.android.fileprovider", archivoFoto);
-
-                    intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, URIFoto);
-
-                    startActivityForResult(intentCamara, REQUEST_CAMARA);
-
-                }
-
-            }
-
-        }
-
-    }
-
-    /**
-     *
-     */
-    private void opcionGaleria(){
-
-        if(permisosLecturaArchivos()) {
-
-            Intent intentGaleria = new Intent(MediaStore.INTENT_ACTION_MEDIA_SEARCH);
-            startActivityForResult(intentGaleria, REQUEST_GALERIA);
-
-        }
 
     }
 
@@ -299,6 +221,84 @@ public class RegPerroActivity extends AppCompatActivity {
         }
 
         return false;
+
+    }
+
+    /**
+     * Método que crea un File temporal con la imagen tomada con la cámara del dispositivo.
+     *
+     * @return File con la imagen temporal.
+     */
+    private File createImageFile(){
+        // Crea un nombre para el archivo con la imagen.
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        try {
+
+            File image = File.createTempFile(
+                    imageFileName,  /* prefijo */
+                    ".jpg",         /* sufijo */
+                    storageDir      /* directorio */
+            );
+
+            //Guarda la ruta absoluta para luego acceder al recurso.
+            rutaFoto = image.getAbsolutePath();
+            return image;
+
+        }catch (IOException ioe){
+            return null;
+        }
+
+    }
+
+    /**
+     * Método que inicia la cámara.
+     */
+    private void opcionCamara(){
+
+        //Si el permiso de acceso a la cámara está aceptado...
+        if(permisosCamara()) {
+
+            //crea el intent que inicia la cámara del dispositivo.
+            Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            //Comprueba que existe una activity que reciba el intent (aplicación de la cámara).
+            if(intentCamara.resolveActivity(getPackageManager())!=null){
+
+                //Crea un archivo temporal, el cual alojará la imagen tomada por la cámara.
+                File archivoFoto=createImageFile();
+
+                //Comprueba que se ha creado correctamente.
+                if(archivoFoto!=null){
+
+                    //Se añade un extra al intent con el File que contendrá la imagen.
+                    intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this,
+                            "com.example.android.fileprovider", archivoFoto));
+
+                    //Inicia la activity con el intent.
+                    startActivityForResult(intentCamara, REQUEST_CAMARA);
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Método que abre el gestor de archivos.
+     */
+    private void opcionGaleria(){
+
+        //Si el permiso de 
+        if(permisosLecturaArchivos()) {
+
+            Intent intentGaleria = new Intent(Intent.ACTION_GET_CONTENT);
+            intentGaleria.setType("image/*");
+
+            startActivityForResult(intentGaleria, REQUEST_GALERIA);
+
+        }
 
     }
 
