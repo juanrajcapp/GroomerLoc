@@ -5,11 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +31,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RegPerroActivity extends AppCompatActivity {
 
     //Objetos de la vista de la activity.
@@ -41,6 +50,8 @@ public class RegPerroActivity extends AppCompatActivity {
     //Objeto del usuario actual.
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
+
+    private String rutaFoto;
 
     private static final int REQUEST_CAMARA=1, REQUEST_GALERIA=2;
 
@@ -77,22 +88,30 @@ public class RegPerroActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Controla que si no se hace o se selecciona una imagen, al volver no produzca una excepción de valor nulo.
-        if(data!=null && data.getExtras()!=null) {
+        switch (requestCode){
 
-            if (requestCode == REQUEST_CAMARA) {
+            case REQUEST_CAMARA:
 
-                Bundle extras = data.getExtras();
-                Bitmap bm = (Bitmap) extras.get("data");
-                ivPerro.setImageBitmap(bm);
+                if(resultCode==RESULT_OK){
+                    ivPerro.setImageBitmap(BitmapFactory.decodeFile(rutaFoto));
+                }
 
-            } else if (requestCode == REQUEST_GALERIA) {
+                break;
 
+            case REQUEST_GALERIA:
 
-            }
+                //Controla que si no se hace o se selecciona una imagen, al volver no produzca una excepción de valor nulo.
+                if(data!=null && data.getExtras()!=null && resultCode ==RESULT_OK){
+
+                    Bundle extras = data.getExtras();
+                    Bitmap bm = (Bitmap) extras.get("data");
+                    ivPerro.setImageBitmap(bm);
+
+                }
+
+                break;
 
         }
-
     }
 
     @Override
@@ -101,6 +120,25 @@ public class RegPerroActivity extends AppCompatActivity {
 
         //Después de una patición de permisos, se recarga el dialog.
         dialogoImagen(null);
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        rutaFoto = image.getAbsolutePath();
+        return image;
+
 
     }
 
@@ -158,7 +196,28 @@ public class RegPerroActivity extends AppCompatActivity {
         if(permisosCamara()) {
 
             Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intentCamara, REQUEST_CAMARA);
+
+            if(intentCamara.resolveActivity(getPackageManager())!=null){
+
+                File archivoFoto =null;
+
+                try{
+                    archivoFoto=createImageFile();
+                }catch (IOException ioe){
+
+                }
+
+                if(archivoFoto!=null){
+
+                    Uri URIFoto = FileProvider.getUriForFile(this, "com.example.android.fileprovider", archivoFoto);
+
+                    intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, URIFoto);
+
+                    startActivityForResult(intentCamara, REQUEST_CAMARA);
+
+                }
+
+            }
 
         }
 
@@ -169,10 +228,10 @@ public class RegPerroActivity extends AppCompatActivity {
      */
     private void opcionGaleria(){
 
-        if(permisosGaleria()) {
+        if(permisosLecturaArchivos()) {
 
             Intent intentGaleria = new Intent(MediaStore.INTENT_ACTION_MEDIA_SEARCH);
-            getParent().startActivityForResult(intentGaleria, REQUEST_GALERIA);
+            startActivityForResult(intentGaleria, REQUEST_GALERIA);
 
         }
 
@@ -197,11 +256,11 @@ public class RegPerroActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que comprueba y pide los permisos para acceder al almacenamiento externo.
+     * Método que comprueba y pide los permisos para leer archivos del almacenamiento externo.
      *
      * @return Devuelve un booleano verdadero si los permisos están aceptados, o falso si no los están
      */
-    private boolean permisosGaleria(){
+    private boolean permisosLecturaArchivos(){
 
         //Comprueba si tenemos permisos para acceder a la galería.
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
