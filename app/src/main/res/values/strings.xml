@@ -4,18 +4,50 @@
     <!-- general -->
     <string name="botonAtras">Back</string>
     <string name="botonSiguiente">Next</string>
+    <string name="menuCabeceraMenu">Menu</string>
+    <string name="menuCabeceraInfo">Information</string>
+    <string name="menuCabeceraOpcion">Options</string>
+    <string name="menuAyuda">Help</string>
+    <string name="menuAcercaDe">About...</string>
+    <string name="menuPreferencias">Preferences</string>
+    <string name="menuSesion">Log out</string>
+    <string name="menuSalir">Exit application</string>
 
     <!-- cliente -->
     <string name="saludo">Welcome</string>
+    <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
+    <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+        <!-- menu cliente -->
+    <string name="menuCliPerro">Pets</string>
 
-    <!-- perro -->
+    <!-- registro perro -->
     <string name="tituloRegPerro">REGISTER YOUR PET</string>
     <string name="raza">Breed</string>string>
     <string name="peso">Weight</string>
     <string name="kg">Kg</string>
+    <string name="cajaPeso">For example: 12.5</string>
+    <string name="sexo">Sex</string>
+    <string name="macho">MALE</string>
+    <string name="hembra">FEMALE</string>
     <string name="comentarios">Comments</string>
     <string name="cajaComentarios">Health problems, allergies...</string>
     <string name="botonFoto">Add photo...</string>
+    <string name="descFotoPerro">Photo of your pet.</string>
+    <string name="mensajeCamposPerro">The fields \'Name\', \'Breed\' and \'Weight\' are required.</string>
+    <string name="mensajeSexo">You must select the sex of your pet</string>
+    <string name="mensajeRequestFoto">It was not possible to load the image</string>
+    <string name="mensajeNoEspecificado">Not specified</string>
+    <string name="mensajeSubidaCorrecta">The image has been uploaded correctly</string>
+    <string name="mensajeSubidaFallida">Failure to upload the image</string>
+    <string name="mensajeFalloBD">Database accessing error</string>
+        <!-- dialog perro -->
+    <string name="tituloDialog">Select an option:</string>
+    <string name="opCamara">Take a photo...</string>
+    <string name="opGaleria">Choose from gallery...</string>
+    <string name="opCancelar">Cancel</string>
+    <string name="mensajeSobreescrituraPerro">is already registered, do you want to update his/her data?</string>
+    <string name="si">YES</string>
+    <string name="no">NO</string>
 
     <!-- login -->
     <string name="botonLogin">Log in</string>
@@ -39,6 +71,8 @@
     <string name="mensajeEmail">You must type a valid Email</string>
     <string name="mensajePw">Passwords are not equals</string>
     <string name="mensajePw2">The password must be at least 6 characters</string>
+    <string name="regCompletado">Registration process completed</string>
+    <string name="error_registro">Registering error</string>
 
     <!-- registro2 -->
     <string name="tituloLoc">Click on your localization or...</string>

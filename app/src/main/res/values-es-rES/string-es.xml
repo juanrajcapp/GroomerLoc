@@ -5,18 +5,50 @@
     <!-- general -->
     <string name="botonAtras">Atrás</string>
     <string name="botonSiguiente">Siguiente</string>
+    <string name="menuCabeceraMenu">Menú</string>
+    <string name="menuCabeceraInfo">Información</string>
+    <string name="menuCabeceraOpcion">Opciones</string>
+    <string name="menuAyuda">Ayuda</string>
+    <string name="menuAcercaDe">Acerca de...</string>
+    <string name="menuPreferencias">Preferencias</string>
+    <string name="menuSesion">Cerrar sesión</string>
+    <string name="menuSalir">Salir de la aplicación</string>
 
     <!-- cliente -->
     <string name="saludo">Bienvenido</string>
+    <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
+    <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <!-- menu cliente -->
+    <string name="menuCliPerro">Mascotas</string>
 
-    <!-- perro -->
+    <!-- registro perro -->
     <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>
     <string name="raza">Raza</string>string>
     <string name="peso">Peso</string>
     <string name="kg">Kg</string>
+    <string name="cajaPeso">Por ejemplo: 12.5</string>
+    <string name="sexo">Sexo</string>
+    <string name="macho">MACHO</string>
+    <string name="hembra">HEMBRA</string>
     <string name="comentarios">Comentarios</string>
     <string name="cajaComentarios">Problemas de salud, alergias...</string>
     <string name="botonFoto">Añadir fotografía...</string>
+    <string name="descFotoPerro">Fotografía de tu mascota.</string>
+    <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios</string>
+    <string name="mensajeSexo">Debe seleccionar el sexo de su mascota</string>
+    <string name="mensajeRequestFoto">No ha sido posible cargar la imagen</string>
+    <string name="mensajeNoEspecificado">No especificado</string>
+    <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente</string>
+    <string name="mensajeSubidaFallida">Fallo al subir la imagen</string>
+    <string name="mensajeFalloBD">Error al acceder a la base de datos</string>
+        <!--dialog perro-->
+    <string name="tituloDialog">Seleccione una opción:</string>
+    <string name="opCamara">Haga una foto...</string>
+    <string name="opGaleria">Seleccione desde la galería...</string>
+    <string name="opCancelar">Cancelar</string>
+    <string name="mensajeSobreescrituraPerro">ya está registrado, ¿Desea actualizar sus datos?</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
 
     <!-- login -->
     <string name="botonLogin">Iniciar sesión</string>
@@ -40,6 +72,8 @@
     <string name="mensajeEmail">Debes introducir un Email válido</string>
     <string name="mensajePw">Las contraseñas no son iguales</string>
     <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres</string>
+    <string name="regCompletado">Registro completado</string>
+    <string name="error_registro">Error al registrarse</string>
 
     <!-- registro2 -->
     <string name="tituloLoc">Pinche en su localización o...</string>

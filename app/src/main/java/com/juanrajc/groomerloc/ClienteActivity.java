@@ -2,14 +2,19 @@ package com.juanrajc.groomerloc;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.MenuItem;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,21 +27,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
 
-public class ClienteActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ClienteActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     //Objeto del mapa que se muestra en la activity.
     private GoogleMap map;
 
-    //Objetos de Firebase (Autenticación, usuario actual y BD Firestore).
+    //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
-    private FirebaseUser usuarioActual;
     private FirebaseFirestore firestore;
+
+    //Objeto del panel lateral (menú).
+    private DrawerLayout dw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +57,18 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
         auth=FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
 
-        //Si existe algún usuario autenticado...
-        if(auth.getCurrentUser()!=null){
+        //Muestra y habilita la pulsación del icono "Home" del ActionBar.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-            //lo instancia...
-            usuarioActual = auth.getCurrentUser();
-
-            //y le muestra un saludo con su nombre.
-            Toast.makeText(this, getString(R.string.saludo) + " " + usuarioActual.getDisplayName(), Toast.LENGTH_SHORT).show();
-
-        }
+        //Codigo del panel lateral.
+        dw = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this, dw, R.string.abrir_navegacion_lateral, R.string.cerrar_navegacion_lateral);
+        dw.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -121,6 +129,55 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        //Según el elemento del panel lateral pulsado...
+        switch (item.getItemId()){
+
+            case R.id.nav_perro:
+                //Inicia la activity de registro de perro...
+                startActivity(new Intent(this, RegPerroActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_log_off:
+                //Desloguea al usuario actual...
+                auth.signOut();
+                //y cierra la activity.
+                finish();
+                return true;
+
+            case R.id.nav_salir:
+                //Cierra la aplicación completamente.
+                finishAffinity();
+                return true;
+
+                default:
+                    return false;
+
+        }
+
+    }
+
+    /**
+     * Método para realizar las acciones del toolbar de la aplicación. Solo realiza la acción de abrir o cerrar el menú lateral.
+     * @return
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        //Si el menú está abierto
+        if(dw.isDrawerOpen(Gravity.START)){
+            //Cerrará el menú
+            dw.closeDrawer(Gravity.START);
+        }else{
+            //Abrirá el menu
+            dw.openDrawer(Gravity.START);
+        }
+        return super.onSupportNavigateUp();
+    }
+
     /**
      * Método que comprueba si tenemos persmiso de localización sobre el dispositivo
      *
@@ -172,15 +229,10 @@ public class ClienteActivity extends FragmentActivity implements OnMapReadyCallb
                                 , doc.toObject(Peluquero.class).getLoc().getLongitude()), doc.toObject(Peluquero.class).getNombre());
 
                     }
-
                 }
             }
         });
-
-
-
     }
-
 
     /**
      * Método que se encarga de generar una marca con nombre en el mapa.
