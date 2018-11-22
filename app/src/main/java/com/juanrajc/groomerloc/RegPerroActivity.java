@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.clasesBD.Perro;
 
 import java.io.File;
 import java.io.IOException;
@@ -290,14 +291,38 @@ public class RegPerroActivity extends AppCompatActivity {
      */
     private void opcionGaleria(){
 
-        //Si el permiso de 
+        //Si el permiso de lectura de archivos está aceptado...
         if(permisosLecturaArchivos()) {
 
+            //crea el intent que inicia el gestor de archivos.
             Intent intentGaleria = new Intent(Intent.ACTION_GET_CONTENT);
+            //Indica el tipo de archivo que se va a mostrar.
             intentGaleria.setType("image/*");
 
+            //Inicia la activity con el intent.
             startActivityForResult(intentGaleria, REQUEST_GALERIA);
 
+        }
+
+    }
+
+    /**
+     * Método que traduce la selección de sexo a cadena.
+     *
+     * @return String con el sexo seleccionado.
+     */
+    private String obtenerSexo(){
+
+        if(perroMacho.isChecked()){
+
+            return "Macho";
+
+        } else if(perroHembra.isChecked()){
+
+            return "Hembra";
+
+        } else{
+            return "No especificado";
         }
 
     }
@@ -312,6 +337,12 @@ public class RegPerroActivity extends AppCompatActivity {
         if(compruebaCampos()){
 
             botonRegPerro.setEnabled(false);
+
+            firestore.collection("clientes")
+                    .document(usuario.getUid()).collection("perros")
+                    .document(nombrePerro.getText().toString()).set(new Perro(nombrePerro.getText().toString(),
+                    razaPerro.getText().toString(), obtenerSexo(), comentPerro.getText().toString(),
+                    Float.parseFloat(pesoPerro.getText().toString()), null));
 
         }
 
