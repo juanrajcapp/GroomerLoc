@@ -36,11 +36,19 @@
     <string name="descFotoPerro">Fotografía de tu mascota.</string>
     <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios</string>
     <string name="mensajeSexo">Debe seleccionar el sexo de su mascota</string>
+    <string name="mensajeRequestFoto">No ha sido posible cargar la imagen</string>
+    <string name="mensajeNoEspecificado">No especificado</string>
+    <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente</string>
+    <string name="mensajeSubidaFallida">Fallo al subir la imagen</string>
+    <string name="mensajeFalloBD">Error al acceder a la base de datos</string>
         <!--dialog perro-->
     <string name="tituloDialog">Seleccione una opción:</string>
     <string name="opCamara">Haga una foto...</string>
     <string name="opGaleria">Seleccione desde la galería...</string>
     <string name="opCancelar">Cancelar</string>
+    <string name="mensajeSobreescrituraPerro">ya está registrado, ¿Desea actualizar sus datos?</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
 
     <!-- login -->
     <string name="botonLogin">Iniciar sesión</string>

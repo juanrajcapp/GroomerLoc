@@ -35,11 +35,19 @@
     <string name="descFotoPerro">Photo of your pet.</string>
     <string name="mensajeCamposPerro">The fields \'Name\', \'Breed\' and \'Weight\' are required.</string>
     <string name="mensajeSexo">You must select the sex of your pet</string>
+    <string name="mensajeRequestFoto">It was not possible to load the image</string>
+    <string name="mensajeNoEspecificado">Not specified</string>
+    <string name="mensajeSubidaCorrecta">The image has been uploaded correctly</string>
+    <string name="mensajeSubidaFallida">Failure to upload the image</string>
+    <string name="mensajeFalloBD">Database accessing error</string>
         <!-- dialog perro -->
     <string name="tituloDialog">Select an option:</string>
     <string name="opCamara">Take a photo...</string>
     <string name="opGaleria">Choose from gallery...</string>
     <string name="opCancelar">Cancel</string>
+    <string name="mensajeSobreescrituraPerro">is already registered, do you want to update his/her data?</string>
+    <string name="si">YES</string>
+    <string name="no">NO</string>
 
     <!-- login -->
     <string name="botonLogin">Log in</string>
