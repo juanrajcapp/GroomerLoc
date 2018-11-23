@@ -2,26 +2,17 @@ package com.juanrajc.groomerloc.clasesBD;
 
 public class Perro {
 
-    private String nombre, raza, sexo, comentario;
+    private String raza, sexo, comentario;
     private float peso;
 
     public Perro() {
     }
 
-    public Perro(String nombre, String raza, String sexo, String comentario, float peso) {
-        this.nombre = nombre;
+    public Perro(String raza, String sexo, String comentario, float peso) {
         this.raza = raza;
         this.sexo = sexo;
         this.comentario = comentario;
         this.peso = peso;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getRaza() {
