@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +31,6 @@ public class PerrosActivity extends AppCompatActivity {
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
     private StorageReference refFotoPerro;
-
-    //private List<CardPerro> listaPerros;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +74,7 @@ public class PerrosActivity extends AppCompatActivity {
 
                                 for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                                    listaPerros.add(new CardPerro(doc.getId(), null));
-
-                                    //obtieneImagenPerro(doc.getId());
+                                    listaPerros.add(new CardPerro(doc.getId(), Uri.parse("gs://groomerloc.appspot.com/fotos/nxIqzMFY9mf1qjsp1nWSBiWIDYE3/Jara.jpg")));
 
                                 }
 
@@ -95,21 +89,4 @@ public class PerrosActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    /*private void obtieneImagenPerro(final String NOMBRE){
-
-        refFotoPerro.child("fotos/"+usuario.getUid()+"/"+NOMBRE+".jpg")
-                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        listaPerros.add(new CardPerro(NOMBRE, uri));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        listaPerros.add(new CardPerro(NOMBRE, null));
-                    }
-                });
-    }*/
-
 }
