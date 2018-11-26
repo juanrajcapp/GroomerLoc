@@ -21,6 +21,10 @@
     <!-- menu cliente -->
     <string name="menuCliPerro">Mascotas</string>
 
+    <!-- lista perros -->
+    <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
+    <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
+
     <!-- registro perro -->
     <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>
     <string name="raza">Raza</string>string>

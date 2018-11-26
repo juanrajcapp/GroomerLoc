@@ -41,7 +41,13 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
     @Override
     public int getItemCount() {
-        return listaPerros.size();
+
+        if(listaPerros!=null) {
+            return listaPerros.size();
+        }else{
+            return 0;
+        }
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
