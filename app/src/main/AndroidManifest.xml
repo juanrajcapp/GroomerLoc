@@ -9,14 +9,16 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--Permiso para acceso a internet-->
+    <!-- Permiso para acceso a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--Permiso para acceso a la cámara del dispositivo-->
+    <!-- Permiso para acceso a la cámara del dispositivo -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--Permiso para lectura de los archivos almacenados externamente-->
+    <!-- Permiso para lectura de los archivos almacenados externamente -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,6 @@
         android:roundIcon="@mipmap/cut8_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppThemeSinAB">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -32,7 +33,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
@@ -60,8 +61,8 @@
         <activity
             android:name=".ClienteActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme"
-            android:label="@string/title_activity_cliente">
+            android:label="@string/title_activity_cliente"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +75,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".RegPerroActivity"
-            android:configChanges="orientation|screenSize"></activity>
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".PerrosActivity"></activity>
     </application>
 
 </manifest>

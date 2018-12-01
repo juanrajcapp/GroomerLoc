@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -338,11 +337,11 @@ public class RegPerroActivity extends AppCompatActivity {
 
         if(perroMacho.isChecked()){
 
-            return getString(R.string.macho);
+            return "XY";
 
         } else if(perroHembra.isChecked()){
 
-            return getString(R.string.hembra);
+            return "XX";
 
         } else{
             return getString(R.string.mensajeNoEspecificado);
@@ -426,9 +425,8 @@ public class RegPerroActivity extends AppCompatActivity {
 
         firestore.collection("clientes")
                 .document(usuario.getUid()).collection("perros")
-                .document(nombrePerro.getText().toString()).set(new Perro(nombrePerro.getText().toString(),
-                razaPerro.getText().toString(), obtieneSexo(), comentPerro.getText().toString(),
-                Float.parseFloat(pesoPerro.getText().toString())));
+                .document(nombrePerro.getText().toString()).set(new Perro(razaPerro.getText().toString(),
+                obtieneSexo(), comentPerro.getText().toString(), Float.parseFloat(pesoPerro.getText().toString())));
 
         //Si se ha especificado la ruta de una foto...
         if(rutaFoto!=null) {

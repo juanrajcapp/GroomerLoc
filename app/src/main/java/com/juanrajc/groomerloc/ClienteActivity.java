@@ -136,8 +136,8 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         switch (item.getItemId()){
 
             case R.id.nav_perro:
-                //Inicia la activity de registro de perro...
-                startActivity(new Intent(this, RegPerroActivity.class));
+                //Inicia la activity de perros...
+                startActivity(new Intent(this, PerrosActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;
