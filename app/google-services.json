@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "650850237051-g69rbg1uq1ki0t3p3cjlrn9mksgsigvq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.juanrajc.groomerloc",
-            "certificate_hash": "c7e575a95d57f13da35a512fa91feca9cab435cf"
-          }
-        },
-        {
           "client_id": "650850237051-rt71v6udmckn677mlfu2qc0m7ug13jur.apps.googleusercontent.com",
           "client_type": 3
         }

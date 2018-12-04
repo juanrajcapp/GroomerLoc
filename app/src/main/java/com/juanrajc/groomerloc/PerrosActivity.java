@@ -1,6 +1,5 @@
 package com.juanrajc.groomerloc;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,22 +14,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorPerros;
-import com.juanrajc.groomerloc.recursos.CardPerro;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PerrosActivity extends AppCompatActivity {
 
+    //Objeto del adaptador que muestra las fichas de los perros.
     private RecyclerView rvPerros;
 
-    //Objeto del usuario actual, de la BD Firestore y de la referencia al almacenamiento de ficheros Storage.
+    //Objeto del usuario actual y de la BD Firestore.
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
-    private StorageReference refFotoPerro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,35 +50,41 @@ public class PerrosActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que obtiene los perros registrados por el cliente en Firestore y los muestra en un CardView.
+     */
     private void obtienePerros(){
 
-        refFotoPerro = FirebaseStorage.getInstance().getReference();
-
+        //Listener que obtiene los perros registrados por el cliente actualmente logueado.
         firestore.collection("clientes").document(usuario.getUid()).collection("perros")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        //Si se obtienen resultados satisfactoriamente...
                         if(task.isSuccessful()){
 
-                            List<CardPerro> listaPerros;
-
+                            //comprueba que esos resultados contienen datos.
                             if(task.getResult().isEmpty()){
                                 Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoPerros), Toast.LENGTH_SHORT).show();
                             }else {
 
-                                listaPerros = new ArrayList<CardPerro>();
+                                //Si contienen datos, se crea un List que contedrá los perros encontrados...
+                                List<String> listaPerros = new ArrayList<String>();
 
+                                //y se introducen sus nombres en dicho list uno a uno.
                                 for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                                    listaPerros.add(new CardPerro(doc.getId(), Uri.parse("gs://groomerloc.appspot.com/fotos/nxIqzMFY9mf1qjsp1nWSBiWIDYE3/Jara.jpg")));
+                                    listaPerros.add(doc.getId());
 
                                 }
 
-                                //Crea un nuevo adaptador.
+                                //Crea un nuevo adaptador con los perros obtenidos.
                                 rvPerros.setAdapter(new AdaptadorPerros(listaPerros));
 
                             }
 
+                        //Si ha habido algún problema al obtener resultados, se muestra un toast avisándolo.
                         }else{
                             Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultPerros), Toast.LENGTH_SHORT).show();
                         }
