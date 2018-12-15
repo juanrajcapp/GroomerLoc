@@ -24,6 +24,11 @@
     <!-- lista perros -->
     <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
     <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
+    <string name="descIvEditPerro">Editar datos de la mascota.</string>
+    <string name="descIvBorrarPerro">>Borrar mascota.</string>
+    <string name="mensajePerroBorradoExito">ha sido borrado con éxito.</string>
+    <string name="mensajePerroNoBorrado">no se ha podido eliminar.</string>
+    <string name="nuevoPerro">AÑADIR NUEVA MASCOTA</string>
 
     <!-- registro perro -->
     <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>

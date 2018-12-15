@@ -1,10 +1,13 @@
 package com.juanrajc.groomerloc;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +31,8 @@ public class PerrosActivity extends AppCompatActivity {
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
 
+    private Button botonActRegPerro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,8 @@ public class PerrosActivity extends AppCompatActivity {
         //Instancia del usuario actual y de la base de datos Firestore.
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
+
+        botonActRegPerro = (Button) findViewById(R.id.botonActRegPerro);
 
         //Instancia el RecyclerView de perros.
         rvPerros = (RecyclerView) findViewById(R.id.rvPerros);
@@ -46,7 +53,32 @@ public class PerrosActivity extends AppCompatActivity {
         //Administrador para el LinearLayout.
         rvPerros.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Si se vuelve a la activity, se reactivan los botones de la misma.
+        botonActRegPerro.setEnabled(true);
+
+        //Se obtienen los perros registrados.
         obtienePerros();
+
+    }
+
+    /**
+     * Método que inicia la activity de registro de perro al pulsar su respectivo botón.
+     *
+     * @param view
+     */
+    protected void nuevoPerro(View view){
+
+        //Se desactiva el botón para evitar más de una pulsación.
+        botonActRegPerro.setEnabled(false);
+
+        //Inicia la activity que se encarga del registro de un nuevo perro.
+        startActivity(new Intent(this, RegPerroActivity.class));
 
     }
 
@@ -91,4 +123,16 @@ public class PerrosActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * Método que controla el retroceso a la activity anterior.
+     *
+     * @param view
+     */
+    protected void atras(View view){
+
+        finish();
+
+    }
+
 }

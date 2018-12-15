@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -7,24 +8,65 @@
     card_view:cardElevation="4dp"
     card_view:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvNombrePerro"
-            android:layout_width="match_parent"
+            android:layout_width="357dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
             android:text=""
             android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ibEditPerro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/tvNombrePerro"
+            card_view:srcCompat="@android:drawable/ic_menu_edit"
+            android:contentDescription="@string/descIvEditPerro"/>
 
         <ImageView
             android:id="@+id/ivFotoPerro"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="2dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/ibBorraPerro"
+            card_view:layout_constraintStart_toEndOf="@+id/ibEditPerro"
+            card_view:layout_constraintTop_toBottomOf="@+id/tvNombrePerro"
+            android:contentDescription="@string/descFotoPerro"/>
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/ibBorraPerro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/tvNombrePerro"
+            card_view:srcCompat="@android:drawable/ic_menu_delete"
+            android:contentDescription="@string/descIvBorrarPerro"/>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
