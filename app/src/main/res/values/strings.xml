@@ -25,8 +25,11 @@
     <string name="mensajeNoResultPerros">The list of pets could not be loaded.</string>
     <string name="descIvEditPerro">Edit data of the pet.</string>
     <string name="descIvBorrarPerro">Delete pet.</string>
+    <string name="mensajeErrorCargaDatosPerro">Unable to obtain data from</string>
+    <string name="dialogBorraPerro">Do you want to erase</string>
     <string name="mensajePerroBorradoExito">has been deleted successfully.</string>
     <string name="mensajePerroNoBorrado">could not be deleted.</string>
+    <string name="salir">EXIT</string>
     <string name="nuevoPerro">ADD NEW PET</string>
 
     <!-- registro perro -->

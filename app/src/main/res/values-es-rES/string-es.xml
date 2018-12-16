@@ -26,8 +26,11 @@
     <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
     <string name="descIvEditPerro">Editar datos de la mascota.</string>
     <string name="descIvBorrarPerro">>Borrar mascota.</string>
+    <string name="mensajeErrorCargaDatosPerro">No se han podido obtener los datos de</string>
+    <string name="dialogBorraPerro">¿Desea borrar a</string>
     <string name="mensajePerroBorradoExito">ha sido borrado con éxito.</string>
     <string name="mensajePerroNoBorrado">no se ha podido eliminar.</string>
+    <string name="salir">SALIR</string>
     <string name="nuevoPerro">AÑADIR NUEVA MASCOTA</string>
 
     <!-- registro perro -->

@@ -1,8 +1,12 @@
 package com.juanrajc.groomerloc.adaptadores;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.R;
+import com.juanrajc.groomerloc.clasesBD.Perro;
 import com.juanrajc.groomerloc.recursos.GlideApp;
 
 import java.util.List;
+import java.util.Map;
 
 public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHolder>  {
 
@@ -84,7 +93,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
-
+                obtieneDatosPerro(position);
 
             }
         });
@@ -102,7 +111,20 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
-                borraPerro(position);
+                //Dialogo de alerta que pregunta si se desa borrar el perro seleccionado.
+                new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog)
+                        .setTitle(contexto.getText(R.string.dialogBorraPerro)+" "+listaPerros.get(position)+"?")
+                        .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        borraPerro(position);
+                    }
+                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).show();
 
             }
         });
@@ -162,6 +184,124 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
             }
         });
+
+    }
+
+    /**
+     * Método que consulta a Firestore los datos del perro seleccionado.
+     *
+     * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
+     */
+    private void obtieneDatosPerro(final int posicion){
+
+        //Consulta a Firebase Firestore los datos del perro seleccionado.
+        firestore.collection("clientes").document(usuario.getUid())
+                .collection("perros").document(listaPerros.get(posicion))
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                //Si la consulta ha resultado exitosa...
+                if(task.isSuccessful()){
+
+                    //guarda el resultado en un DocumentSnapshot.
+                    DocumentSnapshot doc = task.getResult();
+
+                    //Si existe un resultado...
+                    if(doc.exists()){
+
+                        muestraDatosPerro(posicion, formateaDatosPerro(doc));
+
+                    //Si no...
+                    }else{
+                        Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    //Si no...
+                }else{
+                    Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
+                            Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * Método que formatea los datos obtenidos de la consulta al document de un perro guardado en Firestore.
+     *
+     * @param datos DocumentSnapshot con los datos obtenidos de la consulta.
+     *
+     * @return Cadena formateada con los datos listos para ser mostrados.
+     */
+    private String formateaDatosPerro(DocumentSnapshot datos){
+
+        //Redefine el DS al tipo de objeto del perro.
+        Perro perro = datos.toObject(Perro.class);
+
+        //Guarda los datos en cadenas.
+        String raza=perro.getRaza(), sexo=perro.getSexo(), comentario=perro.getComentario(), peso=String.valueOf(perro.getPeso());
+
+        StringBuffer sb=new StringBuffer();
+
+        if(raza.length()>0){
+            sb.append("Raza: "+raza+"\n\n");
+        }
+        if(sexo.length()>0){
+
+            if(sexo.equals("XY")){
+                sb.append("Sexo: "+"Macho"+"\n\n");
+            }else if(sexo.equals("XX")){
+                sb.append("Sexo: "+"Hembra"+"\n\n");
+            }
+
+        }
+        if(peso.length()>0){
+            sb.append("Peso: "+peso+" Kg\n\n");
+        }
+        if(comentario.length()>0){
+            sb.append("Comentario: "+comentario);
+        }
+
+        return sb.toString();
+
+    }
+
+    /**
+     * Método que muestra, mediante un AlertDialog, los datos del perro seleccionado.
+     *
+     * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
+     *
+     * @param datos Cadena formateada con los datos listos para ser mostrados.
+     */
+    private void muestraDatosPerro(int posicion, String datos){
+
+        //Crea un AlertDialog con el estilo especificado.
+        AlertDialog.Builder adPerro = new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog);
+
+        //Crea un TV para personalizar el título del dialog.
+        TextView tituloDialog = new TextView(contexto);
+        tituloDialog.setText(listaPerros.get(posicion));
+        tituloDialog.setGravity(Gravity.CENTER);
+        tituloDialog.setBackgroundColor(Color.GRAY);
+        tituloDialog.setTextColor(Color.WHITE);
+        tituloDialog.setPadding(8, 8, 8, 8);
+        tituloDialog.setTextSize(20);
+
+        //Añade el TV al dialog.
+        adPerro.setCustomTitle(tituloDialog);
+
+        //Añade la cadena obtenida al mensaje del AD.
+        adPerro.setMessage(datos);
+
+        //Añade un botón para salir del AD. Finalmente lo muestra.
+        adPerro.setPositiveButton(contexto.getText(R.string.salir), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).show();
 
     }
 
