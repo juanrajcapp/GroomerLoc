@@ -111,6 +111,10 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
+                /*
+                Se desactiva la posibilidad de pulsación del elemento para evitar
+                múltiples pulsaciones accidentales.
+                */
                 holder.ibBorraPerro.setClickable(false);
 
                 //Dialogo de alerta que pregunta si se desa borrar el perro seleccionado.
@@ -119,16 +123,30 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                         .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        borraPerro(position);
+
+                        borraPerro(position, holder);
+
                     }
                 }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //Cierra el dialog.
                         dialogInterface.cancel();
+
+                    }
+                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+
+                        /*
+                        Si se cancela el borrado o se sale del dialog, se vuelve a activar la
+                        posibilidad de pulsación del elemento.
+                        */
+                        holder.ibBorraPerro.setClickable(true);
+
                     }
                 }).show();
-
-                holder.ibBorraPerro.setClickable(true);
 
             }
         });
@@ -139,8 +157,9 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      * Método que borra el perro seleccionado.
      *
      * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
+     * @param holder ViewHolder necesario para el manejo de los elementos de cada CardView.
      */
-    private void borraPerro(final int posicion){
+    private void borraPerro(final int posicion, final ViewHolder holder){
 
         firestore.collection("clientes").document(usuario.getUid())
                 .collection("perros").document(listaPerros.get(posicion))
@@ -153,7 +172,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 Toast.makeText(contexto, listaPerros.get(posicion)+" "+contexto.getText(R.string.mensajePerroBorradoExito),
                         Toast.LENGTH_SHORT).show();
 
-                //Se elimina el perro del List y se notifica al RecyclerView.
+                //Si se borra con éxito, se elimina el perro del List y se notifica al RecyclerView.
                 listaPerros.remove(posicion);
                 notifyItemRemoved(posicion);
                 notifyItemRangeChanged(posicion, listaPerros.size());
@@ -162,8 +181,13 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
                 Toast.makeText(contexto, listaPerros.get(posicion)+" "+contexto.getText(R.string.mensajePerroNoBorrado),
                         Toast.LENGTH_SHORT).show();
+
+                //Si el borrado falla, se vuelve a activar la posibilidad de pulsación del elemento.
+                holder.ibBorraPerro.setClickable(true);
+
             }
         });
 
@@ -195,9 +219,14 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      * Método que consulta a Firestore los datos del perro seleccionado.
      *
      * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
+     * @param holder ViewHolder necesario para el manejo de los elementos de cada CardView.
      */
     private void obtieneDatosPerro(final int posicion, final ViewHolder holder){
 
+        /*
+        Se desactiva la posibilidad de pulsación del elemento para evitar
+        múltiples pulsaciones accidentales.
+        */
         holder.ivFotoPerroLista.setClickable(false);
 
         //Consulta a Firebase Firestore los datos del perro seleccionado.
@@ -220,15 +249,25 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
                     //Si no...
                     }else{
+
+                        //muestra un mensaje...
                         Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                                 Toast.LENGTH_SHORT).show();
+
+                        //y se vuelve a activar la posibilidad de pulsación del elemento.
                         holder.ivFotoPerroLista.setClickable(true);
+
                     }
                     //Si no...
                 }else{
+
+                    //muestra un mensaje...
                     Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                             Toast.LENGTH_SHORT).show();
+
+                    //y se vuelve a activar la posibilidad de pulsación del elemento.
                     holder.ivFotoPerroLista.setClickable(true);
+
                 }
 
             }
@@ -280,8 +319,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      * Método que muestra, mediante un AlertDialog, los datos del perro seleccionado.
      *
      * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
-     *
      * @param datos Cadena formateada con los datos listos para ser mostrados.
+     * @param holder ViewHolder necesario para el manejo de los elementos de cada CardView.
      */
     private void muestraDatosPerro(int posicion, String datos, ViewHolder holder){
 
@@ -311,6 +350,9 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             }
         }).show();
 
+        /*
+        Una vez mostrado el dialog, se vuelve a activar la posibilidad de pulsación del elemento.
+        */
         holder.ivFotoPerroLista.setClickable(true);
 
     }
