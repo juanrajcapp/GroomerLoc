@@ -192,11 +192,12 @@
 
             <ImageView
                 android:id="@+id/ivPerro"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_span="3"
-                android:src="@drawable/icono_mascota"
-                android:contentDescription="@string/descFotoPerro" />
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/descFotoPerro"
+                android:src="@drawable/icono_mascota" />
 
         </TableRow>
 

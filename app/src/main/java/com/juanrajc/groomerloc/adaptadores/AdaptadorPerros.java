@@ -69,7 +69,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         //Se muestra el nombre del perro en el TextView.
         holder.tvNombrePerroLista.setText(listaPerros.get(position));
@@ -93,7 +93,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
-                obtieneDatosPerro(position);
+                obtieneDatosPerro(position, holder);
 
             }
         });
@@ -111,6 +111,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
+                holder.ibBorraPerro.setClickable(false);
+
                 //Dialogo de alerta que pregunta si se desa borrar el perro seleccionado.
                 new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog)
                         .setTitle(contexto.getText(R.string.dialogBorraPerro)+" "+listaPerros.get(position)+"?")
@@ -125,6 +127,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                         dialogInterface.cancel();
                     }
                 }).show();
+
+                holder.ibBorraPerro.setClickable(true);
 
             }
         });
@@ -192,7 +196,9 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      *
      * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
      */
-    private void obtieneDatosPerro(final int posicion){
+    private void obtieneDatosPerro(final int posicion, final ViewHolder holder){
+
+        holder.ivFotoPerroLista.setClickable(false);
 
         //Consulta a Firebase Firestore los datos del perro seleccionado.
         firestore.collection("clientes").document(usuario.getUid())
@@ -210,17 +216,19 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                     //Si existe un resultado...
                     if(doc.exists()){
 
-                        muestraDatosPerro(posicion, formateaDatosPerro(doc));
+                        muestraDatosPerro(posicion, formateaDatosPerro(doc), holder);
 
                     //Si no...
                     }else{
                         Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                                 Toast.LENGTH_SHORT).show();
+                        holder.ivFotoPerroLista.setClickable(true);
                     }
                     //Si no...
                 }else{
                     Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                             Toast.LENGTH_SHORT).show();
+                    holder.ivFotoPerroLista.setClickable(true);
                 }
 
             }
@@ -275,7 +283,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      *
      * @param datos Cadena formateada con los datos listos para ser mostrados.
      */
-    private void muestraDatosPerro(int posicion, String datos){
+    private void muestraDatosPerro(int posicion, String datos, ViewHolder holder){
 
         //Crea un AlertDialog con el estilo especificado.
         AlertDialog.Builder adPerro = new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog);
@@ -302,6 +310,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 dialogInterface.cancel();
             }
         }).show();
+
+        holder.ivFotoPerroLista.setClickable(true);
 
     }
 
