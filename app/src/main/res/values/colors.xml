@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#b8008b</color>
+    <color name="colorPrimaryDark">#b8008b</color>
+    <color name="colorAccent">#b8008b</color>
 
     <!-- colorFondoSplash -->
-    <color name="fondoSplash">#f4de97</color>
+    <color name="fondoSplash">#d6d5db</color>
 
     <!-- colorRegistroLoc -->
     <color name="tituloLoc">#000000</color>

@@ -150,7 +150,8 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
             botonLoc.setClickable(true);
 
             //Listener que se encarga de mostrar la localización GPS actual.
-            LocationServices.getFusedLocationProviderClient(this).getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            LocationServices.getFusedLocationProviderClient(this).getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if(location!=null) {
@@ -333,7 +334,13 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
         LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locMan.getLastKnownLocation(locMan.getBestProvider(new Criteria(), false));
-        marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+
+        //Comprueba que la localización devuelta no es nula.
+        if(location!=null) {
+            marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+        }else{
+            Toast.makeText(this, getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -375,7 +382,8 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                     con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
                     */
                     firestore.collection("peluqueros")
-                            .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
+                            .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono,
+                            new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
 
                     //y le muestra un saludo con su nombre.
                     Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();

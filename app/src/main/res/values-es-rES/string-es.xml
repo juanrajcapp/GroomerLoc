@@ -94,6 +94,7 @@
     <string name="mensajeMarca">Localización:</string>
     <string name="mensajeNoDireccion">Dirección no encontrada</string>
     <string name="mensajeDirVacia">Debes introducir una dirección</string>
+    <string name="mensajeNoLoc">No se ha podido obtener su localización actual.</string>
     <string name="botonRegistrar">Completar registro</string>
 
     <string name="title_activity_cliente">Mapa</string>

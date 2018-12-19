@@ -93,6 +93,7 @@
     <string name="mensajeMarca">Location:</string>
     <string name="mensajeNoDireccion">Address not found</string>
     <string name="mensajeDirVacia">You must type an address</string>
+    <string name="mensajeNoLoc">Your current location could not be obtained.</string>
     <string name="botonRegistrar">Complete registration</string>
 
     <string name="title_activity_cliente">Map</string>
