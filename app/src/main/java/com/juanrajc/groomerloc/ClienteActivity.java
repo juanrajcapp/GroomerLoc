@@ -61,6 +61,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //Muestra el nombre del cliente en el action bar.
+        getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+
         //Codigo del panel lateral.
         dw = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(

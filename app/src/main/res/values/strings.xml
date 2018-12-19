@@ -96,5 +96,4 @@
     <string name="mensajeNoLoc">Your current location could not be obtained.</string>
     <string name="botonRegistrar">Complete registration</string>
 
-    <string name="title_activity_cliente">Map</string>
 </resources>

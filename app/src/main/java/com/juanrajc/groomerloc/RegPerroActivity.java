@@ -52,8 +52,8 @@ public class RegPerroActivity extends AppCompatActivity {
     private EditText nombrePerro, razaPerro, pesoPerro, comentPerro;
     private ImageView ivPerro;
 
-    //Objeto del botón registro de perro de la vista.
-    private Button botonRegPerro;
+    //Objeto del botón de añadir fotografía y registro de perro de la vista.
+    private Button botonRegImg, botonRegPerro;
 
     //Objeto del usuario actual, de la BD Firestore y de la referencia al almacenamiento de ficheros Storage.
     private FirebaseUser usuario;
@@ -87,6 +87,9 @@ public class RegPerroActivity extends AppCompatActivity {
         razaPerro = (EditText) findViewById(R.id.etRegRaza);
         pesoPerro = (EditText) findViewById(R.id.etRegPeso);
         comentPerro = (EditText) findViewById(R.id.etRegComent);
+
+        //Instancia del botón de añadir fotografía.
+        botonRegImg = (Button) findViewById(R.id.botonRegImg);
 
         //Instancia de la imagen mostrada en la activity.
         ivPerro = (ImageView) findViewById(R.id.ivPerro);
@@ -142,8 +145,14 @@ public class RegPerroActivity extends AppCompatActivity {
      */
     protected void dialogoImagen(View view){
 
+        /*
+        Se desactiva la posibilidad de pulsación del elemento para evitar
+        múltiples pulsaciones accidentales.
+        */
+        botonRegImg.setEnabled(false);
+
         //Array con las opciones mostradas en el dialog.
-        final CharSequence[] opciones = {getString(R.string.opCamara), getString(R.string.opGaleria), getString(R.string.opCancelar)};
+        final CharSequence[] opciones = {getString(R.string.opCamara), getString(R.string.opGaleria)};
 
         //Instancia del dialog con el estilo definido en "styles".
         AlertDialog.Builder ad = new AlertDialog.Builder(this, R.style.AppTheme_Dialog);
@@ -169,10 +178,26 @@ public class RegPerroActivity extends AppCompatActivity {
                     opcionCamara();
                 } else if (opciones[i].equals(getString(R.string.opGaleria))) {
                     opcionGaleria();
-                } else if (opciones[i].equals(getString(R.string.opCancelar))) {
-                    //Cierra el dialog con las opciones.
-                    dialogInterface.dismiss();
                 }
+
+            }
+        }).setNegativeButton(getString(R.string.opCancelar), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                //Cierra el dialog con las opciones.
+                dialogInterface.dismiss();
+
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+                /*
+                Si se cancela el añadido o se sale del dialog, se vuelve a activar la
+                posibilidad de pulsación del elemento.
+                */
+                botonRegImg.setEnabled(true);
 
             }
         });

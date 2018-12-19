@@ -97,5 +97,4 @@
     <string name="mensajeNoLoc">No se ha podido obtener su localización actual.</string>
     <string name="botonRegistrar">Completar registro</string>
 
-    <string name="title_activity_cliente">Mapa</string>
 </resources>

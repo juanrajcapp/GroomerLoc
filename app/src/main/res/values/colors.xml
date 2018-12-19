@@ -4,10 +4,13 @@
     <color name="colorPrimaryDark">#b8008b</color>
     <color name="colorAccent">#b8008b</color>
 
-    <!-- colorFondoSplash -->
+    <!-- Color de fondo del Splash -->
     <color name="fondoSplash">#d6d5db</color>
 
-    <!-- colorRegistroLoc -->
+    <!-- Color del título del Action Bar -->
+    <color name="tituloActionBar">#d6d5db</color>
+
+    <!-- Color del título de "activity_registro_loc.xml" -->
     <color name="tituloLoc">#000000</color>
 
 </resources>
