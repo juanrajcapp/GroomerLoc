@@ -14,6 +14,15 @@
     <string name="menuSesion">Cerrar sesión</string>
     <string name="menuSalir">Salir de la aplicación</string>
 
+    <!-- login -->
+    <string name="botonLogin">Iniciar sesión</string>
+    <string name="botonRegistro">Registrarse</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="toast_faltaMailPw">Se requieren un Email y Contraseña correctos</string>
+    <string name="error_autenticar">Error de autenticación</string>
+    <string name="descLogo">Logo de la aplicación.</string>
+
     <!-- cliente -->
     <string name="saludo">Bienvenido</string>
     <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
@@ -61,15 +70,6 @@
     <string name="mensajeSobreescrituraPerro">ya está registrado, ¿Desea actualizar sus datos?</string>
     <string name="si">SI</string>
     <string name="no">NO</string>
-
-    <!-- login -->
-    <string name="botonLogin">Iniciar sesión</string>
-    <string name="botonRegistro">Registrarse</string>
-    <string name="email">Email</string>
-    <string name="password">Contraseña</string>
-    <string name="toast_faltaMailPw">Se requieren un Email y Contraseña correctos</string>
-    <string name="error_autenticar">Error de autenticación</string>
-    <string name="descLogo">Logo de la aplicación.</string>
 
     <!-- registro -->
     <string name="tituloRegistro">REGISTRO</string>

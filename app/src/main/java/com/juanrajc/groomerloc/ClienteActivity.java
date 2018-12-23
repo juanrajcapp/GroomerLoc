@@ -76,6 +76,11 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
+    public void onBackPressed() {
+       //Botón de retroceso desactivado en esta activity.
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,7 +32,11 @@ public class PerrosActivity extends AppCompatActivity {
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
 
+    //Objeto del botón para registrar nuevo perro.
     private Button botonActRegPerro;
+
+    //Objeto del círculo de carga.
+    private ProgressBar circuloCargaPerros;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,13 @@ public class PerrosActivity extends AppCompatActivity {
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
 
+        //Instancia del botón para registrar nuevo perro.
         botonActRegPerro = (Button) findViewById(R.id.botonActRegPerro);
 
-        //Instancia el RecyclerView de perros.
+        //Instancia del círculo de carga.
+        circuloCargaPerros = (ProgressBar) findViewById(R.id.circuloCargaPerros);
+
+        //Instancia del RecyclerView de perros.
         rvPerros = (RecyclerView) findViewById(R.id.rvPerros);
 
         //Fija el tamaño del rv, que mejorará el rendimento.
@@ -87,6 +96,9 @@ public class PerrosActivity extends AppCompatActivity {
      */
     private void obtienePerros(){
 
+        //Se visibiliza el círculo de carga.
+        circuloCargaPerros.setVisibility(View.VISIBLE);
+
         //Listener que obtiene los perros registrados por el cliente actualmente logueado.
         firestore.collection("clientes").document(usuario.getUid()).collection("perros")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -98,6 +110,7 @@ public class PerrosActivity extends AppCompatActivity {
 
                             //comprueba que esos resultados contienen datos.
                             if(task.getResult().isEmpty()){
+                                circuloCargaPerros.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoPerros), Toast.LENGTH_SHORT).show();
                             }else {
 
@@ -114,10 +127,17 @@ public class PerrosActivity extends AppCompatActivity {
                                 //Crea un nuevo adaptador con los perros obtenidos.
                                 rvPerros.setAdapter(new AdaptadorPerros(listaPerros));
 
+                                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                                circuloCargaPerros.setVisibility(View.INVISIBLE);
+
                             }
 
-                        //Si ha habido algún problema al obtener resultados, se muestra un toast avisándolo.
+                        /*
+                        Si ha habido algún problema al obtener resultados,
+                        se invisibiliza el círculo de carga y se muestra un toast avisándolo.
+                        */
                         }else{
+                            circuloCargaPerros.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultPerros), Toast.LENGTH_SHORT).show();
                         }
                     }

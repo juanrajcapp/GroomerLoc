@@ -8,13 +8,15 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.regex.Pattern;
 
 /**
@@ -22,12 +24,16 @@ import java.util.regex.Pattern;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    //Objeto de Firebase Authentication
+    //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
 
     //Objetos de la vista de la activity.
     private EditText email, pw;
     private Button botonLogin, botonRegistro;
+
+    //Objeto del círculo de carga.
+    private ProgressBar circuloCarga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,12 @@ public class LoginActivity extends AppCompatActivity {
         botonLogin=(Button) findViewById(R.id.login);
         botonRegistro=(Button) findViewById(R.id.registro);
 
-        //Recoje la instancia de autenticación de la clase FirebaseApp.
-        auth = FirebaseAuth.getInstance();
+        //Instancias de la autenticación y la base de datos de Firebase.
+        auth=FirebaseAuth.getInstance();
+        firestore=FirebaseFirestore.getInstance();
+
+        //Instancia del círculo de carga.
+        circuloCarga = (ProgressBar) findViewById(R.id.circuloCarga);
 
     }
 
@@ -58,8 +68,15 @@ public class LoginActivity extends AppCompatActivity {
         //Comprueba si hay un usuario autenticado.
         if (auth.getCurrentUser() != null) {
 
-            //Inicia la activity del cliente.
-            activityCliente();
+            //Si hay un usuario autenticado, se visibiliza el círculo de carga...
+            circuloCarga.setVisibility(View.VISIBLE);
+
+            //y se desactivan los botones de login y registro.
+            botonLogin.setEnabled(false);
+            botonRegistro.setEnabled(false);
+
+            //Comprueba el tipo de usuario logueado e inicia la activity correspondiente a su rol.
+            tipoUsuario();
 
         }
 
@@ -69,10 +86,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //Si se vuelve a la activity, se reactivan los botones de la misma.
-        botonLogin.setEnabled(true);
-        botonRegistro.setEnabled(true);
+        //Si se vuelve a la activity, comprueba si hay un usuario autenticado.
+        if (auth.getCurrentUser() == null) {
 
+            //si no lo hay, se invisibiliza el círulo de carga...
+            circuloCarga.setVisibility(View.INVISIBLE);
+
+            //y se reactivan los botones de la activity.
+            botonLogin.setEnabled(true);
+            botonRegistro.setEnabled(true);
+
+        }
 
     }
 
@@ -92,8 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         //Si están correctos...
         } else {
 
-            //se desactiva el botón de login para evitar más de una pulsación...
+            //Se visibiliza el círculo de carga, ...
+            circuloCarga.setVisibility(View.VISIBLE);
+
+            //se desactiva el botón de login y registro para evitar más de una pulsación...
             botonLogin.setEnabled(false);
+            botonRegistro.setEnabled(false);
 
             //e intenta loguear con esos datos.
             auth.signInWithEmailAndPassword(email.getText().toString(), pw.getText().toString())
@@ -108,19 +136,24 @@ public class LoginActivity extends AppCompatActivity {
                         pw.setText("");
 
                         //y le muestra un saludo con su nombre.
-                        Toast.makeText(getApplicationContext(), getString(R.string.saludo) + " " + auth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.saludo) + " " + auth.getCurrentUser()
+                                .getDisplayName(), Toast.LENGTH_SHORT).show();
 
-                        //e inicia la activity del cliente.
-                        activityCliente();
+                        //Comprueba el tipo de usuario logueado e inicia la activity correspondiente a su rol.
+                        tipoUsuario();
 
                     //Si no...
                     } else {
 
+                        //Se invisibiliza el círulo de carga, ...
+                        circuloCarga.setVisibility(View.INVISIBLE);
+
                         //muestra un toast...
                         Toast.makeText(getApplicationContext(), getString(R.string.error_autenticar), Toast.LENGTH_SHORT).show();
 
-                        //y vuelve a activar el botón de login.
+                        //y vuelve a activar el botón de login y registro.
                         botonLogin.setEnabled(true);
+                        botonRegistro.setEnabled(true);
 
                     }
                 }
@@ -140,14 +173,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Método que se encarga de iniciar la activity correspondiente al rol del usuario autenticado.
+     */
+    private void tipoUsuario(){
+
+        //Se intenta obtener el document correspondiente al usuario logueado dentro de la colección "peluqueros"...
+        firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+
+                    //si existe (es un peluquero), inicia la activity del peluquero...
+                    if(task.getResult().exists()){
+                        activityPeluquero();
+
+                    //si no (por descarte es un cliente), se inicia la activity del cliente.
+                    }else{
+                        activityCliente();
+                    }
+                }
+            }
+        });
+
+    }
+
+    /**
      * Método que se encarga de controlar el inicio de la primera activity de registro.
      *
      * @param view
      */
     protected void activityRegistro(View view){
 
-        //Se desactiva el botón de registro para evitar más de una pulsación.
+        //Se desactiva el botón de registro y login para evitar más de una pulsación.
         botonRegistro.setEnabled(false);
+        botonLogin.setEnabled(false);
 
         //Se inicia la activity de registro.
         startActivity(new Intent(this, RegistroActivity.class));
@@ -159,11 +219,18 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void activityCliente(){
 
-        //Se desactiva el botón de login para evitar más de una pulsación.
-        botonLogin.setEnabled(false);
-
         //Se inicia la activity de cliente.
         startActivity(new Intent(this, ClienteActivity.class));
+
+    }
+
+    /**
+     * Método que controla el inicio de la activity del peluquero.
+     */
+    private void activityPeluquero(){
+
+        //Se inicia la activity de peluquero.
+        //startActivity(new Intent(this, PeluqueroActivity.class));
 
     }
 
