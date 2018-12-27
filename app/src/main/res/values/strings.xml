@@ -29,6 +29,10 @@
         <!-- menu cliente -->
     <string name="menuCliPerro">Pets</string>
 
+    <!-- peluquero -->
+    <string name="mensajeNoCitas">No upcoming appointments.</string>
+    <string name="botonRecargaCitas">RELOAD APPOINTMENTS</string>
+
     <!-- lista perros -->
     <string name="mensajeNoPerros">You have no registered pets.</string>
     <string name="mensajeNoResultPerros">The list of pets could not be loaded.</string>

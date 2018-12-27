@@ -61,16 +61,21 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        //Muestra el nombre del cliente en el action bar.
+        //Activa la visibilidad del logo en el ActionBar.
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        //Muestra el nombre del cliente y el logo de la aplicación en el action bar.
         getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+        getSupportActionBar().setLogo(R.mipmap.logo_groomerloc);
 
         //Codigo del panel lateral.
-        dw = (DrawerLayout) findViewById(R.id.drawer_layout);
+        dw = (DrawerLayout) findViewById(R.id.drawer_layout_cliente);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, dw, R.string.abrir_navegacion_lateral, R.string.cerrar_navegacion_lateral);
         dw.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cliente);
         navigationView.setNavigationItemSelectedListener(this);
 
     }

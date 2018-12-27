@@ -230,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
     private void activityPeluquero(){
 
         //Se inicia la activity de peluquero.
-        //startActivity(new Intent(this, PeluqueroActivity.class));
+        startActivity(new Intent(this, PeluqueroActivity.class));
 
     }
 

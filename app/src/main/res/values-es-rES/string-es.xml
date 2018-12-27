@@ -30,6 +30,10 @@
     <!-- menu cliente -->
     <string name="menuCliPerro">Mascotas</string>
 
+    <!-- peluquero -->
+    <string name="mensajeNoCitas">No tiene citas próximas.</string>
+    <string name="botonRecargaCitas">RECARGAR CITAS</string>
+
     <!-- lista perros -->
     <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
     <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>

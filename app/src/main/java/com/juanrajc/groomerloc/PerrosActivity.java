@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +39,9 @@ public class PerrosActivity extends AppCompatActivity {
     //Objeto del círculo de carga.
     private ProgressBar circuloCargaPerros;
 
+    //Objeto del EditText que aparece cuando no hay perros registrados.
+    private TextView tvNoPerros;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,9 @@ public class PerrosActivity extends AppCompatActivity {
 
         //Instancia del círculo de carga.
         circuloCargaPerros = (ProgressBar) findViewById(R.id.circuloCargaPerros);
+
+        //Instancia del EditText que aparece cuando no hay perros registrados.
+        tvNoPerros = (TextView) findViewById(R.id.tvNoPerros);
 
         //Instancia del RecyclerView de perros.
         rvPerros = (RecyclerView) findViewById(R.id.rvPerros);
@@ -68,8 +75,11 @@ public class PerrosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //Si se vuelve a la activity, se reactivan los botones de la misma.
+        //Si se vuelve a la activity, se reactivan los botones de la misma...
         botonActRegPerro.setEnabled(true);
+
+        //Y se oculta el mensaje de la no existencia de perros registrados.
+        tvNoPerros.setVisibility(View.INVISIBLE);
 
         //Se obtienen los perros registrados.
         obtienePerros();
@@ -111,7 +121,7 @@ public class PerrosActivity extends AppCompatActivity {
                             //comprueba que esos resultados contienen datos.
                             if(task.getResult().isEmpty()){
                                 circuloCargaPerros.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoPerros), Toast.LENGTH_SHORT).show();
+                                tvNoPerros.setVisibility(View.VISIBLE);
                             }else {
 
                                 //Si contienen datos, se crea un List que contedrá los perros encontrados...
