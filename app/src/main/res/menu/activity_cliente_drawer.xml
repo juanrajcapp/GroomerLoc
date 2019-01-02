@@ -7,6 +7,10 @@
             android:title="@string/menuCabeceraMenu">
             <menu>
                 <item
+                    android:id="@+id/nav_buscPelu"
+                    android:icon="@drawable/icono_busqueda"
+                    android:title="@string/menuCliBuscPelu" />
+                <item
                     android:id="@+id/nav_perro"
                     android:icon="@drawable/icono_mascota"
                     android:title="@string/menuCliPerro" />

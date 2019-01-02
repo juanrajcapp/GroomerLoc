@@ -27,7 +27,8 @@
     <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
     <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
         <!-- menu cliente -->
-    <string name="menuCliPerro">Pets</string>
+    <string name="menuCliBuscPelu">Groomers finder</string>
+    <string name="menuCliPerro">My pets</string>
 
     <!-- peluquero -->
     <string name="mensajeNoCitas">No upcoming appointments.</string>
@@ -99,5 +100,12 @@
     <string name="mensajeDirVacia">You must type an address</string>
     <string name="mensajeNoLoc">Your current location could not be obtained.</string>
     <string name="botonRegistrar">Complete registration</string>
+
+    <!-- buscador peluquero -->
+    <string name="tituloADBuscadorPelu">Type name of the groomer:</string>
+    <string name="botonBuscar">Search</string>
+    <string name="mensajeBusqSinRes">No search result.</string>
+    <string name="mensajeBusqError">An error occurred while performing the search.</string>
+    <string name="mensajeBusqNoComp">The search could not be performed.</string>
 
 </resources>

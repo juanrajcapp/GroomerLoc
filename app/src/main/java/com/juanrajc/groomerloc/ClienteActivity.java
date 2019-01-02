@@ -2,6 +2,7 @@ package com.juanrajc.groomerloc;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,9 +13,12 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,11 +28,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
 
@@ -43,6 +49,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
     //Objeto del panel lateral (menú).
     private DrawerLayout dw;
+
+    //Objeto del campo de texto que va a recoger el nombre de un peluquero para su búsqueda.
+    EditText entradaNombrePelu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +142,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 
                         //y ejecuta el método que muestra los peluqueros de alrededor,
-                        buscaPeluqueros();
+                        marcaPeluqueros();
 
                     }
                 }
@@ -147,6 +156,13 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
         //Según el elemento del panel lateral pulsado...
         switch (item.getItemId()){
+
+            case R.id.nav_buscPelu:
+                //Ejecuta el método de búsqueda de peluqueros...
+                dialogBuscaPeluqueros();
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
 
             case R.id.nav_perro:
                 //Inicia la activity de perros...
@@ -224,7 +240,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     /**
      * Método que marca en mapa los peluqueros existentes en la base de datos.
      */
-    private void buscaPeluqueros(){
+    private void marcaPeluqueros(){
 
         //Listener que obtiene los peluqueros existentes en la base de datos.
         firestore.collection("peluqueros").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -245,6 +261,97 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                 }
             }
         });
+    }
+
+    /**
+     * Método que crea el dialog donde se va a introducir el nombre para la búsqueda de peluqueros.
+     */
+    private void dialogBuscaPeluqueros(){
+
+        //Instancia del EditText que recogerá el nombre del peluquero a buscar.
+        entradaNombrePelu = new EditText(this);
+
+        AlertDialog.Builder adBuscaPelu = new AlertDialog.Builder(this);
+        adBuscaPelu.setMessage(getString(R.string.tituloADBuscadorPelu));
+
+        //Añade el EditText al AlertDialog.
+        adBuscaPelu.setView(entradaNombrePelu);
+
+        //Setea los botones del AlertDialog y se muestra.
+        adBuscaPelu.setPositiveButton(getString(R.string.botonBuscar), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                buscaPeluqueros(entradaNombrePelu.getText().toString().toLowerCase());
+            }
+        }).setNegativeButton(getString(R.string.salir), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Cierra el dialog.
+                dialogInterface.dismiss();
+            }
+        }).show();
+
+    }
+
+    /**
+     * Método que busca el o los peluqueros existentes en Firestore con el nombre pasado por parámetro.
+     *
+     * @param nombre Cadena con el nombre del peluquero que se desea buscar.
+     */
+    private void buscaPeluqueros(String nombre){
+
+        //Busca en los arrays de nombres de los peluqueros una coincidencia exacta...
+        firestore.collection("peluqueros").whereArrayContains("nombresBusqueda",nombre)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                //si el resultado de la búsqueda es satisfactorio...
+                if(task.isSuccessful()){
+
+                    //guarda el resultado.
+                    QuerySnapshot respuesta = task.getResult();
+
+                    //Comprueba si el resultado contiene datos.
+                    if(respuesta.isEmpty()){
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqSinRes), Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        //Si la respuesta solo ha dado un resultado...
+                        if(respuesta.size()<=1){
+
+                            //muestra directamente la ubicación del peluquero devuelto.
+                            for(QueryDocumentSnapshot doc:respuesta){
+
+                                Peluquero peluquero = doc.toObject(Peluquero.class);
+
+                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(peluquero.getLoc().getLatitude()
+                                                , peluquero.getLoc().getLongitude()), 15));
+
+                            }
+
+                        //Si no...
+                        }else{
+
+                            Toast.makeText(getApplicationContext(), "MUCHOS", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     /**
