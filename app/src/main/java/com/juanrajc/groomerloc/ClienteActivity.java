@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -38,10 +40,20 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClienteActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+
+    //Constantes con los posibles resultados devueltos a la activity actual.
+    private static final int REQUEST_BUSQUEDA_PELUQUERO = 1;
 
     //Objeto del mapa que se muestra en la activity.
     private GoogleMap map;
+
+    //Geocoder para la traducción de coordenadas en direciones y viceversa.
+    Geocoder gc;
 
     //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
@@ -86,6 +98,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cliente);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Instancia del Geocoder.
+        gc=new Geocoder(this);
 
     }
 
@@ -205,6 +220,26 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
             dw.openDrawer(Gravity.START);
         }
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Si el resultado devuelto a la activity es satisfactoria...
+        if(resultCode==RESULT_OK) {
+
+            //Comprueba mediante un switch el tipo de resultado devuelto.
+            switch (requestCode) {
+
+                case REQUEST_BUSQUEDA_PELUQUERO:
+
+                    marcaLocPeluquero(data.getExtras().getString("idPeluquero"));
+
+            }
+        } else{
+            Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -334,7 +369,33 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                         //Si no...
                         }else{
 
-                            Toast.makeText(getApplicationContext(), "MUCHOS", Toast.LENGTH_SHORT).show();
+                            /*
+                            Envía los datos de los peluqueros que coinciden con la búsqueda
+                            a otra activity, con la cual el usuario podrá afinar más la búsqueda.
+                            */
+                            ArrayList<String> listaIdPeluqueros = new ArrayList<String>();
+                            ArrayList<String> listaNombresPeluqueros = new ArrayList<String>();
+                            ArrayList<String> listaDirPeluqueros = new ArrayList<String>();
+
+                            for(QueryDocumentSnapshot doc:respuesta){
+
+                                listaIdPeluqueros.add(doc.getId());
+                                listaNombresPeluqueros.add(doc.toObject(Peluquero.class).getNombre());
+                                listaDirPeluqueros.add(obtieneDireccion(new LatLng(doc.toObject(Peluquero.class).getLoc().getLatitude(),
+                                        doc.toObject(Peluquero.class).getLoc().getLongitude())));
+
+                            }
+
+                            Intent intentBusqPelu = new Intent(getApplicationContext(), BusqPeluActivity.class);
+                            Bundle bundleBusqPelu = new Bundle();
+
+                            bundleBusqPelu.putStringArrayList("listaIdPeluqueros", listaIdPeluqueros);
+                            bundleBusqPelu.putStringArrayList("listaNombresPeluqueros", listaNombresPeluqueros);
+                            bundleBusqPelu.putStringArrayList("listaDirPeluqueros", listaDirPeluqueros);
+
+                            intentBusqPelu.putExtras(bundleBusqPelu);
+
+                            startActivityForResult(intentBusqPelu, REQUEST_BUSQUEDA_PELUQUERO);
 
                         }
 
@@ -372,4 +433,121 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         map.addMarker(mo);
 
     }
+
+    /**
+     * Método que se encarga de traducir las coordenadas en una dirección postal.
+     *
+     * @param coordenadas LatLng con las coordenadas que se quieren traducir.
+     *
+     * @return Cadena con la dirección postal obtenida mediante las coordenadas.
+     */
+    private String obtieneDireccion(LatLng coordenadas) {
+
+        try {
+
+            //Obtiene la dirección mediante las coordenadas obtenidas por parámetro.
+            List<Address> direcciones = gc.getFromLocation(coordenadas.latitude, coordenadas.longitude, 1);
+
+            //Comprueba que se ha guardado al menos una dirección.
+            if(direcciones.size()>0){
+                //Si es así, devuelve el primero obtenido.
+                return muestraDireccion(direcciones.get(0));
+            }else{
+                //Si no, devuelve una cadena vacía.
+                return "";
+            }
+
+        }catch (IOException ioe){
+            return "";
+        }
+
+    }
+
+    /**
+     * Método que se encarga de generar una dirección postal más comprensible.
+     *
+     * @param direccion Objeto Address con la dirección postal.
+     * @return Devuelve una cadena con la dirección postal simplificada.
+     */
+    protected String muestraDireccion(Address direccion) {
+
+        String numero=direccion.getSubThoroughfare(),
+                calle=direccion.getThoroughfare(),
+                barrio=direccion.getSubLocality(),
+                localidad=direccion.getLocality(),
+                provincia=direccion.getSubAdminArea(),
+                caOEstado=direccion.getAdminArea(),
+                pais=direccion.getCountryName();
+
+        StringBuffer sb=new StringBuffer();
+
+        if(numero!=null){
+            sb.append(numero+", ");
+        }
+        if(calle!=null){
+            sb.append(calle+", ");
+        }
+        if(barrio!=null){
+            sb.append(barrio+", ");
+        }
+        if(localidad!=null){
+            sb.append(localidad+", ");
+        }
+        if(provincia!=null && !provincia.equalsIgnoreCase(localidad)){
+            sb.append(provincia+", ");
+        }
+        if(caOEstado!=null){
+            sb.append(caOEstado+", ");
+        }
+        if(pais!=null){
+            sb.append(pais);
+        }
+
+        return sb.toString();
+
+    }
+
+    /**
+     * Método que mueve la cámara del mapa a la localización del peluquero pasado por parámetro.
+     *
+     * @param idPeluquero Cadena con la ID que tiene el peluquero en Firebase Firestore.
+     */
+    private void marcaLocPeluquero(String idPeluquero){
+
+        firestore.collection("peluqueros").document(idPeluquero).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                //Si la consulta ha resultado exitosa...
+                if(task.isSuccessful()){
+
+                    //guarda el resultado en un DocumentSnapshot.
+                    DocumentSnapshot doc = task.getResult();
+
+                    //Si existe un resultado...
+                    if(doc.exists()){
+
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(doc.toObject(Peluquero.class).getLoc().getLatitude()
+                                        , doc.toObject(Peluquero.class).getLoc().getLongitude()), 15));
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqSinRes), Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 }

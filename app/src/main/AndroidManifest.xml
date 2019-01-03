@@ -61,7 +61,7 @@
         <activity
             android:name=".ClienteActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".RegistroActivity" />
         <activity
             android:name=".RegistroLocActivity"
@@ -73,7 +73,10 @@
         <activity
             android:name=".PeluqueroActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".BusqPeluActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

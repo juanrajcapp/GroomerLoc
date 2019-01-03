@@ -30,10 +30,10 @@ import com.juanrajc.groomerloc.clasesBD.Perro;
 import com.juanrajc.groomerloc.recursos.GlideApp;
 
 import java.util.List;
-import java.util.Map;
 
 public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHolder>  {
 
+    //Objeto del contexto de la aplicación.
     Context contexto;
 
     //Objeto del usuario actual y de la BD Firestore.
