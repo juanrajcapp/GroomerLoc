@@ -107,5 +107,12 @@
     <string name="mensajeBusqSinRes">No search result.</string>
     <string name="mensajeBusqError">An error occurred while performing the search.</string>
     <string name="mensajeBusqNoComp">The search could not be performed.</string>
+    <string name="descFotoPelu">Image of groomer.</string>
+
+    <!-- ficha peluquero -->
+    <string name="fichaPeluTel">Phone number:   </string>
+    <string name="fichaPeluDir">Address:   </string>
+    <string name="botonTarifas">RATES</string>
+    <string name="botonPedirCita">MAKE APPOINTMENT</string>
 
 </resources>

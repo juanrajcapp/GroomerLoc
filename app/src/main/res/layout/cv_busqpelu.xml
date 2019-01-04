@@ -37,7 +37,8 @@
             card_view:layout_constraintBottom_toTopOf="@+id/tvDirPelu"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/tvNombrePelu" />
+            card_view:layout_constraintTop_toBottomOf="@+id/tvNombrePelu"
+            android:contentDescription="@string/descFotoPelu"/>
 
         <TextView
             android:id="@+id/tvDirPelu"

@@ -108,5 +108,12 @@
     <string name="mensajeBusqSinRes">La búsqueda no ha dado resultado.</string>
     <string name="mensajeBusqError">Se produjo un error al realizar la búsqueda.</string>
     <string name="mensajeBusqNoComp">No se ha podido realizar la búsqueda.</string>
+    <string name="descFotoPelu">Imagen del peluquero.</string>
+
+    <!-- ficha peluquero -->
+    <string name="fichaPeluTel">Teléfono:   </string>
+    <string name="fichaPeluDir">Dirección:   </string>
+    <string name="botonTarifas">TARIFAS</string>
+    <string name="botonPedirCita">PEDIR CITA</string>
 
 </resources>
