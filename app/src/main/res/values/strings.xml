@@ -110,9 +110,11 @@
     <string name="descFotoPelu">Image of groomer.</string>
 
     <!-- ficha peluquero -->
-    <string name="fichaPeluTel">Phone number:   </string>
-    <string name="fichaPeluDir">Address:   </string>
+    <string name="fichaPeluTel">Phone number:</string>
+    <string name="fichaPeluDir">Address:</string>
+    <string name="fichaPeluDir2">Additional indications:</string>
     <string name="botonTarifas">RATES</string>
     <string name="botonPedirCita">MAKE APPOINTMENT</string>
+    <string name="mensajeErrorCargaDatosPelu">An error occurred while loading the groomer\'s data.</string>
 
 </resources>

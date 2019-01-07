@@ -9,13 +9,13 @@ public class Peluquero {
 
     private String nombre, locExtra;
     private List<String> nombresBusqueda;
-    private int telefono;
+    private long telefono;
     private MiLatLng loc;
 
     public Peluquero() {
     }
 
-    public Peluquero(String nombre, int telefono, MiLatLng loc, String locExtra){
+    public Peluquero(String nombre, long telefono, MiLatLng loc, String locExtra){
 
         this.nombre=nombre;
         this.telefono=telefono;
@@ -39,11 +39,11 @@ public class Peluquero {
         creaNombresBusqueda(nombre);
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
 

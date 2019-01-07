@@ -3,12 +3,12 @@ package com.juanrajc.groomerloc.clasesBD;
 public class Cliente {
 
     private String nombre;
-    private int telefono;
+    private long telefono;
 
     public Cliente() {
     }
 
-    public Cliente(String nombre,int telefono) {
+    public Cliente(String nombre,long telefono) {
 
         this.nombre = nombre;
         this.telefono = telefono;
@@ -23,11 +23,11 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
 

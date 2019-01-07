@@ -111,9 +111,11 @@
     <string name="descFotoPelu">Imagen del peluquero.</string>
 
     <!-- ficha peluquero -->
-    <string name="fichaPeluTel">Teléfono:   </string>
-    <string name="fichaPeluDir">Dirección:   </string>
+    <string name="fichaPeluTel">Teléfono:</string>
+    <string name="fichaPeluDir">Dirección:</string>
+    <string name="fichaPeluDir2">Indicaciones adicionales:</string>
     <string name="botonTarifas">TARIFAS</string>
     <string name="botonPedirCita">PEDIR CITA</string>
+    <string name="mensajeErrorCargaDatosPelu">Se ha producido un error al cargar los datos del peluquero.</string>
 
 </resources>

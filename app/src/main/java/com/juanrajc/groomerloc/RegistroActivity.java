@@ -20,8 +20,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
 
-import java.util.regex.Pattern;
-
 public class RegistroActivity extends AppCompatActivity {
 
     //Objetos de la vista de la activity.
@@ -85,18 +83,6 @@ public class RegistroActivity extends AppCompatActivity {
         //Si se vuelve a la activity, se reactivan los botones de la misma.
         botonSiguiente.setEnabled(true);
 
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //Si el intent devuelto proviene de la activity "RegistroLocActivity"...
-        if(requestCode==1){
-            //cierra la activity actual.
-            finish();
-        }
 
     }
 
@@ -206,7 +192,7 @@ public class RegistroActivity extends AppCompatActivity {
                             con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
                             */
                             firestore.collection("clientes").document(auth.getCurrentUser()
-                                    .getUid()).set(new Cliente(etRegNombre.getText().toString(), Integer.parseInt(etRegTlfn.getText().toString())));
+                                    .getUid()).set(new Cliente(etRegNombre.getText().toString(), Long.parseLong(etRegTlfn.getText().toString())));
 
                             //y le muestra un saludo con su nombre.
                             Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();
@@ -237,10 +223,11 @@ public class RegistroActivity extends AppCompatActivity {
                 intentPeluquero.putExtra("email", etRegEmail.getText().toString());
                 intentPeluquero.putExtra("pw", etRegPw.getText().toString());
                 intentPeluquero.putExtra("nombre", etRegNombre.getText().toString());
-                intentPeluquero.putExtra("telefono", Integer.parseInt(etRegTlfn.getText().toString()));
+                intentPeluquero.putExtra("telefono", etRegTlfn.getText().toString());
 
-                //Requerida respuesta de vuelta.
-                startActivityForResult(intentPeluquero, 1);
+                startActivity(intentPeluquero);
+
+                finish();
 
             }
 

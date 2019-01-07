@@ -30,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
@@ -62,7 +63,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
     //Datos obtenidos de la activity anterior para el registro del usuario.
     private String email, pw, nombre;
-    private int telefono;
+    private long telefono;
 
     //Objetos de la vista de la activity.
     private EditText etDireccion, etDatAdi;
@@ -117,7 +118,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         email=getIntent().getStringExtra("email");
         pw=getIntent().getStringExtra("pw");
         nombre=getIntent().getStringExtra("nombre");
-        telefono=getIntent().getIntExtra("telefono", 0);
+        telefono=Long.parseLong(getIntent().getStringExtra("telefono"));
 
     }
 
@@ -159,7 +160,14 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                         //Marca la localización actual en el mapa.
                         marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
 
+                    }else{
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
                     }
+                }
+            }).addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
                 }
             });
         }

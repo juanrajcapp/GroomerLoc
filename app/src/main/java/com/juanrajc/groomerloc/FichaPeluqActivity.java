@@ -1,13 +1,211 @@
 package com.juanrajc.groomerloc;
 
+import android.location.Address;
+import android.location.Geocoder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.clasesBD.Peluquero;
+
+import java.io.IOException;
+import java.util.List;
 
 public class FichaPeluqActivity extends AppCompatActivity {
+
+    //Objeto de la BD Firestore.
+    private FirebaseFirestore firestore;
+
+    //Objetos de los elementos visibles de la activity.
+    private TextView tvNombrePelu, tvTelPelu, tvDirPelu, tvDir2Pelu, tvTitDir2Pelu;
+    private ImageView ivImagenPelu;
+    private Button bTarifasPelu, bCitaPelu;
+
+    //Objeto del círculo de carga.
+    private ProgressBar circuloCargaPelu;
+
+    //Geocoder para la traducción de coordenadas en direciones y viceversa.
+    Geocoder gc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ficha_peluq);
+
+        //Instancia de la base de datos de Firebase.
+        firestore=FirebaseFirestore.getInstance();
+
+        //Instancia del círculo de carga.
+        circuloCargaPelu = (ProgressBar) findViewById(R.id.circuloCargaPelu);
+
+        //Instancias de los elementos visibles de la activity.
+        tvNombrePelu = findViewById(R.id.tvNombrePelu);
+        tvTelPelu = findViewById(R.id.tvTelPelu);
+        tvDirPelu = findViewById(R.id.tvDirPelu);
+        tvDir2Pelu = findViewById(R.id.tvDir2Pelu);
+        ivImagenPelu = findViewById(R.id.ivImagenPelu);
+
+        tvTitDir2Pelu = findViewById(R.id.tvTitDir2Pelu);
+        /*Inicia invisible el título de la información adicional, solo se mostrará
+        si el peluquero ha introducido algún dato en dicho campo.*/
+        tvTitDir2Pelu.setVisibility(View.INVISIBLE);
+
+        bTarifasPelu = findViewById(R.id.bTarifasPelu);
+        bCitaPelu = findViewById(R.id.bCitaPelu);
+        /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
+        que los datos se hayan cargado.*/
+        bTarifasPelu.setClickable(false);
+        bCitaPelu.setClickable(false);
+
+        //Instancia del Geocoder.
+        gc=new Geocoder(this);
+
+        //Recoge el id del peluquero y se pasa al método que carga los datos.
+        cargaInfoPelu(getIntent().getStringExtra("idPeluquero"));
+
     }
+
+    /**
+     * Método que se encarga de cargar los datos del peluquero seleccionado desde Firestore.
+     *
+     * @param idPeluquero Cadena con la ID del peluquero.
+     */
+    private void cargaInfoPelu(String idPeluquero){
+
+        //Se visibiliza el círculo de carga.
+        circuloCargaPelu.setVisibility(View.VISIBLE);
+
+        //Carga los datos del peluquero indicando su ID, que es el también el nombre de su documento en Firestore...
+        firestore.collection("peluqueros").document(idPeluquero).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+
+                    //si existe...
+                    if(task.getResult().exists()){
+
+                        Peluquero peluquero = task.getResult().toObject(Peluquero.class);
+
+                        //se muestran los datos.
+                        tvNombrePelu.setText(peluquero.getNombre());
+                        tvTelPelu.setText(String.valueOf(peluquero.getTelefono()));
+                        tvDirPelu.setText(obtieneDireccion(new LatLng(peluquero.getLoc().getLatitude(),
+                                peluquero.getLoc().getLongitude())));
+
+                        //Comprueba que el campo de informacion adicional contiene datos...
+                        if(peluquero.getLocExtra().length()>0) {
+
+                            //si es así, se muestra su título y el contenido del mismo.
+                            tvTitDir2Pelu.setVisibility(View.VISIBLE);
+                            tvDir2Pelu.setText(peluquero.getLocExtra());
+                        }
+
+                        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                        circuloCargaPelu.setVisibility(View.INVISIBLE);
+
+                    //Si no...
+                    }else{
+                        circuloCargaPelu.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPelu),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                circuloCargaPelu.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPelu),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    /**
+     * Método que se encarga de traducir las coordenadas en una dirección postal.
+     *
+     * @param coordenadas LatLng con las coordenadas que se quieren traducir.
+     *
+     * @return Cadena con la dirección postal obtenida mediante las coordenadas.
+     */
+    private String obtieneDireccion(LatLng coordenadas) {
+
+        try {
+
+            //Obtiene la dirección mediante las coordenadas obtenidas por parámetro.
+            List<Address> direcciones = gc.getFromLocation(coordenadas.latitude, coordenadas.longitude, 1);
+
+            //Comprueba que se ha guardado al menos una dirección.
+            if(direcciones.size()>0){
+                //Si es así, devuelve el primero obtenido.
+                return muestraDireccion(direcciones.get(0));
+            }else{
+                //Si no, devuelve una cadena vacía.
+                return "";
+            }
+
+        }catch (IOException ioe){
+            return "";
+        }
+
+    }
+
+    /**
+     * Método que se encarga de generar una dirección postal más comprensible.
+     *
+     * @param direccion Objeto Address con la dirección postal.
+     * @return Devuelve una cadena con la dirección postal simplificada.
+     */
+    protected String muestraDireccion(Address direccion) {
+
+        String numero=direccion.getSubThoroughfare(),
+                calle=direccion.getThoroughfare(),
+                barrio=direccion.getSubLocality(),
+                localidad=direccion.getLocality(),
+                provincia=direccion.getSubAdminArea(),
+                caOEstado=direccion.getAdminArea(),
+                pais=direccion.getCountryName();
+
+        StringBuffer sb=new StringBuffer();
+
+        if(numero!=null){
+            sb.append(numero+", ");
+        }
+        if(calle!=null){
+            sb.append(calle+", ");
+        }
+        if(barrio!=null){
+            sb.append(barrio+", ");
+        }
+        if(localidad!=null){
+            sb.append(localidad+", ");
+        }
+        if(provincia!=null && !provincia.equalsIgnoreCase(localidad)){
+            sb.append(provincia+", ");
+        }
+        if(caOEstado!=null){
+            sb.append(caOEstado+", ");
+        }
+        if(pais!=null){
+            sb.append(pais);
+        }
+
+        return sb.toString();
+
+    }
+
 }

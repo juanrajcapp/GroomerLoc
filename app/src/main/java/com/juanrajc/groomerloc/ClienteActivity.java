@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class ClienteActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     //Constantes con los posibles resultados devueltos a la activity actual.
     private static final int REQUEST_BUSQUEDA_PELUQUERO = 1;
@@ -140,7 +141,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         //Instancia del mapa.
         map=googleMap;
 
-        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación
+        //Comprobar si tenemos permiso de geolocalización para habilitar el botón de mi ubicación.
         if(comprobarPermisoLocalizacion() && comprobarPermisosLocalizacionAproximada()){
 
             //Si es así, activamos y mostramos la localización del usuario.
@@ -153,16 +154,37 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                 public void onSuccess(Location location) {
                     if(location!=null) {
 
-                        //Si se muestra con éxito, se hace zoom sobre dicha localización...
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+                        //Si se muestra con éxito, se hace zoom sobre dicha localización.
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                                location.getLongitude()), 15));
 
-                        //y ejecuta el método que muestra los peluqueros de alrededor,
-                        marcaPeluqueros();
-
+                    }else{
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
                     }
                 }
+            }).addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
+                }
             });
+
+            //Finalmente crea el listener para las marcas del mapa...
+            map.setOnInfoWindowClickListener(this);
+
+            //y ejecuta el método que muestra los peluqueros de alrededor,
+            marcaPeluqueros();
+
         }
+
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+        //Al pulsar en el título de la marca, inicia la activity que muestra la ficha del peluquero seleccionado.
+        startActivity(new Intent(this, FichaPeluqActivity.class)
+                .putExtra("idPeluquero", (String) marker.getTag()));
 
     }
 
@@ -288,9 +310,12 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                     //por cada peluquero obtenido...
                     for(DocumentSnapshot doc : task.getResult()){
 
+                        Peluquero peluquero = doc.toObject(Peluquero.class);
+
                         //marca en el mapa su posición con su nombre.
-                        marcarMapa(new LatLng(doc.toObject(Peluquero.class).getLoc().getLatitude()
-                                , doc.toObject(Peluquero.class).getLoc().getLongitude()), doc.toObject(Peluquero.class).getNombre());
+                        marcarMapa(new LatLng(peluquero.getLoc().getLatitude(),
+                                peluquero.getLoc().getLongitude()),
+                                peluquero.getNombre(), doc.getId());
 
                     }
                 }
@@ -420,8 +445,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
      *
      * @param coordenadas LatLng con las coordenadas donde se va a generar la marca.
      * @param peluquero Cadena con el nombre del peluquero.
+     * @param idPeluquero Cadena con el ID del peluquero.
      */
-    private void marcarMapa (LatLng coordenadas, String peluquero){
+    private void marcarMapa (LatLng coordenadas, String peluquero, String idPeluquero){
 
         //Se crea una marca.
         MarkerOptions mo=new MarkerOptions();
@@ -430,7 +456,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         //Se le añade un título a la marca.
         mo.title(peluquero);
         //Se posiciona la marca en el lugar seleccionado.
-        map.addMarker(mo);
+        map.addMarker(mo).setTag(idPeluquero);
 
     }
 
@@ -549,5 +575,4 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         });
 
     }
-
 }
