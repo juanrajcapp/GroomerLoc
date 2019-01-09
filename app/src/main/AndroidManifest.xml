@@ -80,6 +80,9 @@
         <activity
             android:name=".FichaPeluqActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".EditTarifasPeluActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

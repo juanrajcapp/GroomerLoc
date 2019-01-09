@@ -27,13 +27,16 @@
     <string name="saludo">Bienvenido</string>
     <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
     <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
-    <!-- menu cliente -->
+        <!-- menu cliente -->
     <string name="menuCliBuscPelu">Buscador de peluqueros</string>
     <string name="menuCliPerro">Mis mascotas</string>
 
     <!-- peluquero -->
     <string name="mensajeNoCitas">No tiene citas próximas.</string>
     <string name="botonRecargaCitas">RECARGAR CITAS</string>
+        <!-- menu cliente -->
+    <string name="menuPeluTarifas">Mis tarifas</string>
+    <string name="menuPeluHorario">Mi horario</string>
 
     <!-- lista perros -->
     <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
@@ -117,5 +120,25 @@
     <string name="botonTarifas">TARIFAS</string>
     <string name="botonPedirCita">PEDIR CITA</string>
     <string name="mensajeErrorCargaDatosPelu">Se ha producido un error al cargar los datos del peluquero.</string>
+
+    <!-- ficha peluquero -->
+    <string name="tituloEditTarifasPelu">MIS TARIFAS</string>
+    <string name="avisoEditTarifas">Los servicios con precio en blanco no aparecerán en tu oferta de servicios.</string>
+    <string name="euro">€</string>
+    <string name="tituloEdTaServicios">SERVICIOS</string>
+    <string name="edTaBase">BASE</string>
+    <string name="edTaExtra">* EXTRA</string>
+    <string name="editBaño">Baño:</string>
+    <string name="editArreglo">Arreglo (Corte parcial):</string>
+    <string name="editCompleto">Corte completo:</string>
+    <string name="editDeslanado">Deslanado:</string>
+    <string name="editTinte">Tinte:</string>
+    <string name="edTaPeso1">* A partir de y por cada</string>
+    <string name="edTaPeso2">Kg de peso, se suma un extra al precio base.</string>
+    <string name="tituloEdTaFijas">TARIFAS FIJAS</string>
+    <string name="editOidos">Limpieza de oídos:</string>
+    <string name="editUnias">Corte de uñas:</string>
+    <string name="editAnales">Limpieza glándulas anales:</string>
+    <string name="botonGuardarTarifas">Guardar tarifas</string>
 
 </resources>

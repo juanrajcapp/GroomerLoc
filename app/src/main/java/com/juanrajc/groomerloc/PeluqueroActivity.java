@@ -1,5 +1,6 @@
 package com.juanrajc.groomerloc;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -79,6 +80,20 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
         //Según el elemento del panel lateral pulsado...
         switch (item.getItemId()){
+
+            case R.id.nav_tarifas:
+                //Inicia la activity que edita las tarifas del peluquero...
+                startActivity(new Intent(this, EditTarifasPeluActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_horario:
+                //Inicia la activity que edita el horario del peluquero...
+                //startActivity(new Intent(this, EditHorarioPeluActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
 
             case R.id.nav_log_off:
                 //Desloguea al usuario actual...

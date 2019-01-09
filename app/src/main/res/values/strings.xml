@@ -33,6 +33,9 @@
     <!-- peluquero -->
     <string name="mensajeNoCitas">No upcoming appointments.</string>
     <string name="botonRecargaCitas">RELOAD APPOINTMENTS</string>
+        <!-- menu cliente -->
+    <string name="menuPeluTarifas">My rates</string>
+    <string name="menuPeluHorario">Mi schedule</string>
 
     <!-- lista perros -->
     <string name="mensajeNoPerros">You have no registered pets.</string>
@@ -116,5 +119,25 @@
     <string name="botonTarifas">RATES</string>
     <string name="botonPedirCita">MAKE APPOINTMENT</string>
     <string name="mensajeErrorCargaDatosPelu">An error occurred while loading the groomer\'s data.</string>
+
+    <!-- ficha peluquero -->
+    <string name="tituloEditTarifasPelu">MY RATES</string>
+    <string name="avisoEditTarifas">Services with a blank price will not appear in your service offer.</string>
+    <string name="euro">€</string>
+    <string name="tituloEdTaServicios">SERVICES</string>
+    <string name="edTaBase">BASE</string>
+    <string name="edTaExtra">* EXTRA</string>
+    <string name="editBaño">Wash:</string>
+    <string name="editArreglo">Partial haircut:</string>
+    <string name="editCompleto">Complete haircut:</string>
+    <string name="editDeslanado">Removal of wool:</string>
+    <string name="editTinte">Dye:</string>
+    <string name="edTaPeso1">* From and for every</string>
+    <string name="edTaPeso2">Kg of weight, an extra is added to the base price.</string>
+    <string name="tituloEdTaFijas">FIXED RATES</string>
+    <string name="editOidos">Ear cleaning:</string>
+    <string name="editUnias">Nail cut:</string>
+    <string name="editAnales">Anal gland cleaning:</string>
+    <string name="botonGuardarTarifas">Save rates</string>
 
 </resources>
