@@ -69,6 +69,7 @@
     <string name="mensajeSubidaCorrecta">The image has been uploaded correctly</string>
     <string name="mensajeSubidaFallida">Failure to upload the image</string>
     <string name="mensajeFalloBD">Database accessing error</string>
+    <string name="mensajeFalloRegPerro">Unable to register</string>
         <!-- dialog perro -->
     <string name="tituloDialog">Select an option:</string>
     <string name="opCamara">Take a photo...</string>
@@ -120,7 +121,7 @@
     <string name="botonPedirCita">MAKE APPOINTMENT</string>
     <string name="mensajeErrorCargaDatosPelu">An error occurred while loading the groomer\'s data.</string>
 
-    <!-- ficha peluquero -->
+    <!-- ficha tarifas -->
     <string name="tituloEditTarifasPelu">MY RATES</string>
     <string name="avisoEditTarifas">Services with a blank price will not appear in your service offer.</string>
     <string name="euro">€</string>
@@ -139,5 +140,7 @@
     <string name="editUnias">Nail cut:</string>
     <string name="editAnales">Anal gland cleaning:</string>
     <string name="botonGuardarTarifas">Save rates</string>
+    <string name="mensajeTarGuardadas">Rates have been saved successfully.</string>
+    <string name="mensajeTarNoGuardadas">Rates could not be saved.</string>
 
 </resources>

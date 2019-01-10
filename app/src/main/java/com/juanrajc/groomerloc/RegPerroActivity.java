@@ -451,15 +451,27 @@ public class RegPerroActivity extends AppCompatActivity {
         firestore.collection("clientes")
                 .document(usuario.getUid()).collection("perros")
                 .document(nombrePerro.getText().toString()).set(new Perro(razaPerro.getText().toString(),
-                obtieneSexo(), comentPerro.getText().toString(), Float.parseFloat(pesoPerro.getText().toString())));
+                obtieneSexo(), comentPerro.getText().toString(), Float.parseFloat(pesoPerro.getText().toString())))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
 
-        //Si se ha especificado la ruta de una foto...
-        if(rutaFoto!=null) {
-            guardaFoto();
-        }
+                //Si se ha especificado la ruta de una foto...
+                if(rutaFoto!=null) {
+                    guardaFoto();
+                }
 
-        //Finaliza la activity.
-        finish();
+                //Finaliza la activity.
+                finish();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloRegPerro)
+                        +" "+nombrePerro.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

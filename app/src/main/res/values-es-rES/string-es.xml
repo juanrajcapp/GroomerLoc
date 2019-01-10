@@ -70,6 +70,7 @@
     <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente</string>
     <string name="mensajeSubidaFallida">Fallo al subir la imagen</string>
     <string name="mensajeFalloBD">Error al acceder a la base de datos</string>
+    <string name="mensajeFalloRegPerro">No se ha podido registrar a</string>
         <!--dialog perro-->
     <string name="tituloDialog">Seleccione una opción:</string>
     <string name="opCamara">Haga una foto...</string>
@@ -121,7 +122,7 @@
     <string name="botonPedirCita">PEDIR CITA</string>
     <string name="mensajeErrorCargaDatosPelu">Se ha producido un error al cargar los datos del peluquero.</string>
 
-    <!-- ficha peluquero -->
+    <!-- ficha tarifas -->
     <string name="tituloEditTarifasPelu">MIS TARIFAS</string>
     <string name="avisoEditTarifas">Los servicios con precio en blanco no aparecerán en tu oferta de servicios.</string>
     <string name="euro">€</string>
@@ -140,5 +141,7 @@
     <string name="editUnias">Corte de uñas:</string>
     <string name="editAnales">Limpieza glándulas anales:</string>
     <string name="botonGuardarTarifas">Guardar tarifas</string>
+    <string name="mensajeTarGuardadas">Las tarifas se han guardado con éxito.</string>
+    <string name="mensajeTarNoGuardadas">No se han podido guardar las tarifas.</string>
 
 </resources>

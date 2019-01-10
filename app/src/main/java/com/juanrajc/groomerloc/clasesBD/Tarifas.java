@@ -2,17 +2,17 @@ package com.juanrajc.groomerloc.clasesBD;
 
 public class Tarifas {
 
-    private float baseBanio, extraBanio, baseoArreglo, extraArreglo, baseCorte, extraCorte,
+    private Float baseBanio, extraBanio, baseoArreglo, extraArreglo, baseCorte, extraCorte,
             baseDeslanado, extraDeslanado, baseTinte, extraTinte, pesoExtra, precioOidos,
             precioUnias, precioAnales;
 
     public void Tarifas(){
     }
 
-    public Tarifas(float baseBanio, float extraBanio, float baseoArreglo, float extraArreglo,
-                   float baseCorte, float extraCorte, float baseDeslanado, float extraDeslanado,
-                   float baseTinte, float extraTinte, float pesoExtra, float precioOidos,
-                   float precioUnias, float precioAnales) {
+    public Tarifas(Float baseBanio, Float extraBanio, Float baseoArreglo, Float extraArreglo,
+                   Float baseCorte, Float extraCorte, Float baseDeslanado, Float extraDeslanado,
+                   Float baseTinte, Float extraTinte, Float pesoExtra, Float precioOidos,
+                   Float precioUnias, Float precioAnales) {
 
         this.baseBanio = baseBanio;
         this.extraBanio = extraBanio;
@@ -31,115 +31,115 @@ public class Tarifas {
 
     }
 
-    public float getBaseBanio() {
+    public Float getBaseBanio() {
         return baseBanio;
     }
 
-    public void setBaseBanio(float baseBanio) {
+    public void setBaseBanio(Float baseBanio) {
         this.baseBanio = baseBanio;
     }
 
-    public float getExtraBanio() {
+    public Float getExtraBanio() {
         return extraBanio;
     }
 
-    public void setExtraBanio(float extraBanio) {
+    public void setExtraBanio(Float extraBanio) {
         this.extraBanio = extraBanio;
     }
 
-    public float getBaseoArreglo() {
+    public Float getBaseoArreglo() {
         return baseoArreglo;
     }
 
-    public void setBaseoArreglo(float baseoArreglo) {
+    public void setBaseoArreglo(Float baseoArreglo) {
         this.baseoArreglo = baseoArreglo;
     }
 
-    public float getExtraArreglo() {
+    public Float getExtraArreglo() {
         return extraArreglo;
     }
 
-    public void setExtraArreglo(float extraArreglo) {
+    public void setExtraArreglo(Float extraArreglo) {
         this.extraArreglo = extraArreglo;
     }
 
-    public float getBaseCorte() {
+    public Float getBaseCorte() {
         return baseCorte;
     }
 
-    public void setBaseCorte(float baseCorte) {
+    public void setBaseCorte(Float baseCorte) {
         this.baseCorte = baseCorte;
     }
 
-    public float getExtraCorte() {
+    public Float getExtraCorte() {
         return extraCorte;
     }
 
-    public void setExtraCorte(float extraCorte) {
+    public void setExtraCorte(Float extraCorte) {
         this.extraCorte = extraCorte;
     }
 
-    public float getBaseDeslanado() {
+    public Float getBaseDeslanado() {
         return baseDeslanado;
     }
 
-    public void setBaseDeslanado(float baseDeslanado) {
+    public void setBaseDeslanado(Float baseDeslanado) {
         this.baseDeslanado = baseDeslanado;
     }
 
-    public float getExtraDeslanado() {
+    public Float getExtraDeslanado() {
         return extraDeslanado;
     }
 
-    public void setExtraDeslanado(float extraDeslanado) {
+    public void setExtraDeslanado(Float extraDeslanado) {
         this.extraDeslanado = extraDeslanado;
     }
 
-    public float getBaseTinte() {
+    public Float getBaseTinte() {
         return baseTinte;
     }
 
-    public void setBaseTinte(float baseTinte) {
+    public void setBaseTinte(Float baseTinte) {
         this.baseTinte = baseTinte;
     }
 
-    public float getExtraTinte() {
+    public Float getExtraTinte() {
         return extraTinte;
     }
 
-    public void setExtraTinte(float extraTinte) {
+    public void setExtraTinte(Float extraTinte) {
         this.extraTinte = extraTinte;
     }
 
-    public float getPesoExtra() {
+    public Float getPesoExtra() {
         return pesoExtra;
     }
 
-    public void setPesoExtra(float pesoExtra) {
+    public void setPesoExtra(Float pesoExtra) {
         this.pesoExtra = pesoExtra;
     }
 
-    public float getPrecioOidos() {
+    public Float getPrecioOidos() {
         return precioOidos;
     }
 
-    public void setPrecioOidos(float precioOidos) {
+    public void setPrecioOidos(Float precioOidos) {
         this.precioOidos = precioOidos;
     }
 
-    public float getPrecioUnias() {
+    public Float getPrecioUnias() {
         return precioUnias;
     }
 
-    public void setPrecioUnias(float precioUnias) {
+    public void setPrecioUnias(Float precioUnias) {
         this.precioUnias = precioUnias;
     }
 
-    public float getPrecioAnales() {
+    public Float getPrecioAnales() {
         return precioAnales;
     }
 
-    public void setPrecioAnales(float precioAnales) {
+    public void setPrecioAnales(Float precioAnales) {
         this.precioAnales = precioAnales;
     }
 
