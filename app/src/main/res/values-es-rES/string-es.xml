@@ -128,7 +128,7 @@
     <string name="tituloEdTaServicios">SERVICIOS</string>
     <string name="edTaBase">BASE</string>
     <string name="edTaExtra">* EXTRA</string>
-    <string name="editBaño">Baño:</string>
+    <string name="editBanio">Baño:</string>
     <string name="editArreglo">Arreglo (Corte parcial):</string>
     <string name="editCompleto">Corte completo:</string>
     <string name="editDeslanado">Deslanado:</string>

@@ -97,20 +97,21 @@
                 android:gravity="end">
 
                 <TextView
-                    android:id="@+id/tvEdTaBaño"
+                    android:id="@+id/tvEdTaBanio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/editBaño"
+                    android:text="@string/editBanio"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/etEdTaBaño"
+                    android:id="@+id/etEdTaBanio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editBanio" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro1"
@@ -120,12 +121,13 @@
                     android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
                 <EditText
-                    android:id="@+id/etEdTaBañoExtra"
+                    android:id="@+id/etEdTaBanioExtra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editBanio" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro1b"
@@ -154,7 +156,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editArreglo" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro2"
@@ -169,7 +172,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editArreglo" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro2b"
@@ -198,7 +202,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editCompleto" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro3"
@@ -213,7 +218,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editCompleto" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro3b"
@@ -242,7 +248,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editDeslanado" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro4"
@@ -257,7 +264,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editDeslanado" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro4b"
@@ -286,7 +294,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editTinte" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro5"
@@ -301,7 +310,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editTinte" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro5b"
@@ -338,7 +348,8 @@
                 android:layout_height="wrap_content"
                 android:ems="4"
                 android:inputType="numberDecimal"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:autofillHints="@string/tituloEdTaServicios" tools:targetApi="o" />
 
             <TextView
                 android:id="@+id/tvEdTaPeso2"
@@ -396,7 +407,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editOidos" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro6"
@@ -425,7 +437,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editUnias" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro7"
@@ -454,7 +467,8 @@
                     android:layout_height="wrap_content"
                     android:ems="4"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editAnales" tools:targetApi="o" />
 
                 <TextView
                     android:id="@+id/tvEdTaEuro8"
@@ -473,6 +487,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/botonAtras"
+            android:onClick="atras"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -484,6 +499,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/botonGuardarTarifas"
+            android:onClick="guardaTarifas"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bEditTarifasAtras" />
