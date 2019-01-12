@@ -2,21 +2,21 @@ package com.juanrajc.groomerloc.clasesBD;
 
 public class Tarifas {
 
-    private Float baseBanio, extraBanio, baseoArreglo, extraArreglo, baseCorte, extraCorte,
+    private Float baseBanio, extraBanio, baseArreglo, extraArreglo, baseCorte, extraCorte,
             baseDeslanado, extraDeslanado, baseTinte, extraTinte, pesoExtra, precioOidos,
             precioUnias, precioAnales;
 
-    public void Tarifas(){
+    public Tarifas(){
     }
 
-    public Tarifas(Float baseBanio, Float extraBanio, Float baseoArreglo, Float extraArreglo,
+    public Tarifas(Float baseBanio, Float extraBanio, Float baseArreglo, Float extraArreglo,
                    Float baseCorte, Float extraCorte, Float baseDeslanado, Float extraDeslanado,
                    Float baseTinte, Float extraTinte, Float pesoExtra, Float precioOidos,
                    Float precioUnias, Float precioAnales) {
 
         this.baseBanio = baseBanio;
         this.extraBanio = extraBanio;
-        this.baseoArreglo = baseoArreglo;
+        this.baseArreglo = baseArreglo;
         this.extraArreglo = extraArreglo;
         this.baseCorte = baseCorte;
         this.extraCorte = extraCorte;
@@ -47,12 +47,12 @@ public class Tarifas {
         this.extraBanio = extraBanio;
     }
 
-    public Float getBaseoArreglo() {
-        return baseoArreglo;
+    public Float getBaseArreglo() {
+        return baseArreglo;
     }
 
-    public void setBaseoArreglo(Float baseoArreglo) {
-        this.baseoArreglo = baseoArreglo;
+    public void setBaseArreglo(Float baseArreglo) {
+        this.baseArreglo = baseArreglo;
     }
 
     public Float getExtraArreglo() {

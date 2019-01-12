@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Tarifas;
 
@@ -70,6 +73,8 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
         //Instancias de la autenticación y la base de datos de Firebase.
         auth=FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
+
+        cargaTarifas();
 
     }
 
@@ -235,6 +240,114 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
             etEdTaPeso.setText("");
             etEdTaPeso.setEnabled(false);
 
+        }
+
+    }
+
+    /**
+     * Método que se encarga de obtener desde la BD del peluquero en Firebase las tarifas
+     * guardadas (si existen).
+     */
+    private void cargaTarifas(){
+
+        //Obtiene las tarifas de la BD del peluquero en Firebase.
+        firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
+                .collection("peluqueria").document("tarifas").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+
+                            if (task.getResult().exists()) {
+
+                                Tarifas tarifas = task.getResult().toObject(Tarifas.class);
+
+                                rellenaCampos(tarifas);
+
+                            }
+
+                        }else{
+                            Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaTarifas),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaTarifas),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    /**
+     * Método que rellena los campos de las tarifas con los datos obtenidos de la BD
+     * del peluquero en Firebase.
+     *
+     * @param tarifas Objeto de tipo Tarifas con los datos obtenidos de la BD.
+     */
+    private void rellenaCampos(Tarifas tarifas){
+
+        if(tarifas.getBaseBanio()!=null){
+            etEdTaBanio.setText(tarifas.getBaseBanio().toString());
+
+            if(tarifas.getExtraBanio()!=null){
+                etEdTaBanioExtra.setText(tarifas.getExtraBanio().toString());
+            }
+
+        }
+
+        if(tarifas.getBaseArreglo()!=null){
+            etEdTaArreglo.setText(tarifas.getBaseArreglo().toString());
+
+            if(tarifas.getExtraArreglo()!=null){
+                etEdTaArregloExtra.setText(tarifas.getExtraArreglo().toString());
+            }
+
+        }
+
+        if(tarifas.getBaseCorte()!=null){
+            etEdTaCompleto.setText(tarifas.getBaseCorte().toString());
+
+            if(tarifas.getExtraCorte()!=null){
+                etEdTaCompletoExtra.setText(tarifas.getExtraCorte().toString());
+            }
+
+        }
+
+        if(tarifas.getBaseDeslanado()!=null){
+            etEdTaDeslanado.setText(tarifas.getBaseDeslanado().toString());
+
+            if(tarifas.getExtraDeslanado()!=null){
+                etEdTaDeslanadoExtra.setText(tarifas.getExtraDeslanado().toString());
+            }
+        }
+
+        if(tarifas.getBaseTinte()!=null){
+            etEdTaTinte.setText(tarifas.getBaseTinte().toString());
+
+            if(tarifas.getExtraTinte()!=null){
+                etEdTaTinteExtra.setText(tarifas.getExtraTinte().toString());
+            }
+
+        }
+
+        if(tarifas.getPesoExtra()!=null){
+            etEdTaPeso.setText(tarifas.getPesoExtra().toString());
+        }
+
+        if(tarifas.getPrecioOidos()!=null){
+            etEdTaOidos.setText(tarifas.getPrecioOidos().toString());
+        }
+
+        if(tarifas.getPrecioUnias()!=null){
+            etEdTaUnias.setText(tarifas.getPrecioUnias().toString());
+        }
+
+        if(tarifas.getPrecioAnales()!=null){
+            etEdTaAnales.setText(tarifas.getPrecioAnales().toString());
         }
 
     }

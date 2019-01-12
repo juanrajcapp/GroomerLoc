@@ -142,5 +142,6 @@
     <string name="botonGuardarTarifas">Save rates</string>
     <string name="mensajeTarGuardadas">Rates have been saved successfully.</string>
     <string name="mensajeTarNoGuardadas">Rates could not be saved.</string>
+    <string name="mensajeErrorCargaTarifas">An error occurred while loading the rates.</string>
 
 </resources>

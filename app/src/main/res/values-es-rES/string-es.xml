@@ -143,5 +143,6 @@
     <string name="botonGuardarTarifas">Guardar tarifas</string>
     <string name="mensajeTarGuardadas">Las tarifas se han guardado con éxito.</string>
     <string name="mensajeTarNoGuardadas">No se han podido guardar las tarifas.</string>
+    <string name="mensajeErrorCargaTarifas">Se ha producido un error al cargar las tarifas.</string>
 
 </resources>
