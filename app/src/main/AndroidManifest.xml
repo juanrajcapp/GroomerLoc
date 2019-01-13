@@ -83,6 +83,9 @@
         <activity
             android:name=".EditTarifasPeluActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".TarifasPeluActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

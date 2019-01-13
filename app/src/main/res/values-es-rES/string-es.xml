@@ -122,7 +122,7 @@
     <string name="botonPedirCita">PEDIR CITA</string>
     <string name="mensajeErrorCargaDatosPelu">Se ha producido un error al cargar los datos del peluquero.</string>
 
-    <!-- ficha tarifas -->
+    <!-- ficha editar tarifas -->
     <string name="tituloEditTarifasPelu">MIS TARIFAS</string>
     <string name="avisoEditTarifas">Los servicios con precio en blanco no aparecerán en tu oferta de servicios.</string>
     <string name="euro">€</string>
@@ -144,5 +144,10 @@
     <string name="mensajeTarGuardadas">Las tarifas se han guardado con éxito.</string>
     <string name="mensajeTarNoGuardadas">No se han podido guardar las tarifas.</string>
     <string name="mensajeErrorCargaTarifas">Se ha producido un error al cargar las tarifas.</string>
+
+    <!-- ficha tarifas -->
+    <string name="tituloTarifasPelu">Tarifas de</string>
+    <string name="cabeceraPrecioTarifa">PRECIO</string>
+    <string name="mensajeTarifasNoConfig">El peluquero no ha fijado aún ninguna tarifa.</string>
 
 </resources>

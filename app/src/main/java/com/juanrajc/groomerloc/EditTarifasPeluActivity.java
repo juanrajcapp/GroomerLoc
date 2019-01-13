@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,19 +22,28 @@ import com.juanrajc.groomerloc.clasesBD.Tarifas;
 
 public class EditTarifasPeluActivity extends AppCompatActivity implements TextWatcher{
 
-    ////Objetos de los campos editables de la vista.
+    //Objetos de los campos editables de la vista.
     private EditText etEdTaBanio, etEdTaBanioExtra, etEdTaArreglo, etEdTaArregloExtra,
             etEdTaCompleto, etEdTaCompletoExtra, etEdTaDeslanado, etEdTaDeslanadoExtra,
             etEdTaTinte, etEdTaTinteExtra, etEdTaPeso, etEdTaOidos, etEdTaUnias, etEdTaAnales;
+
+    //Objetos de los botones de la vista.
+    private Button bEditTarifasAtras, bEditTarifasGuardar;
 
     //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
+    //Objeto del círculo de carga.
+    private ProgressBar circuloCargaEdTarPelu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tarifas_pelu);
+
+        //Instancia del círculo de carga.
+        circuloCargaEdTarPelu = (ProgressBar) findViewById(R.id.circuloCargaPelu);
 
         //Instancia de los campos editables de la vista
         etEdTaBanio = findViewById(R.id.etEdTaBanio);
@@ -49,6 +60,14 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
         etEdTaOidos = findViewById(R.id.etEdTaOidos);
         etEdTaUnias = findViewById(R.id.etEdTaUnias);
         etEdTaAnales = findViewById(R.id.etEdTaAnales);
+
+        //Instancia de los botones de la vista.
+        bEditTarifasAtras = findViewById(R.id.bEditTarifasAtras);
+        bEditTarifasGuardar = findViewById(R.id.bEditTarifasGuardar);
+        /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
+        que los datos se hayan cargado.*/
+        bEditTarifasAtras.setClickable(false);
+        bEditTarifasGuardar.setClickable(false);
 
         //Al iniciar la activity, se deshabilitan algunos campos editables de la vista.
         etEdTaBanioExtra.setEnabled(false);
@@ -149,6 +168,10 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      */
     protected void guardaTarifas (View view){
 
+        //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        bEditTarifasGuardar.setClickable(false);
+        bEditTarifasAtras.setClickable(false);
+
         /*
         Guarda en la colección "peluquería" -> documento "tarifas" de la BD del peluquero
         actualmente autenticado los datos introducidos por el mismo, mediante un POJO.
@@ -172,8 +195,14 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
                 Toast.makeText(getApplicationContext(), getString(R.string.mensajeTarNoGuardadas),
                         Toast.LENGTH_SHORT).show();
+
+                //Si falla el guardado, se vuelven a activar los botones de la activity.
+                bEditTarifasGuardar.setClickable(true);
+                bEditTarifasAtras.setClickable(true);
+
             }
         });
 
@@ -185,6 +214,10 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      * @param view
      */
     protected void atras (View view){
+
+        ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        bEditTarifasGuardar.setClickable(false);
+        bEditTarifasAtras.setClickable(false);
 
         //Finaliza la activity.
         finish();
@@ -250,6 +283,9 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      */
     private void cargaTarifas(){
 
+        //Se visibiliza el círculo de carga.
+        circuloCargaEdTarPelu.setVisibility(View.VISIBLE);
+
         //Obtiene las tarifas de la BD del peluquero en Firebase.
         firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
                 .collection("peluqueria").document("tarifas").get()
@@ -264,19 +300,30 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
                                 rellenaCampos(tarifas);
 
+                                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                                circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
+
                             }
 
+                            //Existan o no existan datos, se activa los botones de la activity.
+                            bEditTarifasAtras.setClickable(true);
+                            bEditTarifasGuardar.setClickable(true);
+
                         }else{
+                            circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaTarifas),
                                     Toast.LENGTH_SHORT).show();
+                            bEditTarifasAtras.setClickable(true);
                         }
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
                         Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaTarifas),
                                 Toast.LENGTH_SHORT).show();
+                        bEditTarifasAtras.setClickable(true);
                     }
                 });
 
@@ -290,6 +337,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      */
     private void rellenaCampos(Tarifas tarifas){
 
+        //Precios de baño.
         if(tarifas.getBaseBanio()!=null){
             etEdTaBanio.setText(tarifas.getBaseBanio().toString());
 
@@ -299,6 +347,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
         }
 
+        //Precios de arreglo o corte parcial.
         if(tarifas.getBaseArreglo()!=null){
             etEdTaArreglo.setText(tarifas.getBaseArreglo().toString());
 
@@ -308,6 +357,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
         }
 
+        //Precios de corte completo.
         if(tarifas.getBaseCorte()!=null){
             etEdTaCompleto.setText(tarifas.getBaseCorte().toString());
 
@@ -317,6 +367,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
         }
 
+        //Precios de deslanado.
         if(tarifas.getBaseDeslanado()!=null){
             etEdTaDeslanado.setText(tarifas.getBaseDeslanado().toString());
 
@@ -325,6 +376,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
             }
         }
 
+        //Precios de tinte.
         if(tarifas.getBaseTinte()!=null){
             etEdTaTinte.setText(tarifas.getBaseTinte().toString());
 
@@ -334,18 +386,22 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
         }
 
+        //Peso de los extras.
         if(tarifas.getPesoExtra()!=null){
             etEdTaPeso.setText(tarifas.getPesoExtra().toString());
         }
 
+        //Precio de limpieza de oidos.
         if(tarifas.getPrecioOidos()!=null){
             etEdTaOidos.setText(tarifas.getPrecioOidos().toString());
         }
 
+        //Precio de corte de uñas.
         if(tarifas.getPrecioUnias()!=null){
             etEdTaUnias.setText(tarifas.getPrecioUnias().toString());
         }
 
+        //Precio de limpieza de glándulas anales.
         if(tarifas.getPrecioAnales()!=null){
             etEdTaAnales.setText(tarifas.getPrecioAnales().toString());
         }

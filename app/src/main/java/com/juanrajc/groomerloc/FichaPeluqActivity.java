@@ -1,5 +1,6 @@
 package com.juanrajc.groomerloc;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.annotation.NonNull;
@@ -37,7 +38,9 @@ public class FichaPeluqActivity extends AppCompatActivity {
     private ProgressBar circuloCargaPelu;
 
     //Geocoder para la traducción de coordenadas en direciones y viceversa.
-    Geocoder gc;
+    private Geocoder gc;
+
+    private String idPeluquero, nombrePeluquero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +75,21 @@ public class FichaPeluqActivity extends AppCompatActivity {
         //Instancia del Geocoder.
         gc=new Geocoder(this);
 
-        //Recoge el id del peluquero y se pasa al método que carga los datos.
-        cargaInfoPelu(getIntent().getStringExtra("idPeluquero"));
+        //Recoge y guarda el ID del peluquero...
+        idPeluquero = getIntent().getStringExtra("idPeluquero");
+
+        //y se pasa al método que carga los datos.
+        cargaInfoPelu(idPeluquero);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Al volver a la activity, se vuelven a activar los botones de la misma.
+        bTarifasPelu.setClickable(true);
+        bCitaPelu.setClickable(true);
 
     }
 
@@ -99,7 +115,10 @@ public class FichaPeluqActivity extends AppCompatActivity {
 
                         Peluquero peluquero = task.getResult().toObject(Peluquero.class);
 
-                        //se muestran los datos.
+                        //Guarda el nombre en una variable...
+                        nombrePeluquero = peluquero.getNombre();
+
+                        //se muestran los datos...
                         tvNombrePelu.setText(peluquero.getNombre());
                         tvTelPelu.setText(String.valueOf(peluquero.getTelefono()));
                         tvDirPelu.setText(obtieneDireccion(new LatLng(peluquero.getLoc().getLatitude(),
@@ -113,16 +132,27 @@ public class FichaPeluqActivity extends AppCompatActivity {
                             tvDir2Pelu.setText(peluquero.getLocExtra());
                         }
 
-                        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
-                        circuloCargaPelu.setVisibility(View.INVISIBLE);
+                        //y se activan los botones de la activity.
+                        bTarifasPelu.setClickable(true);
+                        bCitaPelu.setClickable(true);
+
 
                     //Si no...
                     }else{
-                        circuloCargaPelu.setVisibility(View.INVISIBLE);
                         Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPelu),
                                 Toast.LENGTH_SHORT).show();
+                        finish();
                     }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPelu),
+                            Toast.LENGTH_SHORT).show();
+                    finish();
                 }
+
+                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                circuloCargaPelu.setVisibility(View.INVISIBLE);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -130,6 +160,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
                 circuloCargaPelu.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPelu),
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
@@ -205,6 +236,41 @@ public class FichaPeluqActivity extends AppCompatActivity {
         }
 
         return sb.toString();
+
+    }
+
+    /**
+     * Método que inicia la activity que muestra las tarifas del peluquero.
+     *
+     * @param view
+     */
+    protected void iniciaVistaTarifas(View view){
+
+        //Desactiva los botones de la activity actual...
+        bTarifasPelu.setClickable(false);
+        bCitaPelu.setClickable(false);
+
+        //E inicia la que muestra las tarifas, pasándole la ID y nombre del peluquero.
+        startActivity(new Intent(this, TarifasPeluActivity.class)
+                .putExtra("idPeluquero", idPeluquero)
+                .putExtra("nombrePeluquero", nombrePeluquero));
+
+    }
+
+    /**
+     * Método que inicia la activity para pedir cita.
+     *
+     * @param view
+     */
+    protected void iniciaPedirCita(View view){
+
+        /*
+        //Desactiva los botones de la activity actual...
+        bTarifasPelu.setClickable(false);
+        bCitaPelu.setClickable(false);
+        */
+
+        //Comprobar que el peluquero ha seteado las tarifas.
 
     }
 

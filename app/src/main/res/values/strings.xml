@@ -121,7 +121,7 @@
     <string name="botonPedirCita">MAKE APPOINTMENT</string>
     <string name="mensajeErrorCargaDatosPelu">An error occurred while loading the groomer\'s data.</string>
 
-    <!-- ficha tarifas -->
+    <!-- ficha  editar tarifas -->
     <string name="tituloEditTarifasPelu">MY RATES</string>
     <string name="avisoEditTarifas">Services with a blank price will not appear in your service offer.</string>
     <string name="euro">€</string>
@@ -143,5 +143,10 @@
     <string name="mensajeTarGuardadas">Rates have been saved successfully.</string>
     <string name="mensajeTarNoGuardadas">Rates could not be saved.</string>
     <string name="mensajeErrorCargaTarifas">An error occurred while loading the rates.</string>
+
+    <!-- ficha tarifas -->
+    <string name="tituloTarifasPelu">Rates of</string>
+    <string name="cabeceraPrecioTarifa">PRICE</string>
+    <string name="mensajeTarifasNoConfig">The groomer has not yet set a rate.</string>
 
 </resources>
