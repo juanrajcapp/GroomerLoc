@@ -37,6 +37,13 @@
     <string name="menuPeluTarifas">My rates</string>
     <string name="menuPeluHorario">Mi schedule</string>
 
+    <!-- acerca de -->
+    <string name="descAplicacion">This application was designed to facilitate communication and management of appointments
+        between pet groomers and clients, with the invaluable help of geolocation.</string>
+    <string name="desarrolladores">Developers:</string>
+    <string name="nombreJuanrajc">Juan Ramón Jover Cruz</string>
+    <string name="aniosAplicacion">2018 - 2019</string>
+
     <!-- lista perros -->
     <string name="mensajeNoPerros">You have no registered pets.</string>
     <string name="mensajeNoResultPerros">The list of pets could not be loaded.</string>

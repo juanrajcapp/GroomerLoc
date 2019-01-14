@@ -95,6 +95,13 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
                 dw.closeDrawers();
                 return true;
 
+            case R.id.nav_acercaDe:
+                //Inicia la activity que muestra información acerca de la aplicación...
+                startActivity(new Intent(this, AcercaDeActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
             case R.id.nav_log_off:
                 //Desloguea al usuario actual...
                 auth.signOut();

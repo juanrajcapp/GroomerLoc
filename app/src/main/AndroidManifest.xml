@@ -62,14 +62,18 @@
             android:name=".ClienteActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RegistroActivity" />
+        <activity
+            android:name=".RegistroActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".RegistroLocActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".RegPerroActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".PerrosActivity" />
+        <activity
+            android:name=".PerrosActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".PeluqueroActivity"
             android:configChanges="orientation|screenSize"
@@ -86,6 +90,8 @@
         <activity
             android:name=".TarifasPeluActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".AcercaDeActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

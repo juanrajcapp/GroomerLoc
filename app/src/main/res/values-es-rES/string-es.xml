@@ -38,6 +38,13 @@
     <string name="menuPeluTarifas">Mis tarifas</string>
     <string name="menuPeluHorario">Mi horario</string>
 
+    <!-- acerca de -->
+    <string name="descAplicacion">Esta aplicación se ideó para facilitar la comunicación y gestión de citas
+        entre peluqueros de mascotas y clientes, con la inestimable ayuda de la geolocalización.</string>
+    <string name="desarrolladores">Desarrolladores:</string>
+    <string name="nombreJuanrajc">Juan Ramón Jover Cruz</string>
+    <string name="aniosAplicacion">2018 - 2019</string>
+
     <!-- lista perros -->
     <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
     <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
