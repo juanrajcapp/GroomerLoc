@@ -30,6 +30,11 @@
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Buscador de peluqueros</string>
     <string name="menuCliPerro">Mis mascotas</string>
+        <!-- preferencias cliente -->
+    <string name="prefCliCatMapa">Mapa</string>
+    <string name="prefCliZoomMapa">Radio de visión:</string>
+    <string name="prefCliZoomMapaDesc">Radio de visión aproximado (en metros) con el que
+        se va a visualizar el mapa al iniciar la aplicación.</string>
 
     <!-- peluquero -->
     <string name="mensajeNoCitas">No tiene citas próximas.</string>

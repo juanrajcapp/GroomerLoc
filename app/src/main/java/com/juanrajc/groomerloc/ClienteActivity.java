@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -63,6 +65,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     //Objeto del panel lateral (menú).
     private DrawerLayout dw;
 
+    //Objeto de las preferencias.
+    private SharedPreferences preferencias;
+
     //Objeto del campo de texto que va a recoger el nombre de un peluquero para su búsqueda.
     EditText entradaNombrePelu;
 
@@ -70,6 +75,9 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente);
+
+        //Obtiene las preferencias guardadas.
+        preferencias = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Carga del fragment con el mapa.
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -156,7 +164,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
                         //Si se muestra con éxito, se hace zoom sobre dicha localización.
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                                location.getLongitude()), 15));
+                                location.getLongitude()), leePreferenciaZoom()));
 
                     }else{
                         Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
@@ -211,6 +219,13 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.nav_acercaDe:
                 //Inicia la activity que muestra información acerca de la aplicación...
                 startActivity(new Intent(this, AcercaDeActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_preferencias:
+                //Inicia la activity de preferencias del cliente...
+                startActivity(new Intent(this, PrefClienteActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;
@@ -582,4 +597,35 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
         });
 
     }
+
+    /**
+     * Método que lee, maneja y devuelve la preferencia del zoom en el mapa.
+     *
+     * @return Devuelve un float con el nivel de zoom utilizado por Google Maps.
+     */
+    private float leePreferenciaZoom(){
+
+        String preferenciaZoom=preferencias.getString("prefCliZoomMapa", "");
+
+        if(preferenciaZoom==null || preferenciaZoom==""){
+            return radioZoom(1000);
+        }else{
+            return radioZoom(Integer.parseInt(preferenciaZoom));
+        }
+
+    }
+
+    /**
+     * Método que traduce un radio de visión (en metros) al nivel de zoom que utiliza Google Maps.
+     *
+     * @param radio Entero con el radio deseado (en metros).
+     *
+     * @return Devuelve un float con el nivel de zoom utilizado por Google Maps.
+     */
+    public float radioZoom(int radio) {
+
+        return (float) (16 - Math.log(radio/500) / Math.log(2));
+
+    }
+
 }

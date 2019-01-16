@@ -29,6 +29,11 @@
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Groomers finder</string>
     <string name="menuCliPerro">My pets</string>
+        <!-- preferencias cliente -->
+    <string name="prefCliCatMapa">Map</string>
+    <string name="prefCliZoomMapa">Viewing radius:</string>
+    <string name="prefCliZoomMapaDesc">Approximate viewing radius (in meters) with which
+        the map will be displayed when the application starts.</string>
 
     <!-- peluquero -->
     <string name="mensajeNoCitas">No upcoming appointments.</string>
@@ -38,8 +43,9 @@
     <string name="menuPeluHorario">Mi schedule</string>
 
     <!-- acerca de -->
-    <string name="descAplicacion">This application was designed to facilitate communication and management of appointments
-        between pet groomers and clients, with the invaluable help of geolocation.</string>
+    <string name="descAplicacion">This application was designed to facilitate communication
+        and management of appointments between pet groomers and clients, with the invaluable
+        help of geolocation.</string>
     <string name="desarrolladores">Developers:</string>
     <string name="nombreJuanrajc">Juan Ramón Jover Cruz</string>
     <string name="aniosAplicacion">2018 - 2019</string>

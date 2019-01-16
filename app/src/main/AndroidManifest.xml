@@ -90,8 +90,15 @@
         <activity
             android:name=".TarifasPeluActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".AcercaDeActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AcercaDeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PrefClienteActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".PrefPeluqueroActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

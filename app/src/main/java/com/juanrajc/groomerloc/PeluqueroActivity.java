@@ -102,6 +102,13 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
                 dw.closeDrawers();
                 return true;
 
+            case R.id.nav_preferencias:
+                //Inicia la activity de preferencias del peluquero...
+                startActivity(new Intent(this, PrefPeluqueroActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
             case R.id.nav_log_off:
                 //Desloguea al usuario actual...
                 auth.signOut();
