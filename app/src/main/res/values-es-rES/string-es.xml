@@ -63,7 +63,7 @@
     <string name="nuevoPerro">AÑADIR NUEVA MASCOTA</string>
 
     <!-- registro perro -->
-    <string name="tituloRegPerro">REGISTRE SU MASCOTA</string>
+    <string name="tituloRegPerro">DATOS DE SU MASCOTA</string>
     <string name="raza">Raza</string>string>
     <string name="peso">Peso</string>
     <string name="kg">Kg</string>
@@ -75,6 +75,7 @@
     <string name="cajaComentarios">Problemas de salud, alergias...</string>
     <string name="botonFoto">Añadir fotografía...</string>
     <string name="descFotoPerro">Fotografía de tu mascota.</string>
+    <string name="botonGuardarMascota">Guardar mascota</string>
     <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios</string>
     <string name="mensajeSexo">Debe seleccionar el sexo de su mascota</string>
     <string name="mensajeRequestFoto">No ha sido posible cargar la imagen</string>
@@ -83,6 +84,7 @@
     <string name="mensajeSubidaFallida">Fallo al subir la imagen</string>
     <string name="mensajeFalloBD">Error al acceder a la base de datos</string>
     <string name="mensajeFalloRegPerro">No se ha podido registrar a</string>
+    <string name="mensajePerroNoExiste">no está registrado.</string>
         <!--dialog perro-->
     <string name="tituloDialog">Seleccione una opción:</string>
     <string name="opCamara">Haga una foto...</string>

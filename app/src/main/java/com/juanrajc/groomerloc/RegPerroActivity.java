@@ -20,11 +20,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.juanrajc.groomerloc.clasesBD.Perro;
+import com.juanrajc.groomerloc.recursos.GlideApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,8 +58,11 @@ public class RegPerroActivity extends AppCompatActivity {
     private EditText nombrePerro, razaPerro, pesoPerro, comentPerro;
     private ImageView ivPerro;
 
-    //Objeto del botón de añadir fotografía y registro de perro de la vista.
-    private Button botonRegImg, botonRegPerro;
+    //Objeto del círculo de carga.
+    private ProgressBar circuloCargaRegPerro;
+
+    //Objeto del botón de añadir fotografía, registro de perro y atrás de la vista.
+    private Button botonRegImg, botonRegPerro, botonRegAtras;
 
     //Objeto del usuario actual, de la BD Firestore y de la referencia al almacenamiento de ficheros Storage.
     private FirebaseUser usuario;
@@ -94,8 +100,15 @@ public class RegPerroActivity extends AppCompatActivity {
         //Instancia de la imagen mostrada en la activity.
         ivPerro = (ImageView) findViewById(R.id.ivPerro);
 
-        //Instancia del botón de registro del perro de la vista.
+        //Instancia del botón de registro del perro y atrás de la vista.
         botonRegPerro = (Button) findViewById(R.id.botonRegPerro);
+        botonRegAtras = (Button) findViewById(R.id.botonAtrasRegPerro);
+
+        //Si recibe un intent con un extra llamado "nombrePerro"...
+        if(getIntent().hasExtra("nombrePerro")){
+            //Rellena los elementos de la activity con los datos del perro recibido.
+            rellenaFormulario(getIntent().getStringExtra("nombrePerro"));
+        }
 
     }
 
@@ -146,10 +159,12 @@ public class RegPerroActivity extends AppCompatActivity {
     protected void dialogoImagen(View view){
 
         /*
-        Se desactiva la posibilidad de pulsación del elemento para evitar
+        Se desactiva la posibilidad de pulsación de los botones para evitar
         múltiples pulsaciones accidentales.
         */
         botonRegImg.setEnabled(false);
+        botonRegPerro.setEnabled(false);
+        botonRegAtras.setEnabled(false);
 
         //Array con las opciones mostradas en el dialog.
         final CharSequence[] opciones = {getString(R.string.opCamara), getString(R.string.opGaleria)};
@@ -195,9 +210,11 @@ public class RegPerroActivity extends AppCompatActivity {
 
                 /*
                 Si se cancela el añadido o se sale del dialog, se vuelve a activar la
-                posibilidad de pulsación del elemento.
+                posibilidad de pulsación de los botones.
                 */
                 botonRegImg.setEnabled(true);
+                botonRegPerro.setEnabled(true);
+                botonRegAtras.setEnabled(true);
 
             }
         });
@@ -427,10 +444,10 @@ public class RegPerroActivity extends AppCompatActivity {
 
                     //si no...
                     case DialogInterface.BUTTON_NEGATIVE:
-                        //Borra el campo del nombre del perro...
-                        nombrePerro.setText("");
-                        //y vuelve a activar el botón de registro de perro.
+                        //vuelve a activar el botón de registro de perro, añadir fotografía y atrás.
                         botonRegPerro.setEnabled(true);
+                        botonRegImg.setEnabled(true);
+                        botonRegAtras.setEnabled(true);
                 }
 
             }
@@ -504,6 +521,88 @@ public class RegPerroActivity extends AppCompatActivity {
     }
 
     /**
+     * Método que se encarga de rellenar los campos de la activity con los datos
+     * del perro recibido por parámetro.
+     *
+     * @param perro Cadena con el nombre del perro.
+     */
+    private void rellenaFormulario(final String perro){
+
+        //Instancia del círculo de carga y lo activa.
+        circuloCargaRegPerro = (ProgressBar) findViewById(R.id.circuloCargaRegPerro);
+        circuloCargaRegPerro.setVisibility(View.VISIBLE);
+
+        //Obtiene los datos del perro desde Firestore.
+        firestore.collection("clientes").document(usuario.getUid())
+                .collection("perros").document(perro).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+
+                            //si existe...
+                            if (task.getResult().exists()) {
+
+                                Perro datosPerro = task.getResult().toObject(Perro.class);
+
+                                //muestra el nombre y deshabilita el EditText del mismo...
+                                nombrePerro.setText(perro);
+                                nombrePerro.setEnabled(false);
+
+                                //muestra la raza y el peso...
+                                razaPerro.setText(datosPerro.getRaza());
+                                pesoPerro.setText(String.valueOf(datosPerro.getPeso()));
+
+                                //marca el botón de radio correspondiente a su sexo...
+                                if(datosPerro.getSexo().equalsIgnoreCase("XY")){
+                                    perroMacho.setChecked(true);
+                                }else if(datosPerro.getSexo().equalsIgnoreCase("XX")){
+                                    perroHembra.setChecked(true);
+                                }
+
+                                //muestra el comentario del dueño (si existe)...
+                                comentPerro.setText(datosPerro.getComentario());
+
+                                //y obtiene la fotografía desde Firebase Storage (si existe también).
+                                GlideApp.with(getApplicationContext())
+                                        .load(FirebaseStorage.getInstance().getReference()
+                                                .child("fotos/"+usuario.getUid() +"/"+perro+".jpg"))
+                                        .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
+                                                .error(R.drawable.icono_mascota))
+                                        .into(ivPerro);
+
+                                //Finalmente, cuando termina de cargar toda la información, se desactiva el círculo de carga.
+                                circuloCargaRegPerro.setVisibility(View.INVISIBLE);
+
+
+                            }else{
+                                circuloCargaRegPerro.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getApplicationContext(), perro+" "+getString(R.string.mensajePerroNoExiste),
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                        }else{
+                            circuloCargaRegPerro.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPerro)+" "+perro,
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        circuloCargaRegPerro.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPerro)+" "+perro,
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+
+    }
+
+    /**
      * Método que se ejecuta cuando se pulsa el botón de registro del perro.
      *
      * @param view
@@ -512,8 +611,10 @@ public class RegPerroActivity extends AppCompatActivity {
 
         if(compruebaCampos()){
 
-            //Desactiva el botón de registro de perro.
+            //Desactiva el botón de registro de perro, añadir fotografía y atrás.
             botonRegPerro.setEnabled(false);
+            botonRegImg.setEnabled(false);
+            botonRegAtras.setEnabled(false);
 
             compruebaExistenciaPerro(nombrePerro.getText().toString());
 

@@ -27,8 +27,8 @@ public class RegistroActivity extends AppCompatActivity {
     private RadioButton rbCliente, rbPeluquero;
     private EditText etRegEmail, etRegPw, etRegPw2, etRegNombre, etRegTlfn;
 
-    //Objeto del botón siguiente de la vista.
-    private Button botonSiguiente;
+    //Objeto del botón siguiente y atrás de la vista.
+    private Button botonSiguiente, botonAtras;
 
     //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
@@ -52,8 +52,9 @@ public class RegistroActivity extends AppCompatActivity {
         etRegNombre=(EditText) findViewById(R.id.etRegNombre);
         etRegTlfn=(EditText) findViewById(R.id.etRegTlfn);
 
-        //Instancia el botón de siguiente.
+        //Instancia el botón de siguiente y atrás.
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
+        botonAtras=(Button) findViewById(R.id.botonAtrasReg);
 
         //Listener para el grupo de botones de radio que se encarga de cambiar el texto del botón para seguir dependiendo del rol seleccionado.
         rgRegistro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -82,6 +83,7 @@ public class RegistroActivity extends AppCompatActivity {
 
         //Si se vuelve a la activity, se reactivan los botones de la misma.
         botonSiguiente.setEnabled(true);
+        botonAtras.setEnabled(true);
 
 
     }
@@ -168,8 +170,9 @@ public class RegistroActivity extends AppCompatActivity {
         //Comprueba que los campos están correctamente completados.
         if(compruebaCampos()){
 
-            //Se desactiva el botón de siguiente (o completar registro) para evitar más de una pulsación.
+            //Se desactiva el botón de siguiente (o completar registro) y atrás para evitar más de una pulsación.
             botonSiguiente.setEnabled(false);
+            botonAtras.setEnabled(false);
 
             //Si el rol seleccionado es el de cliente...
             if(rbCliente.isChecked()){
@@ -206,8 +209,9 @@ public class RegistroActivity extends AppCompatActivity {
                             //muestra un toast...
                             Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
 
-                            //y vuelve a activar el botón de siguiente.
+                            //y vuelve a activar el botón de siguiente y atrás.
                             botonSiguiente.setEnabled(true);
+                            botonAtras.setEnabled(true);
 
                         }
 

@@ -3,6 +3,7 @@ package com.juanrajc.groomerloc.adaptadores;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.juanrajc.groomerloc.PerrosActivity;
 import com.juanrajc.groomerloc.R;
+import com.juanrajc.groomerloc.RegPerroActivity;
 import com.juanrajc.groomerloc.clasesBD.Perro;
 import com.juanrajc.groomerloc.recursos.GlideApp;
 
@@ -81,7 +84,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             * Si el perro no tiene imagen guardada, en "apply" se indica qué imagen se mostrará en sustitución.
             * En "into" se indica el ImageView donde se va a introducir la imagen.
         */
-        GlideApp.with(holder.ivFotoPerroLista)
+        GlideApp.with(contexto)
                 .load(FirebaseStorage.getInstance().getReference()
                         .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid() +"/"+listaPerros.get(position)+".jpg"))
                 .apply(new RequestOptions().placeholder(R.drawable.icono_mascota).error(R.drawable.icono_mascota))
@@ -93,6 +96,14 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
+                /*
+                Se desactiva la posibilidad de pulsación de los botones para evitar
+                múltiples pulsaciones accidentales.
+                */
+                holder.ivFotoPerroLista.setClickable(false);
+                holder.ibEditPerro.setClickable(false);
+                holder.ibBorraPerro.setClickable(false);
+
                 obtieneDatosPerro(position, holder);
 
             }
@@ -102,7 +113,17 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             @Override
             public void onClick(View view) {
 
+                /*
+                Se desactiva la posibilidad de pulsación de los botones para evitar
+                múltiples pulsaciones accidentales.
+                */
+                holder.ibEditPerro.setClickable(false);
+                holder.ivFotoPerroLista.setClickable(false);
+                holder.ibBorraPerro.setClickable(false);
 
+                //Inicia la activity de registro de perros, pasándole el nombre del perro a editar.
+                ((PerrosActivity) contexto).startActivity(new Intent(contexto, RegPerroActivity.class)
+                        .putExtra("nombrePerro", listaPerros.get(position)));
 
             }
         });
@@ -112,10 +133,12 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             public void onClick(View view) {
 
                 /*
-                Se desactiva la posibilidad de pulsación del elemento para evitar
+                Se desactiva la posibilidad de pulsación de los botones para evitar
                 múltiples pulsaciones accidentales.
                 */
                 holder.ibBorraPerro.setClickable(false);
+                holder.ivFotoPerroLista.setClickable(false);
+                holder.ibEditPerro.setClickable(false);
 
                 //Dialogo de alerta que pregunta si se desa borrar el perro seleccionado.
                 new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog)
@@ -141,9 +164,11 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
                         /*
                         Si se cancela el borrado o se sale del dialog, se vuelve a activar la
-                        posibilidad de pulsación del elemento.
+                        posibilidad de pulsación de los botones.
                         */
                         holder.ibBorraPerro.setClickable(true);
+                        holder.ivFotoPerroLista.setClickable(true);
+                        holder.ibEditPerro.setClickable(true);
 
                     }
                 }).show();
@@ -185,8 +210,10 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 Toast.makeText(contexto, listaPerros.get(posicion)+" "+contexto.getText(R.string.mensajePerroNoBorrado),
                         Toast.LENGTH_SHORT).show();
 
-                //Si el borrado falla, se vuelve a activar la posibilidad de pulsación del elemento.
+                //Si el borrado falla, se vuelve a activar la posibilidad de pulsación de los botones.
                 holder.ibBorraPerro.setClickable(true);
+                holder.ivFotoPerroLista.setClickable(true);
+                holder.ibEditPerro.setClickable(true);
 
             }
         });
@@ -223,12 +250,6 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      */
     private void obtieneDatosPerro(final int posicion, final ViewHolder holder){
 
-        /*
-        Se desactiva la posibilidad de pulsación del elemento para evitar
-        múltiples pulsaciones accidentales.
-        */
-        holder.ivFotoPerroLista.setClickable(false);
-
         //Consulta a Firebase Firestore los datos del perro seleccionado.
         firestore.collection("clientes").document(usuario.getUid())
                 .collection("perros").document(listaPerros.get(posicion))
@@ -254,8 +275,10 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                         Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                                 Toast.LENGTH_SHORT).show();
 
-                        //y se vuelve a activar la posibilidad de pulsación del elemento.
+                        //y se vuelve a activar la posibilidad de pulsación de los botones.
                         holder.ivFotoPerroLista.setClickable(true);
+                        holder.ibEditPerro.setClickable(true);
+                        holder.ibBorraPerro.setClickable(true);
 
                     }
                     //Si no...
@@ -265,8 +288,10 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                     Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
                             Toast.LENGTH_SHORT).show();
 
-                    //y se vuelve a activar la posibilidad de pulsación del elemento.
+                    //y se vuelve a activar la posibilidad de pulsación de los botones.
                     holder.ivFotoPerroLista.setClickable(true);
+                    holder.ibEditPerro.setClickable(true);
+                    holder.ibBorraPerro.setClickable(true);
 
                 }
 
@@ -350,10 +375,10 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
             }
         }).show();
 
-        /*
-        Una vez mostrado el dialog, se vuelve a activar la posibilidad de pulsación del elemento.
-        */
+        //Una vez mostrado el dialog, se vuelve a activar la posibilidad de pulsación de los botones.
         holder.ivFotoPerroLista.setClickable(true);
+        holder.ibEditPerro.setClickable(true);
+        holder.ibBorraPerro.setClickable(true);
 
     }
 

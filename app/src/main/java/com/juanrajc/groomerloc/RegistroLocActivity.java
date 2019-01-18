@@ -68,7 +68,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     //Objetos de la vista de la activity.
     private EditText etDireccion, etDatAdi;
     private ImageButton botonLoc;
-    private Button botonFinReg;
+    private Button botonFinReg, botonAtrasRegLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         etDireccion = (EditText) findViewById(R.id.etDireccion);
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
 
-        //Instancia del botón de registro.
+        //Instancia del botón de registro y atrás.
         botonFinReg = (Button) findViewById(R.id.botonFinRegPel);
+        botonAtrasRegLoc = (Button) findViewById(R.id.botonAtrasReg2);
 
         //Botón de localización personalizado con su listener, que se ejecuta cuando se pulsa.
         botonLoc = (ImageButton) findViewById(R.id.botonLoc);
@@ -370,8 +371,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      */
     protected void registro(View view){
 
-        //Se desactiva el botón de registro para evitar varias pulsaciones simultáneas.
+        //Se desactiva el botón de registro y atrás para evitar varias pulsaciones simultáneas.
         botonFinReg.setEnabled(false);
+        botonAtrasRegLoc.setEnabled(false);
 
         //Crea el usuario cliente con su email y contraseña...
         auth.createUserWithEmailAndPassword(email, pw)
@@ -404,8 +406,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                     //muestra un toast...
                     Toast.makeText(getApplicationContext(), getString(R.string.error_registro), Toast.LENGTH_SHORT).show();
 
-                    //y vuelve a activar el botón de registro.
+                    //y vuelve a activar el botón de registro y atrás.
                     botonFinReg.setEnabled(true);
+                    botonAtrasRegLoc.setEnabled(true);
 
                 }
 

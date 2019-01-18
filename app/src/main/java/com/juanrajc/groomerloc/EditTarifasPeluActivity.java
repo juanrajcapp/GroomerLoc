@@ -43,7 +43,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
         setContentView(R.layout.activity_edit_tarifas_pelu);
 
         //Instancia del círculo de carga.
-        circuloCargaEdTarPelu = (ProgressBar) findViewById(R.id.circuloCargaPelu);
+        circuloCargaEdTarPelu = (ProgressBar) findViewById(R.id.circuloCargaEdTarPelu);
 
         //Instancia de los campos editables de la vista
         etEdTaBanio = findViewById(R.id.etEdTaBanio);
