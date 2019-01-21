@@ -76,6 +76,15 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Cada vez que se vuelve a la activity, se actualiza el nombre del peluquero en el ActionBar.
+        getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         //Según el elemento del panel lateral pulsado...
@@ -88,9 +97,9 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
                 dw.closeDrawers();
                 return true;
 
-            case R.id.nav_horario:
-                //Inicia la activity que edita el horario del peluquero...
-                //startActivity(new Intent(this, EditHorarioPeluActivity.class));
+            case R.id.nav_citas_confirmadas:
+                //Inicia la activity visualiza las citas confirmadas...
+                //startActivity(new Intent(this, CitasConfirmadasPeluActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;
@@ -105,6 +114,13 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
             case R.id.nav_preferencias:
                 //Inicia la activity de preferencias del peluquero...
                 startActivity(new Intent(this, PrefPeluqueroActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_cuenta:
+                //Inicia la activity que permite editar los datos de la cuenta del peluquero...
+                //startActivity(new Intent(this, EditCuentaPeluActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;

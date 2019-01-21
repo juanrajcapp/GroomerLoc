@@ -73,7 +73,7 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".PerrosActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".PeluqueroActivity"
             android:configChanges="orientation|screenSize"
@@ -98,6 +98,9 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".PrefPeluqueroActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".EditCuentaCliActivity"
             android:configChanges="orientation|screenSize" />
     </application>
 

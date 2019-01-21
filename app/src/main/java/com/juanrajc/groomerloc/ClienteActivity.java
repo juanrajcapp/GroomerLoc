@@ -114,6 +114,26 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Si al volver a la activity existe un usuario autenticado...
+        if(auth.getCurrentUser()!=null) {
+
+            //se actualiza el nombre del cliente en el ActionBar.
+            getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+
+        //Si no...
+        }else{
+
+            //se cierra la activity.
+            finish();
+
+        }
+
+    }
+
+    @Override
     public void onBackPressed() {
        //Botón de retroceso desactivado en esta activity.
     }
@@ -216,6 +236,13 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                 dw.closeDrawers();
                 return true;
 
+            case R.id.nav_citas:
+                //Inicia la activity de citas del cliente...
+                //startActivity(new Intent(this, CitasCliActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
             case R.id.nav_acercaDe:
                 //Inicia la activity que muestra información acerca de la aplicación...
                 startActivity(new Intent(this, AcercaDeActivity.class));
@@ -226,6 +253,13 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
             case R.id.nav_preferencias:
                 //Inicia la activity de preferencias del cliente...
                 startActivity(new Intent(this, PrefClienteActivity.class));
+                //y cierra el menú lateral.
+                dw.closeDrawers();
+                return true;
+
+            case R.id.nav_cuenta:
+                //Inicia la activity que permite editar los datos de la cuenta del cliente...
+                startActivity(new Intent(this, EditCuentaCliActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;

@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
@@ -403,8 +404,20 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
                 //Si no...
                 } else {
-                    //muestra un toast...
-                    Toast.makeText(getApplicationContext(), getString(R.string.error_registro), Toast.LENGTH_SHORT).show();
+
+                    //captura el motivo, lo muestra...
+                    try {
+
+                        throw task.getException();
+
+                    }catch (FirebaseAuthUserCollisionException emailExistente){
+                        Toast.makeText(getApplicationContext(),
+                                email +" "+
+                                        getText(R.string.mensajeEditCuentaExisteEmail),
+                                Toast.LENGTH_SHORT).show();
+                    }catch (Exception ex){
+                        Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+                    }
 
                     //y vuelve a activar el botón de registro y atrás.
                     botonFinReg.setEnabled(true);
@@ -412,6 +425,13 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
                 }
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+                botonFinReg.setEnabled(true);
+                botonAtrasRegLoc.setEnabled(true);
             }
         });
 

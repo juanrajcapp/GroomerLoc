@@ -13,9 +13,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
@@ -206,8 +208,20 @@ public class RegistroActivity extends AppCompatActivity {
 
                         //Si no...
                         } else {
-                            //muestra un toast...
-                            Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+
+                            //captura el motivo, lo muestra...
+                            try {
+
+                                throw task.getException();
+
+                            }catch (FirebaseAuthUserCollisionException emailExistente){
+                                Toast.makeText(getApplicationContext(),
+                                        etRegEmail.getText().toString() +" "+
+                                                getText(R.string.mensajeEditCuentaExisteEmail),
+                                        Toast.LENGTH_SHORT).show();
+                            }catch (Exception ex){
+                                Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+                            }
 
                             //y vuelve a activar el botón de siguiente y atrás.
                             botonSiguiente.setEnabled(true);
@@ -215,6 +229,13 @@ public class RegistroActivity extends AppCompatActivity {
 
                         }
 
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+                        botonSiguiente.setEnabled(true);
+                        botonAtras.setEnabled(true);
                     }
                 });
 

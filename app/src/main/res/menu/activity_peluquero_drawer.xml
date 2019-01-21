@@ -11,9 +11,9 @@
                     android:icon="@drawable/icono_tarifas"
                     android:title="@string/menuPeluTarifas" />
                 <item
-                    android:id="@+id/nav_horario"
-                    android:icon="@drawable/icono_horario"
-                    android:title="@string/menuPeluHorario" />
+                    android:id="@+id/nav_citas_confirmadas"
+                    android:icon="@drawable/icono_cita"
+                    android:title="@string/menuPeluCitasConfirmadas" />
             </menu>
         </item>
     </group>
@@ -47,6 +47,10 @@
                     android:id="@+id/nav_preferencias"
                     android:icon="@android:drawable/ic_menu_preferences"
                     android:title="@string/menuPreferencias" />
+                <item
+                    android:id="@+id/nav_cuenta"
+                    android:icon="@drawable/icono_cuenta"
+                    android:title="@string/menuMiCuenta" />
                 <item
                     android:id="@+id/nav_log_off"
                     android:icon="@android:drawable/ic_menu_close_clear_cancel"

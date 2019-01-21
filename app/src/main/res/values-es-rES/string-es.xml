@@ -11,6 +11,7 @@
     <string name="menuAyuda">Ayuda</string>
     <string name="menuAcercaDe">Acerca de...</string>
     <string name="menuPreferencias">Preferencias</string>
+    <string name="menuMiCuenta">Mi cuenta</string>
     <string name="menuSesion">Cerrar sesión</string>
     <string name="menuSalir">Salir de la aplicación</string>
 
@@ -30,6 +31,7 @@
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Buscador de peluqueros</string>
     <string name="menuCliPerro">Mis mascotas</string>
+    <string name="menuCliCitas">Mis citas</string>
         <!-- preferencias cliente -->
     <string name="prefCliCatMapa">Mapa</string>
     <string name="prefCliZoomMapa">Radio de visión:</string>
@@ -39,9 +41,49 @@
     <!-- peluquero -->
     <string name="mensajeNoCitas">No tiene citas próximas.</string>
     <string name="botonRecargaCitas">RECARGAR CITAS</string>
-        <!-- menu cliente -->
+        <!-- menu peluquero -->
     <string name="menuPeluTarifas">Mis tarifas</string>
-    <string name="menuPeluHorario">Mi horario</string>
+    <string name="menuPeluCitasConfirmadas">Mis citas confirmadas</string>
+
+    <!-- editar cuenta cliente -->
+    <string name="editCuentaNuevoPw">Nueva contraseña</string>
+    <string name="editCuentaNuevoPw2">Repite la nueva contraseña</string>
+    <string name="botonEditCuentaMail">Cambiar email</string>
+    <string name="botonEditCuentaNombre">Cambiar nombre</string>
+    <string name="botonEditCuentaTlfn">Cambiar teléfono</string>
+    <string name="botonEditCuentaPw">Cambiar contraseña</string>
+    <string name="botonEditCuentaEliCu">Eliminar cuenta</string>
+    <string name="botonEditCuentaGuardar">Guardar</string>
+    <string name="alDiEditCuentaTituloEmail">Introduzca el nuevo email:</string>
+    <string name="alDiEditCuentaTituloNombre">Introduzca el nuevo nombre:</string>
+    <string name="alDiEditCuentaTituloTlfn">Introduzca el nuevo teléfono:</string>
+    <string name="alDiEditCuentaTituloPw">Introduzca la nueva contraseña de 6 o más caracteres (dos veces):</string>
+    <string name="alDiEditCuentaAvisoAut">Para cambiar el email, contraseña o borrar el usuario,
+        es necesario haberse autenticado recientemente. Para hacerlo, introduzca su contraseña y vuelva a intentarlo:</string>
+    <string name="alDiEditCuentaAutenticar">Autenticar</string>
+    <string name="alDiEditCuentaBorrar">¿Está seguro de que desea eliminar esta cuenta?</string>
+    <string name="mensajeEditCuentaAutExito">Se ha autenticado con éxito.</string>
+    <string name="mensajeEditCuentaAutPwIncorrecto">La contraseña introducida es incorrecta.</string>
+    <string name="mensajeEditCuentaAutFallo">Autenticación fallida.</string>
+    <string name="mensajeEditCuentaNada">No se ha introducido ningún valor.</string>
+    <string name="mensajeEditCuentaEmailExito">Se ha cambiado el email con éxito.</string>
+    <string name="mensajeEditCuentaErrorCarga">Se ha producido un error al cargar sus datos.</string>
+    <string name="mensajeEditCuentaMismoEmail">El email introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaExisteEmail">ya está registrado.</string>
+    <string name="mensajeEditCuentaErrorMail">No se ha podido cambiar el email.</string>
+    <string name="mensajeEditCuentaNombreExito">Se ha cambiado el nombre con éxito.</string>
+    <string name="mensajeEditCuentaMismoNombre">El nombre introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaErrorNombre">No se ha podido cambiar el nombre.</string>
+    <string name="mensajeEditCuentaTlfnExito">Se ha cambiado el teléfono con éxito.</string>
+    <string name="mensajeEditCuentaMismoTlfn">El teléfono introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaErrorTlfn">No se ha podido cambiar el teléfono.</string>
+    <string name="mensajeEditCuentaExitoPw">Se ha cambiado la contraseña con éxito.</string>
+    <string name="mensajeEditCuentaPwVacio">No se ha introducido valor en uno o ambos campos de la contraseña.</string>
+    <string name="mensajeEditCuentaMismoPw">La contraseña introducida es igual a la existente.</string>
+    <string name="mensajeEditCuentaErrorPw">No se ha podido cambiar la contraseña.</string>
+    <string name="mensajeEditCuentaBorrada">La cuenta</string>
+    <string name="mensajeEditCuentaBorrada2">ha sido eliminada.</string>
+    <string name="mensajeEditCuentaErrorBorrar">No se ha podido eliminar la cuenta.</string>
 
     <!-- acerca de -->
     <string name="descAplicacion">Esta aplicación se ideó para facilitar la comunicación y gestión de citas
@@ -76,13 +118,13 @@
     <string name="botonFoto">Añadir fotografía...</string>
     <string name="descFotoPerro">Fotografía de tu mascota.</string>
     <string name="botonGuardarMascota">Guardar mascota</string>
-    <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios</string>
-    <string name="mensajeSexo">Debe seleccionar el sexo de su mascota</string>
-    <string name="mensajeRequestFoto">No ha sido posible cargar la imagen</string>
-    <string name="mensajeNoEspecificado">No especificado</string>
-    <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente</string>
-    <string name="mensajeSubidaFallida">Fallo al subir la imagen</string>
-    <string name="mensajeFalloBD">Error al acceder a la base de datos</string>
+    <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios.</string>
+    <string name="mensajeSexo">Debe seleccionar el sexo de su mascota.</string>
+    <string name="mensajeRequestFoto">No ha sido posible cargar la imagen.</string>
+    <string name="mensajeNoEspecificado">No especificado.</string>
+    <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente.</string>
+    <string name="mensajeSubidaFallida">Fallo al subir la imagen.</string>
+    <string name="mensajeFalloBD">Error al acceder a la base de datos.</string>
     <string name="mensajeFalloRegPerro">No se ha podido registrar a</string>
     <string name="mensajePerroNoExiste">no está registrado.</string>
         <!--dialog perro-->
@@ -102,21 +144,21 @@
     <string name="password2">Repite la contraseña</string>
     <string name="nombre">Nombre</string>
     <string name="tlfn">Teléfono</string>
-    <string name="mensajeRol">Debes seleccionar un rol (cliente o peluquero)</string>
-    <string name="mensajeCampos">Debes completar todos los campos</string>
-    <string name="mensajeEmail">Debes introducir un Email válido</string>
-    <string name="mensajePw">Las contraseñas no son iguales</string>
-    <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres</string>
-    <string name="regCompletado">Registro completado</string>
-    <string name="error_registro">Error al registrarse</string>
+    <string name="mensajeRol">Debes seleccionar un rol (cliente o peluquero).</string>
+    <string name="mensajeCampos">Debes completar todos los campos.</string>
+    <string name="mensajeEmail">Debes introducir un Email válido.</string>
+    <string name="mensajePw">Las contraseñas no son iguales.</string>
+    <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres.</string>
+    <string name="regCompletado">Registro completado.</string>
+    <string name="error_registro">Error al registrarse.</string>
 
     <!-- registro2 -->
     <string name="tituloLoc">Pinche en su localización o...</string>
     <string name="dir">Introduca su dirección</string>
     <string name="datAdi">Indicaciones adicionales (piso, puerta, etc)</string>
     <string name="mensajeMarca">Localización:</string>
-    <string name="mensajeNoDireccion">Dirección no encontrada</string>
-    <string name="mensajeDirVacia">Debes introducir una dirección</string>
+    <string name="mensajeNoDireccion">Dirección no encontrada.</string>
+    <string name="mensajeDirVacia">Debes introducir una dirección.</string>
     <string name="mensajeNoLoc">No se ha podido obtener su localización actual.</string>
     <string name="botonRegistrar">Completar registro</string>
 
