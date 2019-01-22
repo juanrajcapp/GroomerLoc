@@ -84,6 +84,10 @@
     <string name="mensajeEditCuentaBorrada">La cuenta</string>
     <string name="mensajeEditCuentaBorrada2">ha sido eliminada.</string>
     <string name="mensajeEditCuentaErrorBorrar">No se ha podido eliminar la cuenta.</string>
+        <!-- editar cuenta cliente -->
+    <string name="botonEditCuentaLoc">Cambiar localízación</string>
+    <string name="mensajeEditCuentaErrorLoc">No se ha podido actualizar la localización.</string>
+    <string name="mensajeEditCuentaExitoLoc">La localización se ha actualizado con éxito.</string>
 
     <!-- acerca de -->
     <string name="descAplicacion">Esta aplicación se ideó para facilitar la comunicación y gestión de citas

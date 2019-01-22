@@ -3,6 +3,7 @@ package com.juanrajc.groomerloc;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -38,12 +39,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.juanrajc.groomerloc.clasesBD.Peluquero;
 import com.juanrajc.groomerloc.recursos.MiLatLng;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RegistroLocActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -83,6 +87,9 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         //Instancia del botón de registro y atrás.
         botonFinReg = (Button) findViewById(R.id.botonFinRegPel);
         botonAtrasRegLoc = (Button) findViewById(R.id.botonAtrasReg2);
+        /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
+        que los datos se hayan cargado.*/
+        activaBotones(false);
 
         //Botón de localización personalizado con su listener, que se ejecuta cuando se pulsa.
         botonLoc = (ImageButton) findViewById(R.id.botonLoc);
@@ -116,11 +123,24 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        //Carga y guardado de los parámetros pasados desde la activity "RegistroActivity" mediante intent.
-        email=getIntent().getStringExtra("email");
-        pw=getIntent().getStringExtra("pw");
-        nombre=getIntent().getStringExtra("nombre");
-        telefono=Long.parseLong(getIntent().getStringExtra("telefono"));
+        //Dependiendo de lo recibido por intent, hace una cosa u otra.
+        if(getIntent().hasExtra("idPeluquero")){
+
+            muestraLocPeluquero(getIntent().getStringExtra("idPeluquero"));
+
+        }else{
+
+            //Carga y guardado de los parámetros pasados desde la activity "RegistroActivity" mediante intent.
+            email=getIntent().getStringExtra("email");
+            pw=getIntent().getStringExtra("pw");
+            nombre=getIntent().getStringExtra("nombre");
+            telefono=Long.parseLong(getIntent().getStringExtra("telefono"));
+
+            //Muestra un texto de registro en el respectivo botón y los activa.
+            botonFinReg.setText(getString(R.string.botonRegistrar));
+            activaBotones(true);
+
+        }
 
     }
 
@@ -152,26 +172,34 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
             //Si los permisos están activos, se muestra el botón de localización.
             botonLoc.setClickable(true);
 
-            //Listener que se encarga de mostrar la localización GPS actual.
-            LocationServices.getFusedLocationProviderClient(this).getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if(location!=null) {
+            //Si lo que se va a realizar es un registro nuevo...
+            if(botonFinReg.getText().toString().equals(getString(R.string.botonRegistrar))) {
 
-                        //Marca la localización actual en el mapa.
-                        marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+                //Listener que se encarga de mostrar la localización GPS actual.
+                LocationServices.getFusedLocationProviderClient(this).getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
 
-                    }else{
-                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
+                                    //marca la localización actual en el mapa.
+                                    marcarMapa(new LatLng(location.getLatitude(), location.getLongitude()));
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc),
+                                Toast.LENGTH_SHORT).show();
                     }
-                }
-            }).addOnFailureListener(this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+
+            }
+
         }
 
         //Evento que recoge el toque del usuario en el mapa.
@@ -181,6 +209,61 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
                 marcarMapa(latLng);
 
+            }
+        });
+
+    }
+
+    /**
+     * Método que controla la activación de los botones de la activity.
+     *
+     * @param boleano Booleano true para activar los botones, y false para desactivarlos.
+     */
+    private void activaBotones(boolean boleano){
+
+        botonFinReg.setEnabled(boleano);
+        botonAtrasRegLoc.setEnabled(boleano);
+
+    }
+
+    /**
+     * Método que se encarga de mostrar la localización guardada del peluquero
+     *
+     * @param idPeluquero Cadena con la ID del peluquero.
+     */
+    private void muestraLocPeluquero(String idPeluquero){
+
+        //Obtiene los datos del peluquero desde su BD en Firestore.
+        firestore.collection("peluqueros").document(idPeluquero).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+
+                    //Si existen datos...
+                    if (task.getResult().exists()) {
+
+                        Peluquero peluquero = task.getResult().toObject(Peluquero.class);
+
+                        //marca su localización guardada en el mapa...
+                        marcarMapa(new LatLng(peluquero.getLoc().getLatitude(), peluquero.getLoc().getLongitude()));
+
+                        //y muestra los datos extra de su localización.
+                        etDatAdi.setText(peluquero.getLocExtra());
+
+                    }
+                }
+
+                //Muestra un texto de guardar en el respectivo botón y los activa.
+                botonFinReg.setText(getString(R.string.botonEditCuentaGuardar));
+                activaBotones(true);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                botonFinReg.setText(getString(R.string.botonEditCuentaGuardar));
+                activaBotones(true);
             }
         });
 
@@ -373,65 +456,141 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     protected void registro(View view){
 
         //Se desactiva el botón de registro y atrás para evitar varias pulsaciones simultáneas.
-        botonFinReg.setEnabled(false);
-        botonAtrasRegLoc.setEnabled(false);
+        activaBotones(false);
 
-        //Crea el usuario cliente con su email y contraseña...
-        auth.createUserWithEmailAndPassword(email, pw)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        //Si lo que se va a realizar es un registro nuevo...
+        if(botonFinReg.getText().toString().equals(getString(R.string.botonRegistrar))) {
 
-                //Si se ha creado correctamente el usuario...
-                if(task.isSuccessful()) {
+            //crea el usuario cliente con su email y contraseña.
+            auth.createUserWithEmailAndPassword(email, pw)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    //añade el nombre introducido a la cuenta creada (y loqueada)...
-                    auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(nombre).build());
+                            //Si se ha creado correctamente el usuario...
+                            if (task.isSuccessful()) {
 
-                    /*
-                    crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
-                    con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
-                    */
-                    firestore.collection("peluqueros")
-                            .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono,
-                            new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
+                                //añade el nombre introducido a la cuenta creada (y loqueada)...
+                                auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(nombre).build());
 
-                    //y le muestra un saludo con su nombre.
-                    Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();
+                                /*
+                                crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
+                                con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
+                                */
+                                firestore.collection("peluqueros")
+                                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono,
+                                        new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
 
-                    //Finalmente se cierra la activity.
-                    finish();
+                                //y le muestra un saludo con su nombre.
+                                Toast.makeText(getApplicationContext(), getString(R.string.regCompletado),
+                                        Toast.LENGTH_SHORT).show();
 
-                //Si no...
-                } else {
+                                //Finalmente se cierra la activity.
+                                finish();
 
-                    //captura el motivo, lo muestra...
-                    try {
+                                //Si no...
+                            } else {
 
-                        throw task.getException();
+                                //captura el motivo, lo muestra...
+                                try {
 
-                    }catch (FirebaseAuthUserCollisionException emailExistente){
-                        Toast.makeText(getApplicationContext(),
-                                email +" "+
-                                        getText(R.string.mensajeEditCuentaExisteEmail),
-                                Toast.LENGTH_SHORT).show();
-                    }catch (Exception ex){
-                        Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
-                    }
+                                    throw task.getException();
 
-                    //y vuelve a activar el botón de registro y atrás.
-                    botonFinReg.setEnabled(true);
-                    botonAtrasRegLoc.setEnabled(true);
+                                } catch (FirebaseAuthUserCollisionException emailExistente) {
+                                    Toast.makeText(getApplicationContext(),
+                                            email + " " +
+                                                    getText(R.string.mensajeEditCuentaExisteEmail),
+                                            Toast.LENGTH_SHORT).show();
+                                } catch (Exception ex) {
+                                    Toast.makeText(getApplicationContext(), getText(R.string.error_registro),
+                                            Toast.LENGTH_SHORT).show();
+                                }
 
+                                //y vuelve a activar el botón de registro y atrás.
+                                activaBotones(true);
+
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
+                    activaBotones(true);
                 }
+            });
+
+        //Si lo que se va a realizar es una modificación de la localización...
+        }else if(botonFinReg.getText().toString().equals(getString(R.string.botonEditCuentaGuardar))){
+            actualizaLocalizacion();
+        }
+
+    }
+
+    /**
+     * Método que actualiza la localización del peluquero.
+     */
+    private void actualizaLocalizacion(){
+
+        //Crea un Map con las modificaciones en los datos anidados de la localización.
+        Map<String, Object> localizacion = new HashMap<>();
+        localizacion.put("loc.latitude", loc.latitude);
+        localizacion.put("loc.longitude", loc.longitude);
+
+        //Actualiza las coordenadas en la BD del peluquero en Firestore.
+        firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
+                .update(localizacion)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                actualizaLocExtra();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
-                botonFinReg.setEnabled(true);
-                botonAtrasRegLoc.setEnabled(true);
+                Toast.makeText(getApplicationContext(), getText(R.string.mensajeEditCuentaErrorLoc),
+                        Toast.LENGTH_SHORT).show();
+                activaBotones(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que actualiza las indicaciones extra de la localización del peluquero.
+     */
+    private void actualizaLocExtra(){
+
+        //Actualiza las indicaciones extra del peluquero en su BD de Firestore.
+        firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
+                .update("locExtra", etDatAdi.getText().toString())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Toast.makeText(getApplicationContext(), getText(R.string.mensajeEditCuentaExitoLoc),
+                        Toast.LENGTH_SHORT).show();
+
+                //Devuelve los datos modificados a la activity anterior...
+                Intent intentNuevaLoc =new Intent();
+                intentNuevaLoc.putExtra("loc", etDireccion.getText().toString());
+                intentNuevaLoc.putExtra("locExtra", etDatAdi.getText().toString());
+
+                setResult(RESULT_OK, intentNuevaLoc);
+
+                //y se cierra.
+                finish();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getText(R.string.mensajeEditCuentaErrorLoc),
+                        Toast.LENGTH_SHORT).show();
+                activaBotones(true);
             }
         });
 

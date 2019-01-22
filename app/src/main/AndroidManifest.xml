@@ -102,6 +102,9 @@
         <activity
             android:name=".EditCuentaCliActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".EditCuentaPeluActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

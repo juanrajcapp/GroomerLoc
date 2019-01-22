@@ -79,8 +79,19 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
     protected void onResume() {
         super.onResume();
 
-        //Cada vez que se vuelve a la activity, se actualiza el nombre del peluquero en el ActionBar.
-        getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+        //Si al volver a la activity existe un usuario autenticado...
+        if(auth.getCurrentUser()!=null) {
+
+            //se actualiza el nombre del peluquero en el ActionBar.
+            getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+
+            //Si no...
+        }else{
+
+            //se cierra la activity.
+            finish();
+
+        }
 
     }
 
@@ -120,7 +131,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
             case R.id.nav_cuenta:
                 //Inicia la activity que permite editar los datos de la cuenta del peluquero...
-                //startActivity(new Intent(this, EditCuentaPeluActivity.class));
+                startActivity(new Intent(this, EditCuentaPeluActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;

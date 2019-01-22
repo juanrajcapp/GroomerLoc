@@ -83,6 +83,10 @@
     <string name="mensajeEditCuentaBorrada">The account</string>
     <string name="mensajeEditCuentaBorrada2">has been deleted.</string>
     <string name="mensajeEditCuentaErrorBorrar">The account could not be deleted.</string>
+        <!-- editar cuenta cliente -->
+    <string name="botonEditCuentaLoc">Change location</string>
+    <string name="mensajeEditCuentaErrorLoc">The location could not be updated.</string>
+    <string name="mensajeEditCuentaExitoLoc">Location has been updated successfully.</string>
 
     <!-- acerca de -->
     <string name="descAplicacion">This application was designed to facilitate communication
