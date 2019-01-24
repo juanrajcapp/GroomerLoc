@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.juanrajc.groomerloc">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -9,12 +8,9 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- Permiso para acceso a internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Permiso para acceso a la cámara del dispositivo -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Permiso para lectura de los archivos almacenados externamente -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permiso para acceso a internet -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Permiso para acceso a la cámara del dispositivo -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permiso para lectura de los archivos almacenados externamente -->
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -26,6 +22,7 @@
         android:roundIcon="@mipmap/fg_logo_groomerloc"
         android:supportsRtl="true"
         android:theme="@style/AppThemeSinAB">
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -104,6 +101,9 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".EditCuentaPeluActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".CreaCitaActivity"
             android:configChanges="orientation|screenSize" />
     </application>
 

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#b8008b</color>
     <color name="colorPrimaryDark">#b8008b</color>
-    <color name="colorAccent">#b8008b</color>
+    <color name="colorAccent">#B8008B</color>
 
     <!-- Color de fondo del Splash -->
     <color name="fondoSplash">#d6d5db</color>

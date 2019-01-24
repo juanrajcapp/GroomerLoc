@@ -69,6 +69,7 @@
                     android:text="@string/cabeceraPrecioTarifa"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium"
                     android:textStyle="bold" />
 
@@ -106,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <TextView
@@ -138,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <TextView
@@ -170,6 +173,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <TextView
@@ -202,6 +206,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <TextView
@@ -234,6 +239,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <TextView
@@ -266,6 +272,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <Space
@@ -294,6 +301,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <Space
@@ -322,6 +330,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:paddingEnd="12dp"
+                    android:paddingStart="0dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
                 <Space

@@ -32,7 +32,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
     //Objetos de los elementos visibles de la activity.
     private TextView tvNombrePelu, tvTelPelu, tvDirPelu, tvDir2Pelu, tvTitDir2Pelu;
     private ImageView ivImagenPelu;
-    private Button bTarifasPelu, bCitaPelu;
+    private Button bTarifasPelu, bAtrasFichaPelu;
 
     //Objeto del círculo de carga.
     private ProgressBar circuloCargaPelu;
@@ -66,11 +66,11 @@ public class FichaPeluqActivity extends AppCompatActivity {
         tvTitDir2Pelu.setVisibility(View.INVISIBLE);
 
         bTarifasPelu = findViewById(R.id.bTarifasPelu);
-        bCitaPelu = findViewById(R.id.bCitaPelu);
+        bAtrasFichaPelu = findViewById(R.id.bAtrasFichaPelu);
         /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
         que los datos se hayan cargado.*/
         bTarifasPelu.setClickable(false);
-        bCitaPelu.setClickable(false);
+        bAtrasFichaPelu.setClickable(false);
 
         //Instancia del Geocoder.
         gc=new Geocoder(this);
@@ -89,7 +89,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
 
         //Al volver a la activity, se vuelven a activar los botones de la misma.
         bTarifasPelu.setClickable(true);
-        bCitaPelu.setClickable(true);
+        bAtrasFichaPelu.setClickable(true);
 
     }
 
@@ -134,7 +134,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
 
                         //y se activan los botones de la activity.
                         bTarifasPelu.setClickable(true);
-                        bCitaPelu.setClickable(true);
+                        bAtrasFichaPelu.setClickable(true);
 
 
                     //Si no...
@@ -248,7 +248,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
 
         //Desactiva los botones de la activity actual...
         bTarifasPelu.setClickable(false);
-        bCitaPelu.setClickable(false);
+        bAtrasFichaPelu.setClickable(false);
 
         //E inicia la que muestra las tarifas, pasándole la ID y nombre del peluquero.
         startActivity(new Intent(this, TarifasPeluActivity.class)
@@ -258,19 +258,18 @@ public class FichaPeluqActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que inicia la activity para pedir cita.
+     * Método que controla el retroceso a la activity anterior.
      *
      * @param view
      */
-    protected void iniciaPedirCita(View view){
+    protected void atras (View view){
 
-        /*
-        //Desactiva los botones de la activity actual...
+        ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bTarifasPelu.setClickable(false);
-        bCitaPelu.setClickable(false);
-        */
+        bAtrasFichaPelu.setClickable(false);
 
-        //Comprobar que el peluquero ha seteado las tarifas.
+        //Finaliza la activity.
+        finish();
 
     }
 

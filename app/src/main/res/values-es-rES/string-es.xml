@@ -212,4 +212,17 @@
     <string name="cabeceraPrecioTarifa">PRECIO</string>
     <string name="mensajeTarifasNoConfig">El peluquero no ha fijado aún ninguna tarifa.</string>
 
+    <!-- crea cita -->
+    <string name="creaCitaTitulo">NUEVA CITA</string>
+    <string name="creaCitaPelu">Peluquero:</string>
+    <string name="creaCitaFechaSol">Fecha de solicitud:</string>
+    <string name="creaCitaCbBanio">Baño</string>
+    <string name="creaCitaCbArreglo">Arreglo (Corte parcial)</string>
+    <string name="creaCitaCbCorte">Corte completo</string>
+    <string name="creaCitaCbDeslanado">Deslanado</string>
+    <string name="creaCitaCbTinte">Tinte</string>
+    <string name="creaCitaCbOidos">Limpieza de oídos</string>
+    <string name="creaCitaCbUnias">Corte de uñas</string>
+    <string name="creaCitaCbAnales">Limpieza gándulas anales</string>
+
 </resources>

@@ -130,13 +130,14 @@ public class TarifasPeluActivity extends AppCompatActivity {
      */
     private void muestraTarifas(Tarifas tarifas){
 
-        //Booleano que controla si se ha obtenido al menos un extra.
-        Boolean existenExtras=false;
+        //Booleanos que controlan si existen tarifas establecidas y si se ha obtenido al menos un extra.
+        Boolean existenTarifas=false, existenExtras=false;
 
         //Precios de baño.
         if(tarifas.getBaseBanio()!=null){
             tvTaBanio.setVisibility(View.VISIBLE);
             tvTaBanioPrecio.setText(tarifas.getBaseBanio().toString()+MONEDA);
+            existenTarifas=true;
 
             if(tarifas.getExtraBanio()!=null){
                 tvTaBanioExtraPrecio.setText(tarifas.getExtraBanio().toString()+MONEDA);
@@ -149,6 +150,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
         if(tarifas.getBaseArreglo()!=null){
             tvTaArreglo.setVisibility(View.VISIBLE);
             tvTaArregloPrecio.setText(tarifas.getBaseArreglo().toString()+MONEDA);
+            existenTarifas=true;
 
             if(tarifas.getExtraArreglo()!=null){
                 tvTaArregloExtraPrecio.setText(tarifas.getExtraArreglo().toString()+MONEDA);
@@ -161,6 +163,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
         if(tarifas.getBaseCorte()!=null){
             tvTaCompleto.setVisibility(View.VISIBLE);
             tvTaCompletoPrecio.setText(tarifas.getBaseCorte().toString()+MONEDA);
+            existenTarifas=true;
 
             if(tarifas.getExtraCorte()!=null){
                 tvTaCompletoExtraPrecio.setText(tarifas.getExtraCorte().toString()+MONEDA);
@@ -173,6 +176,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
         if(tarifas.getBaseDeslanado()!=null){
             tvTaDeslanado.setVisibility(View.VISIBLE);
             tvTaDeslanadoPrecio.setText(tarifas.getBaseDeslanado().toString()+MONEDA);
+            existenTarifas=true;
 
             if(tarifas.getExtraDeslanado()!=null){
                 tvTaDeslanadoExtraPrecio.setText(tarifas.getExtraDeslanado().toString()+MONEDA);
@@ -185,6 +189,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
         if(tarifas.getBaseTinte()!=null){
             tvTaTinte.setVisibility(View.VISIBLE);
             tvTaTintePrecio.setText(tarifas.getBaseTinte().toString()+MONEDA);
+            existenTarifas=true;
 
             if(tarifas.getExtraTinte()!=null){
                 tvTaTinteExtraPrecio.setText(tarifas.getExtraTinte().toString()+MONEDA);
@@ -197,25 +202,34 @@ public class TarifasPeluActivity extends AppCompatActivity {
         if(tarifas.getPrecioOidos()!=null){
             tvTaOidos.setVisibility(View.VISIBLE);
             tvTaOidosPrecio.setText(tarifas.getPrecioOidos().toString()+MONEDA);
+            existenTarifas=true;
         }
 
         //Precio de corte de uñas.
         if(tarifas.getPrecioUnias()!=null){
             tvTaUnias.setVisibility(View.VISIBLE);
             tvTaUniasPrecio.setText(tarifas.getPrecioUnias().toString()+MONEDA);
+            existenTarifas=true;
         }
 
         //Precio de limpieza de glándulas anales.
         if(tarifas.getPrecioAnales()!=null){
             tvTaAnales.setVisibility(View.VISIBLE);
             tvTaAnalesPrecio.setText(tarifas.getPrecioAnales().toString()+MONEDA);
+            existenTarifas=true;
         }
 
-        //Peso de los extras.
-        if(existenExtras){
-            tvPesoTarifas.setText(getString(R.string.edTaPeso1)+" "
-                    +tarifas.getPesoExtra().toString()+" "+getString(R.string.edTaPeso2));
-            tvTaExtra.setVisibility(View.VISIBLE);
+        if(existenTarifas) {
+
+            //Peso de los extras.
+            if (existenExtras) {
+                tvPesoTarifas.setText(getString(R.string.edTaPeso1) + " "
+                        + tarifas.getPesoExtra().toString() + " " + getString(R.string.edTaPeso2));
+                tvTaExtra.setVisibility(View.VISIBLE);
+            }
+
+        }else{
+            bTarifasPedirCita.setEnabled(false);
         }
 
     }
@@ -255,7 +269,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
         /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
         que los datos se hayan cargado.*/
         bTarifasAtras.setClickable(false);
-        bTarifasAtras.setClickable(false);
+        bTarifasPedirCita.setClickable(false);
 
     }
 
