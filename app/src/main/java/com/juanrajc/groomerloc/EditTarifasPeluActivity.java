@@ -168,43 +168,57 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      */
     protected void guardaTarifas (View view){
 
-        //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
-        bEditTarifasGuardar.setClickable(false);
-        bEditTarifasAtras.setClickable(false);
+        //Comprueba que, si se introduce un precio de extra, se haya introducido también el rango de peso.
+        if((etEdTaBanioExtra.getText().toString().length()>0 || etEdTaArregloExtra.getText().toString().length()>0
+                || etEdTaCompletoExtra.getText().toString().length()>0 || etEdTaDeslanadoExtra.getText().toString().length()>0
+                || etEdTaTinteExtra.getText().toString().length()>0) && etEdTaPeso.getText().toString().length()<1){
 
-        /*
-        Guarda en la colección "peluquería" -> documento "tarifas" de la BD del peluquero
-        actualmente autenticado los datos introducidos por el mismo, mediante un POJO.
-        */
-        firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
-                .collection("peluqueria").document("tarifas")
-                .set(new Tarifas(manejaValorCampo(etEdTaBanio), manejaValorCampo(etEdTaBanioExtra),
-                        manejaValorCampo(etEdTaArreglo), manejaValorCampo(etEdTaArregloExtra),
-                        manejaValorCampo(etEdTaCompleto), manejaValorCampo(etEdTaCompletoExtra),
-                        manejaValorCampo(etEdTaDeslanado), manejaValorCampo(etEdTaDeslanadoExtra),
-                        manejaValorCampo(etEdTaTinte), manejaValorCampo(etEdTaTinteExtra),
-                        manejaValorCampo(etEdTaPeso), manejaValorCampo(etEdTaOidos),
-                        manejaValorCampo(etEdTaUnias), manejaValorCampo(etEdTaAnales)))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), getString(R.string.mensajeTarGuardadas),
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            //Si no, muestra un mensaje y mueve el focus al campo del peso.
+            Toast.makeText(getApplicationContext(), getString(R.string.mensajeAvisoPesoExtra),
+                    Toast.LENGTH_SHORT).show();
+            etEdTaPeso.requestFocus();
 
-                Toast.makeText(getApplicationContext(), getString(R.string.mensajeTarNoGuardadas),
-                        Toast.LENGTH_SHORT).show();
+        }else {
 
-                //Si falla el guardado, se vuelven a activar los botones de la activity.
-                bEditTarifasGuardar.setClickable(true);
-                bEditTarifasAtras.setClickable(true);
+            //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+            bEditTarifasGuardar.setClickable(false);
+            bEditTarifasAtras.setClickable(false);
 
-            }
-        });
+            /*
+            Guarda en la colección "peluquería" -> documento "tarifas" de la BD del peluquero
+            actualmente autenticado los datos introducidos por el mismo, mediante un POJO.
+            */
+            firestore.collection("peluqueros").document(auth.getCurrentUser().getUid())
+                    .collection("peluqueria").document("tarifas")
+                    .set(new Tarifas(manejaValorCampo(etEdTaBanio), manejaValorCampo(etEdTaBanioExtra),
+                            manejaValorCampo(etEdTaArreglo), manejaValorCampo(etEdTaArregloExtra),
+                            manejaValorCampo(etEdTaCompleto), manejaValorCampo(etEdTaCompletoExtra),
+                            manejaValorCampo(etEdTaDeslanado), manejaValorCampo(etEdTaDeslanadoExtra),
+                            manejaValorCampo(etEdTaTinte), manejaValorCampo(etEdTaTinteExtra),
+                            manejaValorCampo(etEdTaPeso), manejaValorCampo(etEdTaOidos),
+                            manejaValorCampo(etEdTaUnias), manejaValorCampo(etEdTaAnales)))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.mensajeTarGuardadas),
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeTarNoGuardadas),
+                            Toast.LENGTH_SHORT).show();
+
+                    //Si falla el guardado, se vuelven a activar los botones de la activity.
+                    bEditTarifasGuardar.setClickable(true);
+                    bEditTarifasAtras.setClickable(true);
+
+                }
+            });
+
+        }
 
     }
 
@@ -300,9 +314,6 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
 
                                 rellenaCampos(tarifas);
 
-                                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
-                                circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
-
                             }
 
                             //Existan o no existan datos, se activa los botones de la activity.
@@ -310,11 +321,13 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
                             bEditTarifasGuardar.setClickable(true);
 
                         }else{
-                            circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaTarifas),
                                     Toast.LENGTH_SHORT).show();
                             bEditTarifasAtras.setClickable(true);
                         }
+
+                        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                        circuloCargaEdTarPelu.setVisibility(View.INVISIBLE);
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {

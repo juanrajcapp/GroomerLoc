@@ -28,6 +28,7 @@
     <string name="saludo">Bienvenido</string>
     <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
     <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <string name="mensajeErrorCargaMarcas">No se han podido cargar las localizaciones de los peluqueros.</string>
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Buscador de peluqueros</string>
     <string name="menuCliPerro">Mis mascotas</string>
@@ -85,7 +86,7 @@
     <string name="mensajeEditCuentaBorrada2">ha sido eliminada.</string>
     <string name="mensajeEditCuentaErrorBorrar">No se ha podido eliminar la cuenta.</string>
         <!-- editar cuenta cliente -->
-    <string name="botonEditCuentaLoc">Cambiar localízación</string>
+    <string name="botonEditCuentaLoc">Cambiar localización</string>
     <string name="mensajeEditCuentaErrorLoc">No se ha podido actualizar la localización.</string>
     <string name="mensajeEditCuentaExitoLoc">La localización se ha actualizado con éxito.</string>
 
@@ -162,7 +163,7 @@
     <string name="datAdi">Indicaciones adicionales (piso, puerta, etc)</string>
     <string name="mensajeMarca">Localización:</string>
     <string name="mensajeNoDireccion">Dirección no encontrada.</string>
-    <string name="mensajeDirVacia">Debes introducir una dirección.</string>
+    <string name="mensajeDirVacia">Debes buscar una dirección o realizar una marca en el mapa.</string>
     <string name="mensajeNoLoc">No se ha podido obtener su localización actual.</string>
     <string name="botonRegistrar">Completar registro</string>
 
@@ -204,6 +205,7 @@
     <string name="mensajeTarGuardadas">Las tarifas se han guardado con éxito.</string>
     <string name="mensajeTarNoGuardadas">No se han podido guardar las tarifas.</string>
     <string name="mensajeErrorCargaTarifas">Se ha producido un error al cargar las tarifas.</string>
+    <string name="mensajeAvisoPesoExtra">Si incluye un extra por peso, debe especificar también el peso.</string>
 
     <!-- ficha tarifas -->
     <string name="tituloTarifasPelu">Tarifas de</string>

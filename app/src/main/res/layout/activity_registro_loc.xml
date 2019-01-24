@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/tvRegPeluquero"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -42,12 +42,24 @@
         android:ems="10"
         android:hint="@string/dir"
         android:imeOptions="actionSearch"
+        android:importantForAutofill="no"
         android:inputType="textPostalAddress"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/botonBuscaDir"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero"
-        android:importantForAutofill="no" tools:targetApi="o"/>
+        tools:targetApi="o" />
+
+    <Button
+        android:id="@+id/botonBuscaDir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/botonBuscar"
+        android:onClick="buscaDireccion"
+        app:layout_constraintEnd_toEndOf="@+id/regLoc"
+        app:layout_constraintTop_toBottomOf="@+id/tvRegPeluquero" />
 
     <EditText
         android:id="@+id/etDatAdi"

@@ -374,7 +374,18 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                                 peluquero.getNombre(), doc.getId());
 
                     }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaMarcas),
+                            Toast.LENGTH_SHORT).show();
                 }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaMarcas),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -462,8 +473,8 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
                                 listaIdPeluqueros.add(doc.getId());
                                 listaNombresPeluqueros.add(doc.toObject(Peluquero.class).getNombre());
-                                listaDirPeluqueros.add(obtieneDireccion(new LatLng(doc.toObject(Peluquero.class).getLoc().getLatitude(),
-                                        doc.toObject(Peluquero.class).getLoc().getLongitude())));
+                                listaDirPeluqueros.add(obtieneDireccion(new LatLng(doc.toObject(Peluquero.class)
+                                        .getLoc().getLatitude(), doc.toObject(Peluquero.class).getLoc().getLongitude())));
 
                             }
 
@@ -483,14 +494,16 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                     }
 
                 }else{
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp),
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -615,18 +628,21 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                                         , doc.toObject(Peluquero.class).getLoc().getLongitude()), 15));
 
                     }else{
-                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqSinRes), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqSinRes),
+                                Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqNoComp),
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 

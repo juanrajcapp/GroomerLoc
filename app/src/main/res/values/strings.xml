@@ -27,6 +27,7 @@
     <string name="saludo">Welcome</string>
     <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
     <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <string name="mensajeErrorCargaMarcas">Groomers locations could not be loaded.</string>
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Groomers finder</string>
     <string name="menuCliPerro">My pets</string>
@@ -162,7 +163,7 @@
     <string name="datAdi">Additional indications (floor, door, etc)</string>
     <string name="mensajeMarca">Location:</string>
     <string name="mensajeNoDireccion">Address not found.</string>
-    <string name="mensajeDirVacia">You must type an address.</string>
+    <string name="mensajeDirVacia">You must find an address or make a mark on the map.</string>
     <string name="mensajeNoLoc">Your current location could not be obtained.</string>
     <string name="botonRegistrar">Complete registration</string>
 
@@ -204,6 +205,7 @@
     <string name="mensajeTarGuardadas">Rates have been saved successfully.</string>
     <string name="mensajeTarNoGuardadas">Rates could not be saved.</string>
     <string name="mensajeErrorCargaTarifas">An error occurred while loading the rates.</string>
+    <string name="mensajeAvisoPesoExtra">If you include an extra by weight, you must also specify the weight.</string>
 
     <!-- ficha tarifas -->
     <string name="tituloTarifasPelu">Rates of</string>

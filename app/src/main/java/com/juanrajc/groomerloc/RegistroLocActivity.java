@@ -15,6 +15,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -73,7 +75,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     //Objetos de la vista de la activity.
     private EditText etDireccion, etDatAdi;
     private ImageButton botonLoc;
-    private Button botonFinReg, botonAtrasRegLoc;
+    private Button botonBuscaDir, botonFinReg, botonAtrasRegLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +87,10 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
         etDatAdi = (EditText) findViewById(R.id.etDatAdi);
 
         //Instancia del botón de registro y atrás.
+        botonBuscaDir = (Button) findViewById(R.id.botonBuscaDir);
         botonFinReg = (Button) findViewById(R.id.botonFinRegPel);
         botonAtrasRegLoc = (Button) findViewById(R.id.botonAtrasReg2);
-        /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
+        /*Inician 'no clicables' algunos botones de la activity. No se podrán cliquear hasta
         que los datos se hayan cargado.*/
         activaBotones(false);
 
@@ -109,6 +112,27 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                     buscaCoordenadas();
                 }
                 return false;
+            }
+        });
+
+        //Evento que detecta si hay o no contenido en el EditText de dirección.
+        etDireccion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                //Si el campo contiene texto, permite el uso del botón de buscar, si no, no.
+                if(editable.toString().length()>0){
+                    botonBuscaDir.setEnabled(true);
+                }else{
+                    botonBuscaDir.setEnabled(false);
+                }
+
             }
         });
 
@@ -337,8 +361,10 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
 
             //Comprueba que se ha guardado una dirección.
             if(direcciones.size() > 0) {
+
                 //Si es así, crea la marca en el mapa con las coordenadas obtenidas de la dirección.
                 marcarMapa(new LatLng(direcciones.get(0).getLatitude(), direcciones.get(0).getLongitude()));
+
             }else{
                 Toast.makeText(this, getString(R.string.mensajeNoDireccion), Toast.LENGTH_SHORT).show();
             }
@@ -438,13 +464,14 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
     }
 
     /**
-     * Método que cierra la activity.
+     * Método que, al pulsar el botón de buscar, marca en el mapa la dirección introducida y
+     * la muestra con un formato ofrecido por Google.
      *
      * @param view
      */
-    protected void atras(View view){
+    protected void buscaDireccion(View view){
 
-        finish();
+        buscaCoordenadas();
 
     }
 
@@ -455,76 +482,97 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      */
     protected void registro(View view){
 
-        //Se desactiva el botón de registro y atrás para evitar varias pulsaciones simultáneas.
-        activaBotones(false);
+        //Comprueba que se ha guardado previamente unas coordenadas.
+        if(loc!=null) {
 
-        //Si lo que se va a realizar es un registro nuevo...
-        if(botonFinReg.getText().toString().equals(getString(R.string.botonRegistrar))) {
+            //Se desactiva el botón de registro y atrás para evitar varias pulsaciones simultáneas.
+            activaBotones(false);
 
-            //crea el usuario cliente con su email y contraseña.
-            auth.createUserWithEmailAndPassword(email, pw)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+            //Si lo que se va a realizar es un registro nuevo...
+            if (botonFinReg.getText().toString().equals(getString(R.string.botonRegistrar))) {
 
-                            //Si se ha creado correctamente el usuario...
-                            if (task.isSuccessful()) {
+                //crea el usuario cliente con su email y contraseña.
+                auth.createUserWithEmailAndPassword(email, pw)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                //añade el nombre introducido a la cuenta creada (y loqueada)...
-                                auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(nombre).build());
+                                //Si se ha creado correctamente el usuario...
+                                if (task.isSuccessful()) {
 
-                                /*
-                                crea en la base de datos una colección de clientes (si aún no existe) y un registro (documento)
-                                con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
-                                */
-                                firestore.collection("peluqueros")
-                                        .document(auth.getCurrentUser().getUid()).set(new Peluquero(nombre, telefono,
-                                        new MiLatLng(loc.latitude, loc.longitude), etDatAdi.getText().toString()));
+                                    //añade el nombre introducido a la cuenta creada (y loqueada)...
+                                    auth.getCurrentUser().updateProfile(new UserProfileChangeRequest
+                                            .Builder().setDisplayName(nombre).build());
 
-                                //y le muestra un saludo con su nombre.
-                                Toast.makeText(getApplicationContext(), getString(R.string.regCompletado),
-                                        Toast.LENGTH_SHORT).show();
+                                    /*
+                                    crea en la base de datos una colección de clientes (si aún no existe)
+                                    y un registro (documento) con la id del cliente registrado. Se añaden
+                                    también sus datos de registro mediante un POJO...
+                                    */
+                                    firestore.collection("peluqueros").document(auth.getCurrentUser()
+                                            .getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude,
+                                            loc.longitude), etDatAdi.getText().toString()));
 
-                                //Finalmente se cierra la activity.
-                                finish();
-
-                                //Si no...
-                            } else {
-
-                                //captura el motivo, lo muestra...
-                                try {
-
-                                    throw task.getException();
-
-                                } catch (FirebaseAuthUserCollisionException emailExistente) {
-                                    Toast.makeText(getApplicationContext(),
-                                            email + " " +
-                                                    getText(R.string.mensajeEditCuentaExisteEmail),
+                                    //y le muestra un saludo con su nombre.
+                                    Toast.makeText(getApplicationContext(), getString(R.string.regCompletado),
                                             Toast.LENGTH_SHORT).show();
-                                } catch (Exception ex) {
-                                    Toast.makeText(getApplicationContext(), getText(R.string.error_registro),
-                                            Toast.LENGTH_SHORT).show();
+
+                                    //Finalmente se cierra la activity.
+                                    finish();
+
+                                    //Si no...
+                                } else {
+
+                                    //captura el motivo, lo muestra...
+                                    try {
+
+                                        throw task.getException();
+
+                                    } catch (FirebaseAuthUserCollisionException emailExistente) {
+                                        Toast.makeText(getApplicationContext(),
+                                                email + " " +
+                                                        getText(R.string.mensajeEditCuentaExisteEmail),
+                                                Toast.LENGTH_SHORT).show();
+                                    } catch (Exception ex) {
+                                        Toast.makeText(getApplicationContext(), getText(R.string.error_registro),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    //y vuelve a activar el botón de registro y atrás.
+                                    activaBotones(true);
+
                                 }
 
-                                //y vuelve a activar el botón de registro y atrás.
-                                activaBotones(true);
-
                             }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), getText(R.string.error_registro),
+                                Toast.LENGTH_SHORT).show();
+                        activaBotones(true);
+                    }
+                });
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), getText(R.string.error_registro), Toast.LENGTH_SHORT).show();
-                    activaBotones(true);
-                }
-            });
+                //Si lo que se va a realizar es una modificación de la localización...
+            } else if (botonFinReg.getText().toString().equals(getString(R.string.botonEditCuentaGuardar))) {
+                actualizaLocalizacion();
+            }
 
-        //Si lo que se va a realizar es una modificación de la localización...
-        }else if(botonFinReg.getText().toString().equals(getString(R.string.botonEditCuentaGuardar))){
-            actualizaLocalizacion();
+        } else{
+            Toast.makeText(getApplicationContext(), getText(R.string.mensajeDirVacia),
+                    Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    /**
+     * Método que cierra la activity.
+     *
+     * @param view
+     */
+    protected void atras(View view){
+
+        finish();
 
     }
 
