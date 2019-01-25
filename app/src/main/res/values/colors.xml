@@ -13,6 +13,6 @@
     <!-- Color del título de "activity_registro_loc.xml" -->
     <color name="tituloLoc">#000000</color>
 
-    <color name="colorAlerta">#c70003</color>
+    <color name="colorAlerta">#C70003</color>
 
 </resources>

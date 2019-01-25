@@ -224,5 +224,8 @@
     <string name="creaCitaCbOidos">Ear cleaning</string>
     <string name="creaCitaCbUnias">Nail cut</string>
     <string name="creaCitaCbAnales">Anal gland cleaning</string>
+    <string name="creaCitaMascota">Pet:</string>
+    <string name="creaCitaSeleccionar">Select</string>
+    <string name="botonCreaCitaConfirmar">Create appointment</string>
 
 </resources>

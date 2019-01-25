@@ -224,5 +224,8 @@
     <string name="creaCitaCbOidos">Limpieza de oídos</string>
     <string name="creaCitaCbUnias">Corte de uñas</string>
     <string name="creaCitaCbAnales">Limpieza gándulas anales</string>
+    <string name="creaCitaMascota">Mascota:</string>
+    <string name="creaCitaSeleccionar">Seleccionar</string>
+    <string name="botonCreaCitaConfirmar">Crear cita</string>
 
 </resources>

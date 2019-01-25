@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -45,16 +44,18 @@
                     android:id="@+id/tvCreaCitaPeluTit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/creaCitaPelu"
-                    android:textStyle="bold"
+                    android:paddingStart="0dp"
                     android:paddingEnd="5dp"
-                    android:paddingStart="0dp"/>
+                    android:text="@string/creaCitaPelu"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvCreaCitaPelu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </TableRow>
 
@@ -66,16 +67,18 @@
                     android:id="@+id/tvCreaCitaFechaTit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/creaCitaFechaSol"
-                    android:textStyle="bold"
+                    android:paddingStart="0dp"
                     android:paddingEnd="5dp"
-                    android:paddingStart="0dp"/>
+                    android:text="@string/creaCitaFechaSol"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvCreaCitaFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </TableRow>
 
@@ -116,7 +119,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <CheckBox
                     android:id="@+id/cbCreaCitaCorte"
@@ -137,7 +140,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <CheckBox
                     android:id="@+id/cbCreaCitaTinte"
@@ -158,7 +161,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <CheckBox
                     android:id="@+id/cbCreaCitaUnias"
@@ -177,6 +180,101 @@
                     android:text="@string/creaCitaCbAnales" />
             </TableRow>
         </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/llCreaCitaPerro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tlCreaCitaServicios">
+
+            <TextView
+                android:id="@+id/tvCreaCitaMascotaTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creaCitaMascota"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvCreaCitaMascota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/bCreaCitaSelecMascota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creaCitaSeleccionar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCreaCitaPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/bCreaCitaConfirmar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llCreaCitaPerro">
+
+            <TextView
+                android:id="@+id/tvCreaCitaPrecioTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/cabeceraPrecioTarifa"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvCreCitaPrecio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorAlerta"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bCreaCitaAtras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/botonAtras"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/bCreaCitaConfirmar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/botonCreaCitaConfirmar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bCreaCitaAtras" />
 
 
     </android.support.constraint.ConstraintLayout>
