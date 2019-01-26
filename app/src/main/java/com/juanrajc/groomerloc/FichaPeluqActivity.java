@@ -67,10 +67,10 @@ public class FichaPeluqActivity extends AppCompatActivity {
 
         bTarifasPelu = findViewById(R.id.bTarifasPelu);
         bAtrasFichaPelu = findViewById(R.id.bAtrasFichaPelu);
-        /*Inician 'no clicables' los botones de la activity. No se podrán cliquear hasta
+        /*Inician desactivados los botones de la activity. No se podrán usar hasta
         que los datos se hayan cargado.*/
-        bTarifasPelu.setClickable(false);
-        bAtrasFichaPelu.setClickable(false);
+        bTarifasPelu.setEnabled(false);
+        bAtrasFichaPelu.setEnabled(false);
 
         //Instancia del Geocoder.
         gc=new Geocoder(this);
@@ -88,8 +88,8 @@ public class FichaPeluqActivity extends AppCompatActivity {
         super.onResume();
 
         //Al volver a la activity, se vuelven a activar los botones de la misma.
-        bTarifasPelu.setClickable(true);
-        bAtrasFichaPelu.setClickable(true);
+        bTarifasPelu.setEnabled(true);
+        bAtrasFichaPelu.setEnabled(true);
 
     }
 
@@ -133,8 +133,8 @@ public class FichaPeluqActivity extends AppCompatActivity {
                         }
 
                         //y se activan los botones de la activity.
-                        bTarifasPelu.setClickable(true);
-                        bAtrasFichaPelu.setClickable(true);
+                        bTarifasPelu.setEnabled(true);
+                        bAtrasFichaPelu.setEnabled(true);
 
 
                     //Si no...
@@ -247,8 +247,8 @@ public class FichaPeluqActivity extends AppCompatActivity {
     protected void iniciaVistaTarifas(View view){
 
         //Desactiva los botones de la activity actual...
-        bTarifasPelu.setClickable(false);
-        bAtrasFichaPelu.setClickable(false);
+        bTarifasPelu.setEnabled(false);
+        bAtrasFichaPelu.setEnabled(false);
 
         //E inicia la que muestra las tarifas, pasándole la ID y nombre del peluquero.
         startActivity(new Intent(this, TarifasPeluActivity.class)
@@ -265,8 +265,8 @@ public class FichaPeluqActivity extends AppCompatActivity {
     protected void atras (View view){
 
         ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
-        bTarifasPelu.setClickable(false);
-        bAtrasFichaPelu.setClickable(false);
+        bTarifasPelu.setEnabled(false);
+        bAtrasFichaPelu.setEnabled(false);
 
         //Finaliza la activity.
         finish();

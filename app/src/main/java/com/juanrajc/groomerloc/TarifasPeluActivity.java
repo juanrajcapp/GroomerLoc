@@ -73,6 +73,16 @@ public class TarifasPeluActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Al volver a la activity, se vuelven a activar los botones de la misma.
+        bTarifasAtras.setEnabled(true);
+        bTarifasPedirCita.setEnabled(true);
+
+    }
+
     /**
      * Método que se encarga de obtener las tarifas del peluquero seleccionado desde su BDen Firebase (si existen).
      */
@@ -325,6 +335,10 @@ public class TarifasPeluActivity extends AppCompatActivity {
      * @param view
      */
     protected void atras (View view){
+
+        ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        bTarifasAtras.setEnabled(false);
+        bTarifasPedirCita.setEnabled(false);
 
         finish();
 
