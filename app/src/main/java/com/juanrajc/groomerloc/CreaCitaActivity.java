@@ -1,5 +1,6 @@
 package com.juanrajc.groomerloc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,12 +8,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class CreaCitaActivity extends AppCompatActivity {
+
+    //Constantes con los posibles resultados devueltos a la activity actual.
+    private static final int REQUEST_PERRO=1;
 
     //Objetos de las textView de la activity.
     private TextView tvCreaCitaPelu, tvCreaCitaFecha, tvCreaCitaMascota, tvCreaCitaPrecio;
@@ -29,7 +34,7 @@ public class CreaCitaActivity extends AppCompatActivity {
     private ProgressBar circuloCargaCreaCita;
 
     //Datos necesarios para crear la cita.
-    private String idPeluquero;
+    private String idPeluquero, nombrePerro;
     private Date fechaCreacion;
 
     //Precios del pelquero.
@@ -86,6 +91,49 @@ public class CreaCitaActivity extends AppCompatActivity {
 
         cargaOpciones();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /*CONTROLAR ACTIVACIÓN BOTÓN CREAR CITA*/
+
+        //Al recibir el nombre del perro, se vuelven a activar los botones de la activity...
+        bCreaCitaSelecMascota.setEnabled(true);
+        bCreaCitaAtras.setEnabled(true);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Si el resultado devuelto a la activity es satisfactoria...
+        if(resultCode==RESULT_OK) {
+
+            //Comprueba mediante un switch el tipo de resultado devuelto.
+            switch (requestCode) {
+
+                case REQUEST_PERRO:
+
+                    /*CONTROLAR ACTIVACIÓN BOTÓN CREAR CITA*/
+
+                    //Al recibir el nombre del perro, se vuelven a activar los botones de la activity...
+                    bCreaCitaSelecMascota.setEnabled(true);
+                    bCreaCitaAtras.setEnabled(true);
+
+                    //se guarda el nombre recibido...
+                    nombrePerro = data.getExtras().getString("nombrePerro");
+
+                    //y se muestra en la interfaz de la activity.
+                    tvCreaCitaMascota.setText(nombrePerro);
+
+            }
+        } else{
+            Toast.makeText(this, getString(R.string.mensajeCreaCitaPerroNoRecibido),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -192,13 +240,29 @@ public class CreaCitaActivity extends AppCompatActivity {
     }
 
     /**
+     * Método que inicia la activity de selección de mascota.
+     *
+     * @param view
+     */
+    protected void seleccionaMascota(View view){
+
+        //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        bCreaCitaSelecMascota.setEnabled(false);
+        bCreaCitaAtras.setEnabled(false);
+
+        //Inicia la activity que devolverá la mascota seleccionada por el cliente.
+        startActivityForResult(new Intent(this, PerrosCitaActivity.class), REQUEST_PERRO);
+
+    }
+
+    /**
      * Método que controla el retroceso a la activity anterior.
      *
      * @param view
      */
     protected void atras (View view){
 
-        ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);
         bCreaCitaAtras.setEnabled(false);
 

@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Permiso para acceso a internet -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Permiso para acceso a la cámara del dispositivo -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permiso para lectura de los archivos almacenados externamente -->
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -22,6 +21,9 @@
         android:roundIcon="@mipmap/fg_logo_groomerloc"
         android:supportsRtl="true"
         android:theme="@style/AppThemeSinAB">
+        <activity
+            android:name=".PerrosCitaActivity"
+            android:configChanges="orientation|screenSize" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

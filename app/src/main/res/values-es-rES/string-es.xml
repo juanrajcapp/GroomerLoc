@@ -227,5 +227,6 @@
     <string name="creaCitaMascota">Mascota:</string>
     <string name="creaCitaSeleccionar">Seleccionar</string>
     <string name="botonCreaCitaConfirmar">Crear cita</string>
+    <string name="mensajeCreaCitaPerroNoRecibido">No se ha seleccionado mascota.</string>
 
 </resources>
