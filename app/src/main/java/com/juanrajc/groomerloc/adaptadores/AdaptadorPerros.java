@@ -296,6 +296,15 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 }
 
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
+                        Toast.LENGTH_SHORT).show();
+                holder.ivFotoPerroLista.setClickable(true);
+                holder.ibEditPerro.setClickable(true);
+                holder.ibBorraPerro.setClickable(true);
+            }
         });
 
     }

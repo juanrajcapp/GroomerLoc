@@ -1,23 +1,37 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.clasesBD.Perro;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CreaCitaActivity extends AppCompatActivity {
+public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCheckedChangeListener {
 
     //Constantes con los posibles resultados devueltos a la activity actual.
     private static final int REQUEST_PERRO=1;
+
+    //Tipo de moneda usada en las tarifas.
+    private final String MONEDA=" €";
 
     //Objetos de las textView de la activity.
     private TextView tvCreaCitaPelu, tvCreaCitaFecha, tvCreaCitaMascota, tvCreaCitaPrecio;
@@ -33,12 +47,18 @@ public class CreaCitaActivity extends AppCompatActivity {
     //Objeto del círculo de carga.
     private ProgressBar circuloCargaCreaCita;
 
+    //Objeto del usuario actual y de la BD Firestore.
+    private FirebaseUser usuario;
+    private FirebaseFirestore firestore;
+
     //Datos necesarios para crear la cita.
     private String idPeluquero, nombrePerro;
     private Date fechaCreacion;
+    private Perro mascota;
+    private Float pesoMascota, precioTotal;
 
     //Precios del pelquero.
-    private float banio, banioExtra, arreglo, arregloExtra, corte,
+    private Float banio, banioExtra, arreglo, arregloExtra, corte,
             corteExtra, deslanado, deslanadoExtra, tinte, tinteExtra,
             oidos, unias, anales, pesoExtra;
 
@@ -76,6 +96,10 @@ public class CreaCitaActivity extends AppCompatActivity {
         bCreaCitaAtras.setEnabled(false);
         bCreaCitaConfirmar.setEnabled(false);
 
+        //Instancia del usuario actual y de la base de datos Firestore.
+        usuario = FirebaseAuth.getInstance().getCurrentUser();
+        firestore = FirebaseFirestore.getInstance();
+
         //Se visibiliza el círculo de carga.
         circuloCargaCreaCita.setVisibility(View.VISIBLE);
 
@@ -97,11 +121,14 @@ public class CreaCitaActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        /*CONTROLAR ACTIVACIÓN BOTÓN CREAR CITA*/
-
-        //Al recibir el nombre del perro, se vuelven a activar los botones de la activity...
+        //Al recibir el nombre del perro, se vuelven a activar algunos botones de la activity...
         bCreaCitaSelecMascota.setEnabled(true);
         bCreaCitaAtras.setEnabled(true);
+
+        //y se comprueba si se debe activar el de confirmar.
+        if(precioTotal!=null){
+            bCreaCitaConfirmar.setEnabled(true);
+        }
 
     }
 
@@ -117,23 +144,25 @@ public class CreaCitaActivity extends AppCompatActivity {
 
                 case REQUEST_PERRO:
 
-                    /*CONTROLAR ACTIVACIÓN BOTÓN CREAR CITA*/
-
-                    //Al recibir el nombre del perro, se vuelven a activar los botones de la activity...
-                    bCreaCitaSelecMascota.setEnabled(true);
-                    bCreaCitaAtras.setEnabled(true);
-
-                    //se guarda el nombre recibido...
-                    nombrePerro = data.getExtras().getString("nombrePerro");
-
-                    //y se muestra en la interfaz de la activity.
-                    tvCreaCitaMascota.setText(nombrePerro);
+                    //Al recibir el nombre de la mascota, se cargan sus datos.
+                    cargaMascota(data.getExtras().getString("nombrePerro"));
 
             }
         } else{
             Toast.makeText(this, getString(R.string.mensajeCreaCitaPerroNoRecibido),
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+        //Cada vez que se modifica el estado de un CheckBox, se comprueba si hay alguna mascota cargada...
+        if(mascota != null) {
+            //si es así, se calcula el precio y se muestra.
+            tvCreaCitaPrecio.setText(calculaPrecio());
+        }
+
     }
 
     /**
@@ -146,6 +175,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             banio = getIntent().getFloatExtra("banio", 0f);
             cbCreaCitaBanio.setVisibility(View.VISIBLE);
+            cbCreaCitaBanio.setOnCheckedChangeListener(this);
 
             if(getIntent().hasExtra("banioExtra")){
                 banioExtra = getIntent().getFloatExtra("banioExtra", 0f);
@@ -158,6 +188,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             arreglo = getIntent().getFloatExtra("arreglo", 0f);
             cbCreaCitaArreglo.setVisibility(View.VISIBLE);
+            cbCreaCitaArreglo.setOnCheckedChangeListener(this);
 
             if(getIntent().hasExtra("arregloExtra")){
                 arregloExtra = getIntent().getFloatExtra("arregloExtra", 0f);
@@ -170,6 +201,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             corte = getIntent().getFloatExtra("corte", 0f);
             cbCreaCitaCorte.setVisibility(View.VISIBLE);
+            cbCreaCitaCorte.setOnCheckedChangeListener(this);
 
             if(getIntent().hasExtra("corteExtra")){
                 corteExtra = getIntent().getFloatExtra("corteExtra", 0f);
@@ -182,6 +214,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             deslanado = getIntent().getFloatExtra("deslanado", 0f);
             cbCreaCitaDeslanado.setVisibility(View.VISIBLE);
+            cbCreaCitaDeslanado.setOnCheckedChangeListener(this);
 
             if(getIntent().hasExtra("deslanadoExtra")){
                 deslanadoExtra = getIntent().getFloatExtra("deslanadoExtra", 0f);
@@ -194,6 +227,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             tinte = getIntent().getFloatExtra("tinte", 0f);
             cbCreaCitaTinte.setVisibility(View.VISIBLE);
+            cbCreaCitaTinte.setOnCheckedChangeListener(this);
 
             if(getIntent().hasExtra("tinteExtra")){
                 tinteExtra = getIntent().getFloatExtra("tinteExtra", 0f);
@@ -206,6 +240,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             oidos = getIntent().getFloatExtra("oidos", 0f);
             cbCreaCitaOidos.setVisibility(View.VISIBLE);
+            cbCreaCitaOidos.setOnCheckedChangeListener(this);
 
         }
 
@@ -214,6 +249,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             unias = getIntent().getFloatExtra("unias", 0f);
             cbCreaCitaUnias.setVisibility(View.VISIBLE);
+            cbCreaCitaUnias.setOnCheckedChangeListener(this);
 
         }
 
@@ -222,6 +258,7 @@ public class CreaCitaActivity extends AppCompatActivity {
 
             anales = getIntent().getFloatExtra("anales", 0f);
             cbCreaCitaAnales.setVisibility(View.VISIBLE);
+            cbCreaCitaAnales.setOnCheckedChangeListener(this);
 
         }
 
@@ -230,12 +267,202 @@ public class CreaCitaActivity extends AppCompatActivity {
             pesoExtra = getIntent().getFloatExtra("pesoExtra", 0f);
         }
 
-        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga...
         circuloCargaCreaCita.setVisibility(View.INVISIBLE);
 
-        //Activa los botones de selección de mascota y atrás.
+        //y se activan los botones de selección de mascota y atrás.
         bCreaCitaSelecMascota.setEnabled(true);
         bCreaCitaAtras.setEnabled(true);
+
+    }
+
+    /**
+     * Método que carga los datos guardados de la mascota pasada por parámetro.
+     *
+     * @param nombre Cadena con el nombre de la mascota.
+     */
+    private void cargaMascota(final String nombre){
+
+        //Se visibiliza el círculo de carga.
+        circuloCargaCreaCita.setVisibility(View.VISIBLE);
+
+        //Consulta a Firebase Firestore los datos del perro seleccionado.
+        firestore.collection("clientes").document(usuario.getUid())
+                .collection("perros").document(nombre)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                //Si la consulta ha resultado exitosa...
+                if(task.isSuccessful()){
+
+                    //guarda el resultado en un DocumentSnapshot.
+                    DocumentSnapshot doc = task.getResult();
+
+                    //Si existe un resultado...
+                    if(doc.exists()){
+
+                        //se obtiene y guarda el objeto con los datos de la mascota...
+                        mascota = doc.toObject(Perro.class);
+                        //se guarda el nombre en una variable de clase...
+                        nombrePerro = nombre;
+                        //se guarda el peso en una variable de clase...
+                        pesoMascota = mascota.getPeso();
+                        //se muestra el nombre en la interfaz de la activity...
+                        tvCreaCitaMascota.setText(nombre);
+                        //y por último, se muestra el precio calculado en la interfaz de la activity.
+                        tvCreaCitaPrecio.setText(calculaPrecio());
+
+                    //Si no...
+                    }else{
+                        //muestra un mensaje...
+                        Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                //Si no...
+                }else{
+                    //muestra un mensaje...
+                    Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga...
+                circuloCargaCreaCita.setVisibility(View.INVISIBLE);
+
+                //y se vuelve a activar la posibilidad de pulsación de los botones.
+                bCreaCitaSelecMascota.setEnabled(true);
+                bCreaCitaAtras.setEnabled(true);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                        Toast.LENGTH_SHORT).show();
+                circuloCargaCreaCita.setVisibility(View.INVISIBLE);
+                bCreaCitaSelecMascota.setEnabled(true);
+                bCreaCitaAtras.setEnabled(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que se encarga de calcular el precio total conjunto de los servicios seleccionados.
+     *
+     * @return Cadena con el precio calculado.
+     */
+    private String calculaPrecio(){
+
+        Float precio=0f;
+        boolean algunaSeleccion=false;
+
+        //Precios de baño.
+        if(cbCreaCitaBanio.isChecked()){
+            precio+=banio;
+            algunaSeleccion=true;
+
+            if(banioExtra!=null){
+                precio+=calculaExtra(banioExtra);
+            }
+
+        }
+
+        //Precios de arreglo o corte parcial.
+        if(cbCreaCitaArreglo.isChecked()){
+            precio+=arreglo;
+            algunaSeleccion=true;
+
+            if(arregloExtra!=null){
+                precio+=calculaExtra(arregloExtra);
+            }
+
+        }
+
+        //Precios de corte completo.
+        if(cbCreaCitaCorte.isChecked()){
+            precio+=corte;
+            algunaSeleccion=true;
+
+            if(corteExtra!=null){
+                precio+=calculaExtra(corteExtra);
+            }
+
+        }
+
+        //Precios de deslanado.
+        if(cbCreaCitaDeslanado.isChecked()){
+            precio+=deslanado;
+            algunaSeleccion=true;
+
+            if(deslanadoExtra!=null){
+                precio+=calculaExtra(deslanadoExtra);
+            }
+
+        }
+
+        //Precios de tinte.
+        if(cbCreaCitaTinte.isChecked()){
+            precio+=tinte;
+            algunaSeleccion=true;
+
+            if(tinteExtra!=null){
+                precio+=calculaExtra(tinteExtra);
+            }
+
+        }
+
+        //Precio de limpieza de oidos.
+        if(cbCreaCitaOidos.isChecked()){
+            precio+=oidos;
+            algunaSeleccion=true;
+        }
+
+        //Precio de corte de uñas.
+        if(cbCreaCitaUnias.isChecked()){
+            precio+=unias;
+            algunaSeleccion=true;
+        }
+
+        //Precio de limpieza de glándulas anales.
+        if(cbCreaCitaAnales.isChecked()){
+            precio+=anales;
+            algunaSeleccion=true;
+        }
+
+        //Comprueba que al menos un servicio ha sido seleccionado.
+        if(algunaSeleccion){
+
+            precioTotal = precio;
+
+            bCreaCitaConfirmar.setEnabled(true);
+
+            return precio.toString()+MONEDA;
+
+        }else{
+
+            precioTotal = null;
+
+            bCreaCitaConfirmar.setEnabled(false);
+
+            return "";
+
+        }
+
+    }
+
+    /**
+     * Método que se encarga de calcular el suplemento de precio por peso.
+     *
+     * @param precioExtra Float con el suplemento por peso.
+     *
+     * @return Float con el precio del suplemento ya calculado respecto al peso de la mascota.
+     */
+    private Float calculaExtra(Float precioExtra){
+
+        int vecesExtra = (int) (pesoMascota/pesoExtra);
+
+        return precioExtra*vecesExtra;
 
     }
 
@@ -249,6 +476,7 @@ public class CreaCitaActivity extends AppCompatActivity {
         //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);
         bCreaCitaAtras.setEnabled(false);
+        bCreaCitaConfirmar.setEnabled(false);
 
         //Inicia la activity que devolverá la mascota seleccionada por el cliente.
         startActivityForResult(new Intent(this, PerrosCitaActivity.class), REQUEST_PERRO);
@@ -265,10 +493,7 @@ public class CreaCitaActivity extends AppCompatActivity {
         //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);
         bCreaCitaAtras.setEnabled(false);
-
-        if(bCreaCitaConfirmar.isEnabled()){
-            bCreaCitaConfirmar.setEnabled(false);
-        }
+        bCreaCitaConfirmar.setEnabled(false);
 
         //Finaliza la activity.
         finish();
