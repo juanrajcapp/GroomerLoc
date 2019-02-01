@@ -1,6 +1,8 @@
 package com.juanrajc.groomerloc;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +22,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.clasesBD.Cita;
 import com.juanrajc.groomerloc.clasesBD.Perro;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +69,9 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
     private Float banio, banioExtra, arreglo, arregloExtra, corte,
             corteExtra, deslanado, deslanadoExtra, tinte, tinteExtra,
             oidos, unias, anales, pesoExtra;
+
+    //Archivo temporal que aloja una imagen.
+    private File temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -529,12 +537,39 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
      */
     private void guardaFotoPerro(final String idCita){
 
-        /*FirebaseStorage.getInstance().getReference().child("fotos/"+usuario.getUid()
-                +"/perros/"+idPerro+" "+perro.getFechaFoto()+".jpg");
+        try {
 
-        FirebaseStorage.getInstance().getReference("citas/" + idCita
-                + "/perros/" + perro.getNombre() + ".jpg")
-                .putFile();*/
+            // Crea un nombre para el archivo con la imagen.
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+            //Crea el archivo temporal.
+            temp = File.createTempFile(
+                    imageFileName,  /* prefijo */
+                    ".jpg",         /* sufijo */
+                    storageDir      /* directorio */
+            );
+
+            //Descarga la imagen del perro seleccionado desde Firebase Storage y la guarda en el archivo temporal.
+            FirebaseStorage.getInstance().getReference().child("fotos/"+usuario.getUid()
+                    +"/perros/"+idPerro+" "+perro.getFechaFoto()+".jpg").getFile(temp)
+                    .addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful() && task.isComplete()){
+
+                        //Cuando termina de descargarse, se sube a la ubicación de la cita.
+                        FirebaseStorage.getInstance().getReference("citas/" + idCita
+                                + "/perros/" + perro.getNombre() + ".jpg")
+                                .putFile(Uri.parse("file:"+temp.getAbsolutePath()));
+
+                    }
+                }
+            });
+
+        } catch (IOException e) {
+        }
 
     }
 
