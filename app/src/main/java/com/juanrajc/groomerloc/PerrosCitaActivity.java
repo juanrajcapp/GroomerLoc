@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorPerrosCita;
+import com.juanrajc.groomerloc.clasesBD.Perro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,18 +89,23 @@ public class PerrosCitaActivity extends AppCompatActivity {
                         tvNoPerrosCita.setVisibility(View.VISIBLE);
                     }else {
 
-                        //Si contienen datos, se crea un List que contedrá los perros encontrados...
-                        List<String> listaPerros = new ArrayList<String>();
+                        /*
+                        Si contienen datos, se crean dos List, una con las IDs y otra con
+                        los objetos de los perros encontrados...
+                        */
+                        List<String> listaIdsPerros = new ArrayList<String>();
+                        List<Perro> listaObjPerros = new ArrayList<Perro>();
 
-                        //y se introducen sus nombres en dicho list uno a uno.
+                        //y se introducen dichos datos en dichos List.
                         for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                            listaPerros.add(doc.getId());
+                            listaIdsPerros.add(doc.getId());
+                            listaObjPerros.add(doc.toObject(Perro.class));
 
                         }
 
                         //Crea un nuevo adaptador con los perros obtenidos.
-                        rvPerrosCita.setAdapter(new AdaptadorPerrosCita(listaPerros));
+                        rvPerrosCita.setAdapter(new AdaptadorPerrosCita(listaIdsPerros, listaObjPerros));
 
                         //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
                         circuloCargaPerrosCita.setVisibility(View.INVISIBLE);

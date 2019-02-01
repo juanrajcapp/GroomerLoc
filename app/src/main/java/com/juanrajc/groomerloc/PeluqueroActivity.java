@@ -157,7 +157,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
     @Override
     public void onBackPressed() {
-        //Botón de retroceso desactivado en esta activity.
+        finishAffinity();
     }
 
     /**

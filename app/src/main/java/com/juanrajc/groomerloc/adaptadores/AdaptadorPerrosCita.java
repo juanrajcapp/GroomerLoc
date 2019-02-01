@@ -9,14 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.PerrosCitaActivity;
@@ -37,21 +33,24 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
 
-    //Objeto que contendrá la lista de perros que se van a mostrar.
-    private List<String> listaPerros;
+    //Objetos que contendrá las IDs y datos de los perros que se van a mostrar.
+    private List<String> listaIdsPerros;
+    private List<Perro> listaObjPerros;
 
     /**
      * Constructor del adaptador.
      *
-     * @param listaPerros List con los perros que se van a mostrar.
+     * @param listaIdsPerros Cadenas con las IDs de los perros.
+     * @param listaObjPerros Objetos con los datos de los perros.
      */
-    public AdaptadorPerrosCita(List<String> listaPerros){
+    public AdaptadorPerrosCita(List<String> listaIdsPerros, List<Perro> listaObjPerros){
 
         //Instancia del usuario actual y de la base de datos Firestore.
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
 
-        this.listaPerros=listaPerros;
+        this.listaIdsPerros=listaIdsPerros;
+        this.listaObjPerros=listaObjPerros;
 
     }
 
@@ -69,7 +68,7 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         //Se muestra el nombre del perro en el TextView.
-        holder.tvNombrePerroLista.setText(listaPerros.get(position));
+        holder.tvNombrePerroLista.setText(listaObjPerros.get(position).getNombre());
 
         /*
         Con Glide, se obtiene la imagen guardada en el Storage de Firebase del perro y se muestra en el ImageView.
@@ -80,8 +79,11 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
         */
         GlideApp.with(contexto)
                 .load(FirebaseStorage.getInstance().getReference()
-                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid() +"/"+listaPerros.get(position)+".jpg"))
-                .apply(new RequestOptions().placeholder(R.drawable.icono_mascota).error(R.drawable.icono_mascota))
+                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
+                                +"/perros/"+listaIdsPerros.get(position)
+                                +" "+listaObjPerros.get(position).getFechaFoto()+".jpg"))
+                .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
+                        .error(R.drawable.icono_mascota))
                 .into(holder.ivFotoPerroLista);
 
         /*Listeners de los CardViews.*/
@@ -97,12 +99,7 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
                 holder.tvNombrePerroLista.setClickable(false);
                 holder.ivFotoPerroLista.setClickable(false);
 
-                //Devuelve el nombre del perro seleccionado...
-                ((PerrosCitaActivity) contexto).setResult(RESULT_OK, new Intent()
-                        .putExtra("nombrePerro", listaPerros.get(position)));
-
-                //y cierra la activity.
-                ((PerrosCitaActivity) contexto).finish();
+                respuestaSeleccion(listaIdsPerros.get(position));
 
             }
         });
@@ -119,23 +116,34 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
                 holder.ivFotoPerroLista.setClickable(false);
                 holder.tvNombrePerroLista.setClickable(false);
 
-                //Devuelve el nombre del perro seleccionado...
-                ((PerrosCitaActivity) contexto).setResult(RESULT_OK, new Intent()
-                        .putExtra("nombrePerro", listaPerros.get(position)));
-
-                //y cierra la activity.
-                ((PerrosCitaActivity) contexto).finish();
+                respuestaSeleccion(listaIdsPerros.get(position));
 
             }
         });
 
     }
 
+    /**
+     * Método que responde a la activity que lo llamó con el perro seleccionado.
+     *
+     * @param idPerro Cadena con la ID del perro.
+     */
+    private void respuestaSeleccion(String idPerro){
+
+        //Devuelve el ID del perro seleccionado...
+        ((PerrosCitaActivity) contexto).setResult(RESULT_OK, new Intent()
+                .putExtra("idPerro", idPerro));
+
+        //y cierra la activity.
+        ((PerrosCitaActivity) contexto).finish();
+
+    }
+
     @Override
     public int getItemCount() {
 
-        if(listaPerros!=null) {
-            return listaPerros.size();
+        if(listaIdsPerros!=null) {
+            return listaIdsPerros.size();
         }else{
             return 0;
         }

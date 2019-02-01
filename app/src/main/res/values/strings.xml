@@ -102,7 +102,6 @@
     <string name="mensajeNoResultPerros">The list of pets could not be loaded.</string>
     <string name="descIvEditPerro">Edit data of the pet.</string>
     <string name="descIvBorrarPerro">Delete pet.</string>
-    <string name="mensajeErrorCargaDatosPerro">Unable to obtain data from</string>
     <string name="dialogBorraPerro">Do you want to erase</string>
     <string name="mensajePerroBorradoExito">has been deleted successfully.</string>
     <string name="mensajePerroNoBorrado">could not be deleted.</string>
@@ -129,15 +128,16 @@
     <string name="mensajeNoEspecificado">Not specified.</string>
     <string name="mensajeSubidaCorrecta">The image has been uploaded correctly.</string>
     <string name="mensajeSubidaFallida">Failure to upload the image.</string>
-    <string name="mensajeFalloBD">Database accessing error.</string>
     <string name="mensajeFalloRegPerro">Unable to register</string>
-    <string name="mensajePerroNoExiste">is not registered.</string>
+    <string name="mensajeFalloActuPerro">The pet data could not be updated.</string>
+    <string name="mensajePerroNoExiste">Failed to load the pet\'s data.</string>
         <!-- dialog perro -->
     <string name="tituloDialog">Select an option:</string>
     <string name="opCamara">Take a photo...</string>
     <string name="opGaleria">Choose from gallery...</string>
     <string name="opCancelar">Cancel</string>
-    <string name="mensajeSobreescrituraPerro">is already registered, do you want to update his/her data?</string>
+    <string name="mensajeSobreescrituraPerro">Are you sure you want to update</string>
+    <string name="mensajeSobreescrituraPerro2">\'s data?</string>
     <string name="si">YES</string>
     <string name="no">NO</string>
 
@@ -228,5 +228,8 @@
     <string name="creaCitaSeleccionar">Select</string>
     <string name="botonCreaCitaConfirmar">Create appointment</string>
     <string name="mensajeCreaCitaPerroNoRecibido">No pet selected.</string>
+    <string name="mensajeCreaCitaCreadaExito">Appointment created successfully,
+        do not forget to arrange the date and time with the groomer.</string>
+    <string name="mensajeCreaCitaCreadaError">The appointment could not be created.</string>
 
 </resources>

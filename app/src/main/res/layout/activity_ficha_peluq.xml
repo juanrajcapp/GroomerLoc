@@ -57,13 +57,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:text="@string/fichaPeluTel"
+                android:textAlignment="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTelPelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:textAlignment="center" />
         </TableRow>
 
         <TableRow
@@ -80,13 +81,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:text="@string/fichaPeluDir"
+                android:textAlignment="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDirPelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:textAlignment="center" />
 
         </TableRow>
 
@@ -107,13 +109,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:text="@string/fichaPeluDir2"
+                android:textAlignment="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDir2Pelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:textAlignment="center" />
         </TableRow>
 
         <Button

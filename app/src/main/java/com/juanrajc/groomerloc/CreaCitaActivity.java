@@ -11,14 +11,17 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.juanrajc.groomerloc.clasesBD.Cita;
 import com.juanrajc.groomerloc.clasesBD.Perro;
 
 import java.text.SimpleDateFormat;
@@ -52,9 +55,9 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
     private FirebaseFirestore firestore;
 
     //Datos necesarios para crear la cita.
-    private String idPeluquero, nombrePerro;
+    private String idPeluquero, idPerro;
     private Date fechaCreacion;
-    private Perro mascota;
+    private Perro perro;
     private Float pesoMascota, precioTotal;
 
     //Precios del pelquero.
@@ -144,8 +147,10 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
 
                 case REQUEST_PERRO:
 
-                    //Al recibir el nombre de la mascota, se cargan sus datos.
-                    cargaMascota(data.getExtras().getString("nombrePerro"));
+                    //Al recibir el ID de la mascota, se guarda en una variable de clase...
+                    idPerro = data.getExtras().getString("idPerro");
+                    //y se cargan sus datos.
+                    cargaMascota(idPerro);
 
             }
         } else{
@@ -158,7 +163,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
         //Cada vez que se modifica el estado de un CheckBox, se comprueba si hay alguna mascota cargada...
-        if(mascota != null) {
+        if(perro != null) {
             //si es así, se calcula el precio y se muestra.
             tvCreaCitaPrecio.setText(calculaPrecio());
         }
@@ -279,16 +284,16 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
     /**
      * Método que carga los datos guardados de la mascota pasada por parámetro.
      *
-     * @param nombre Cadena con el nombre de la mascota.
+     * @param idPerro Cadena con la ID de la mascota.
      */
-    private void cargaMascota(final String nombre){
+    private void cargaMascota(final String idPerro){
 
         //Se visibiliza el círculo de carga.
         circuloCargaCreaCita.setVisibility(View.VISIBLE);
 
         //Consulta a Firebase Firestore los datos del perro seleccionado.
         firestore.collection("clientes").document(usuario.getUid())
-                .collection("perros").document(nombre)
+                .collection("perros").document(idPerro)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -303,26 +308,24 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
                     if(doc.exists()){
 
                         //se obtiene y guarda el objeto con los datos de la mascota...
-                        mascota = doc.toObject(Perro.class);
-                        //se guarda el nombre en una variable de clase...
-                        nombrePerro = nombre;
+                        perro = doc.toObject(Perro.class);
                         //se guarda el peso en una variable de clase...
-                        pesoMascota = mascota.getPeso();
+                        pesoMascota = perro.getPeso();
                         //se muestra el nombre en la interfaz de la activity...
-                        tvCreaCitaMascota.setText(nombre);
+                        tvCreaCitaMascota.setText(perro.getNombre());
                         //y por último, se muestra el precio calculado en la interfaz de la activity.
                         tvCreaCitaPrecio.setText(calculaPrecio());
 
                     //Si no...
                     }else{
                         //muestra un mensaje...
-                        Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                        Toast.makeText(getApplicationContext(), getText(R.string.mensajePerroNoExiste),
                                 Toast.LENGTH_SHORT).show();
                     }
                 //Si no...
                 }else{
                     //muestra un mensaje...
-                    Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                    Toast.makeText(getApplicationContext(), getText(R.string.mensajePerroNoExiste),
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -337,7 +340,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), getText(R.string.mensajeErrorCargaDatosPerro)+" "+nombre,
+                Toast.makeText(getApplicationContext(), getText(R.string.mensajePerroNoExiste),
                         Toast.LENGTH_SHORT).show();
                 circuloCargaCreaCita.setVisibility(View.INVISIBLE);
                 bCreaCitaSelecMascota.setEnabled(true);
@@ -463,6 +466,121 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
         int vecesExtra = (int) (pesoMascota/pesoExtra);
 
         return precioExtra*vecesExtra;
+
+    }
+
+    /**
+     * Método que crea la descripción del servicio a prestar en la cita.
+     *
+     * @return Cadena con la descripción del servicio.
+     */
+    private String creaServicio(){
+
+        StringBuffer sb=new StringBuffer();
+
+        //Baño.
+        if(cbCreaCitaBanio.isChecked()){
+            sb.append("| BAÑO |");
+        }
+
+        //Arreglo o corte parcial.
+        if(cbCreaCitaArreglo.isChecked()){
+            sb.append("| ARREGLO |");
+        }
+
+        //Corte completo.
+        if(cbCreaCitaCorte.isChecked()){
+            sb.append("| CORTE |");
+        }
+
+        //Deslanado.
+        if(cbCreaCitaDeslanado.isChecked()){
+            sb.append("| DESLANADO |");
+        }
+
+        //Tinte.
+        if(cbCreaCitaTinte.isChecked()){
+            sb.append("| TINTE |");
+        }
+
+        //Limpieza de oidos.
+        if(cbCreaCitaOidos.isChecked()){
+            sb.append("| LIMP. OIDOS |");
+        }
+
+        //Corte de uñas.
+        if(cbCreaCitaUnias.isChecked()){
+            sb.append("| CORT. UÑAS |");
+        }
+
+        //Limpieza de glándulas anales.
+        if(cbCreaCitaAnales.isChecked()) {
+            sb.append("| LIMP. GLÁNDULAS |");
+        }
+
+        return sb.toString();
+
+    }
+
+    /**
+     * Método que guarda la foto actual del perro en la ubicación de la cita.
+     *
+     * @param idCita Cadena con la ID de la cita en Firestore.
+     */
+    private void guardaFotoPerro(final String idCita){
+
+        /*FirebaseStorage.getInstance().getReference().child("fotos/"+usuario.getUid()
+                +"/perros/"+idPerro+" "+perro.getFechaFoto()+".jpg");
+
+        FirebaseStorage.getInstance().getReference("citas/" + idCita
+                + "/perros/" + perro.getNombre() + ".jpg")
+                .putFile();*/
+
+    }
+
+    /**
+     * Método que crea la cita.
+     *
+     * @param view
+     */
+    protected void creaCita(View view){
+
+        //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
+        bCreaCitaSelecMascota.setEnabled(false);
+        bCreaCitaAtras.setEnabled(false);
+        bCreaCitaConfirmar.setEnabled(false);
+
+        //Crea la cita en Firestore.
+        firestore.collection("citas").add(new Cita(idPeluquero, usuario.getUid(),
+                creaServicio(), precioTotal, fechaCreacion, null, perro))
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        //Si el perro seleccionado tiene foto, se guarda en la ubicación de la cita.
+                        if(perro.getFechaFoto()!=null){
+                            guardaFotoPerro(documentReference.getId());
+                        }
+
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeCreaCitaCreadaExito),
+                                Toast.LENGTH_LONG).show();
+
+                        /*startActivity(new Intent(getApplicationContext(), ChatCitaActivity.class)
+                                .putExtra("refCita", documentReference.getId()));*/
+
+                        finish();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeCreaCitaCreadaError),
+                        Toast.LENGTH_SHORT).show();
+                bCreaCitaSelecMascota.setEnabled(true);
+                bCreaCitaAtras.setEnabled(true);
+                bCreaCitaConfirmar.setEnabled(true);
+            }
+        });
 
     }
 

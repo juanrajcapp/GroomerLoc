@@ -45,6 +45,7 @@ import com.juanrajc.groomerloc.recursos.GlideApp;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RegPerroActivity extends AppCompatActivity {
@@ -71,6 +72,12 @@ public class RegPerroActivity extends AppCompatActivity {
 
     //Uri de la foto temporal o almacenada en el dispositivo.
     private Uri rutaFoto;
+
+    //Fechas en las que se ha guardado la foto.
+    private String fechaFoto, fechaFotoAnterior;
+
+    //ID del perro al que se le van a modificar los datos.
+    private String idPerro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +111,12 @@ public class RegPerroActivity extends AppCompatActivity {
         botonRegPerro = (Button) findViewById(R.id.botonRegPerro);
         botonRegAtras = (Button) findViewById(R.id.botonAtrasRegPerro);
 
-        //Si recibe un intent con un extra llamado "nombrePerro"...
-        if(getIntent().hasExtra("nombrePerro")){
-            //Rellena los elementos de la activity con los datos del perro recibido.
-            rellenaFormulario(getIntent().getStringExtra("nombrePerro"));
+        //Si recibe un intent con un extra llamado "idPerro"...
+        if(getIntent().hasExtra("idPerro")){
+            //guarda el ID en una variable de clase...
+            idPerro = getIntent().getStringExtra("idPerro");
+            //y rellena los elementos de la activity con los datos del perro recibido.
+            rellenaFormulario();
         }
 
     }
@@ -392,40 +401,6 @@ public class RegPerroActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que comprueba si el perro que se intenta registrar lo está ya o no.
-     *
-     * @param nombre String con el nombre del perro.
-     */
-    private void compruebaExistenciaPerro(String nombre){
-
-        //Referencia al registro (documento) de la base de datos en la que se encontrarían los datos del perro.
-        DocumentReference dr=firestore.collection("clientes").document(usuario.getUid())
-                .collection("perros").document(nombre);
-
-        //Crea un listener que recupera el contenido del documento especificado anteriormente.
-        dr.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-
-                    DocumentSnapshot doc = task.getResult();
-
-                    //Si existe el registro...
-                    if (doc.exists()) {
-                        preguntaSobreescrituraPerro();
-                    //si no...
-                    }else {
-                        creaPerro();
-                    }
-
-                }else{
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloBD), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    /**
      * Método que se encarga de preguntar si se desea sobreescribir la información existente del perro.
      */
     private void preguntaSobreescrituraPerro(){
@@ -439,7 +414,7 @@ public class RegPerroActivity extends AppCompatActivity {
 
                     //Si se acepta sobreescribir...
                     case DialogInterface.BUTTON_POSITIVE:
-                        creaPerro();
+                        sobreescribePerro();
                         break;
 
                     //si no...
@@ -455,38 +430,107 @@ public class RegPerroActivity extends AppCompatActivity {
         };
 
         //Crea y muestra el diálogo de alerta.
-        new AlertDialog.Builder(this).setMessage(nombrePerro.getText().toString()+" "+getString(R.string.mensajeSobreescrituraPerro))
+        new AlertDialog.Builder(this).setMessage(getString(R.string.mensajeSobreescrituraPerro)
+                +" "+nombrePerro.getText()+getString(R.string.mensajeSobreescrituraPerro2))
                 .setPositiveButton(getString(R.string.si), dialogo).setNegativeButton(getString(R.string.no), dialogo).show();
 
     }
 
     /**
-     * Método que se encarga de crear el registro del perro con los datos introducidos en la activity.
+     * Método que se encarga de registrar un nuevo perro con los datos introducidos en la activity.
      */
     private void creaPerro(){
 
-        firestore.collection("clientes")
-                .document(usuario.getUid()).collection("perros")
-                .document(nombrePerro.getText().toString()).set(new Perro(razaPerro.getText().toString(),
-                obtieneSexo(), comentPerro.getText().toString(), Float.parseFloat(pesoPerro.getText().toString())))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        //Si se ha especificado la ruta de una foto, se indica la fecha de creación.
+        if(rutaFoto!=null){
+            fechaFoto = Calendar.getInstance().getTime().toString();
+        }
+
+        //Crea un nuevo perro en la base de datos Firestore del cliente actual.
+        firestore.collection("clientes").document(usuario.getUid())
+                .collection("perros").add(new Perro(nombrePerro.getText().toString(),
+                razaPerro.getText().toString(), obtieneSexo(), comentPerro.getText().toString(),
+                fechaFoto, Float.parseFloat(pesoPerro.getText().toString())))
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onSuccess(Void aVoid) {
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
 
-                //Si se ha especificado la ruta de una foto...
-                if(rutaFoto!=null) {
-                    guardaFoto();
+                    //Si se ha especificado la ruta de una foto...
+                    if(rutaFoto!=null) {
+                        guardaFoto(task.getResult().getId());
+                    }
+
+                    //Finaliza la activity.
+                    finish();
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloRegPerro)
+                            +" "+nombrePerro.getText().toString(), Toast.LENGTH_SHORT).show();
+                    botonRegPerro.setEnabled(true);
+                    botonRegImg.setEnabled(true);
+                    botonRegAtras.setEnabled(true);
                 }
-
-                //Finaliza la activity.
-                finish();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloRegPerro)
                         +" "+nombrePerro.getText().toString(), Toast.LENGTH_SHORT).show();
+                botonRegPerro.setEnabled(true);
+                botonRegImg.setEnabled(true);
+                botonRegAtras.setEnabled(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que sobreescribe los datos del perro seleccionado.
+     */
+    private void sobreescribePerro(){
+
+        //Si se ha especificado la ruta de una foto, se indica la fecha de modificación.
+        if(rutaFoto!=null){
+            fechaFoto = Calendar.getInstance().getTime().toString();
+        }
+
+        //Actualiza los datos del perro en Firestore.
+        firestore.collection("clientes").document(usuario.getUid())
+                .collection("perros").document(idPerro)
+                .set(new Perro(nombrePerro.getText().toString(), razaPerro.getText().toString(),
+                        obtieneSexo(), comentPerro.getText().toString(), fechaFoto,
+                        Float.parseFloat(pesoPerro.getText().toString())))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                    //Si se ha especificado la ruta de una foto...
+                    if(rutaFoto!=null) {
+                        borraFotoAnterior();
+                        guardaFoto(idPerro);
+                    }
+
+                    //Finaliza la activity.
+                    finish();
+
+                }else{
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloActuPerro)
+                            +" "+nombrePerro.getText().toString(), Toast.LENGTH_SHORT).show();
+                    botonRegPerro.setEnabled(true);
+                    botonRegImg.setEnabled(true);
+                    botonRegAtras.setEnabled(true);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeFalloActuPerro)
+                        +" "+nombrePerro.getText().toString(), Toast.LENGTH_SHORT).show();
+                botonRegPerro.setEnabled(true);
+                botonRegImg.setEnabled(true);
+                botonRegAtras.setEnabled(true);
             }
         });
 
@@ -494,12 +538,14 @@ public class RegPerroActivity extends AppCompatActivity {
 
     /**
      * Método que se encarga de guardar la foto en Firebase Storage.
+     *
+     * @param idPerro Cadena con la ID del perro en Firestore.
      */
-    private void guardaFoto(){
+    private void guardaFoto(String idPerro){
 
         //Crea la referencia de Firebase Storage donde se va a guardar la foto.
         referenciaFoto = FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
-                + "/" + nombrePerro.getText().toString() + ".jpg");
+                + "/perros/" + idPerro+" "+fechaFoto + ".jpg");
 
         //Sube la foto a la referencia previamente creada. Se guarda el return de la acción para controlar la subida.
         UploadTask controlSubida = referenciaFoto.putFile(rutaFoto);
@@ -521,12 +567,20 @@ public class RegPerroActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que se encarga de rellenar los campos de la activity con los datos
-     * del perro recibido por parámetro.
-     *
-     * @param perro Cadena con el nombre del perro.
+     * Método que borra la foto anterior del perro guardada en Firebase Storage.
      */
-    private void rellenaFormulario(final String perro){
+    private void borraFotoAnterior(){
+
+        FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
+                + "/perros/" + idPerro+" "+fechaFotoAnterior + ".jpg").delete();
+
+    }
+
+    /**
+     * Método que se encarga de rellenar los campos de la activity con los datos
+     * del perro recibido por Intent.
+     */
+    private void rellenaFormulario(){
 
         //Instancia del círculo de carga y lo activa.
         circuloCargaRegPerro = (ProgressBar) findViewById(R.id.circuloCargaRegPerro);
@@ -534,7 +588,7 @@ public class RegPerroActivity extends AppCompatActivity {
 
         //Obtiene los datos del perro desde Firestore.
         firestore.collection("clientes").document(usuario.getUid())
-                .collection("perros").document(perro).get()
+                .collection("perros").document(idPerro).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -545,11 +599,8 @@ public class RegPerroActivity extends AppCompatActivity {
 
                                 Perro datosPerro = task.getResult().toObject(Perro.class);
 
-                                //muestra el nombre y deshabilita el EditText del mismo...
-                                nombrePerro.setText(perro);
-                                nombrePerro.setEnabled(false);
-
-                                //muestra la raza y el peso...
+                                //muestra el nombre, la raza y el peso...
+                                nombrePerro.setText(datosPerro.getNombre());
                                 razaPerro.setText(datosPerro.getRaza());
                                 pesoPerro.setText(String.valueOf(datosPerro.getPeso()));
 
@@ -566,10 +617,13 @@ public class RegPerroActivity extends AppCompatActivity {
                                 //y obtiene la fotografía desde Firebase Storage (si existe también).
                                 GlideApp.with(getApplicationContext())
                                         .load(FirebaseStorage.getInstance().getReference()
-                                                .child("fotos/"+usuario.getUid() +"/"+perro+".jpg"))
+                                                .child("fotos/"+usuario.getUid() +"/perros/"
+                                                        +idPerro+" "+datosPerro.getFechaFoto()+".jpg"))
                                         .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
                                                 .error(R.drawable.icono_mascota))
                                         .into(ivPerro);
+
+                                fechaFotoAnterior = datosPerro.getFechaFoto();
 
                                 //Finalmente, cuando termina de cargar toda la información, se desactiva el círculo de carga.
                                 circuloCargaRegPerro.setVisibility(View.INVISIBLE);
@@ -577,14 +631,14 @@ public class RegPerroActivity extends AppCompatActivity {
 
                             }else{
                                 circuloCargaRegPerro.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getApplicationContext(), perro+" "+getString(R.string.mensajePerroNoExiste),
+                                Toast.makeText(getApplicationContext(), getString(R.string.mensajePerroNoExiste),
                                         Toast.LENGTH_SHORT).show();
                                 finish();
                             }
 
                         }else{
                             circuloCargaRegPerro.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPerro)+" "+perro,
+                            Toast.makeText(getApplicationContext(), getString(R.string.mensajePerroNoExiste),
                                     Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -594,7 +648,7 @@ public class RegPerroActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         circuloCargaRegPerro.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeErrorCargaDatosPerro)+" "+perro,
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajePerroNoExiste),
                                 Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -607,7 +661,7 @@ public class RegPerroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected  void regPerro (View view){
+    protected void regPerro (View view){
 
         if(compruebaCampos()){
 
@@ -616,7 +670,12 @@ public class RegPerroActivity extends AppCompatActivity {
             botonRegImg.setEnabled(false);
             botonRegAtras.setEnabled(false);
 
-            compruebaExistenciaPerro(nombrePerro.getText().toString());
+            //Comprueba si es una edición o una creación de perro.
+            if(idPerro!=null){
+                preguntaSobreescrituraPerro();
+            }else{
+                creaPerro();
+            }
 
         }
 
@@ -628,6 +687,11 @@ public class RegPerroActivity extends AppCompatActivity {
      * @param view
      */
     protected void atras (View view){
+
+        //Desactiva el botón de registro de perro, añadir fotografía y atrás.
+        botonRegPerro.setEnabled(false);
+        botonRegImg.setEnabled(false);
+        botonRegAtras.setEnabled(false);
 
         //Finaliza la activity.
         finish();

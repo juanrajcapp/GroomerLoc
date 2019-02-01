@@ -102,7 +102,6 @@
     <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
     <string name="descIvEditPerro">Editar datos de la mascota.</string>
     <string name="descIvBorrarPerro">>Borrar mascota.</string>
-    <string name="mensajeErrorCargaDatosPerro">No se han podido obtener los datos de</string>
     <string name="dialogBorraPerro">¿Desea borrar a</string>
     <string name="mensajePerroBorradoExito">ha sido borrado con éxito.</string>
     <string name="mensajePerroNoBorrado">no se ha podido eliminar.</string>
@@ -129,15 +128,16 @@
     <string name="mensajeNoEspecificado">No especificado.</string>
     <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente.</string>
     <string name="mensajeSubidaFallida">Fallo al subir la imagen.</string>
-    <string name="mensajeFalloBD">Error al acceder a la base de datos.</string>
     <string name="mensajeFalloRegPerro">No se ha podido registrar a</string>
-    <string name="mensajePerroNoExiste">no está registrado.</string>
+    <string name="mensajeFalloActuPerro">No se han podido actualizar los datos de la mascota.</string>
+    <string name="mensajePerroNoExiste">No se han podido cargar los datos de la mascota.</string>
         <!--dialog perro-->
     <string name="tituloDialog">Seleccione una opción:</string>
     <string name="opCamara">Haga una foto...</string>
     <string name="opGaleria">Seleccione desde la galería...</string>
     <string name="opCancelar">Cancelar</string>
-    <string name="mensajeSobreescrituraPerro">ya está registrado, ¿Desea actualizar sus datos?</string>
+    <string name="mensajeSobreescrituraPerro">¿Está seguro de que desea actualizar los datos de</string>
+    <string name="mensajeSobreescrituraPerro2">\?</string>
     <string name="si">SI</string>
     <string name="no">NO</string>
 
@@ -228,5 +228,8 @@
     <string name="creaCitaSeleccionar">Seleccionar</string>
     <string name="botonCreaCitaConfirmar">Crear cita</string>
     <string name="mensajeCreaCitaPerroNoRecibido">No se ha seleccionado mascota.</string>
+    <string name="mensajeCreaCitaCreadaExito">Cita creada con éxito,
+        no olvide acordar la fecha y hora con el peluquero.</string>
+    <string name="mensajeCreaCitaCreadaError">No se ha podido crear la cita.</string>
 
 </resources>

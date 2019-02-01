@@ -17,13 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.PerrosActivity;
@@ -32,6 +30,7 @@ import com.juanrajc.groomerloc.RegPerroActivity;
 import com.juanrajc.groomerloc.clasesBD.Perro;
 import com.juanrajc.groomerloc.recursos.GlideApp;
 
+import java.util.Date;
 import java.util.List;
 
 public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHolder>  {
@@ -43,21 +42,24 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     private FirebaseUser usuario;
     private FirebaseFirestore firestore;
 
-    //Objeto que contendrá la lista de perros que se van a mostrar.
-    private List<String> listaPerros;
+    //Objetos que contendrá las IDs y datos de los perros que se van a mostrar.
+    private List<String> listaIdsPerros;
+    private List<Perro> listaObjPerros;
 
     /**
      * Constructor del adaptador.
      *
-     * @param listaPerros List con los perros que se van a mostrar.
+     * @param listaIdsPerros Cadenas con las IDs de los perros.
+     * @param listaObjPerros Objetos con los datos de los perros.
      */
-    public AdaptadorPerros(List<String> listaPerros){
+    public AdaptadorPerros(List<String> listaIdsPerros, List<Perro> listaObjPerros){
 
         //Instancia del usuario actual y de la base de datos Firestore.
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
 
-        this.listaPerros=listaPerros;
+        this.listaIdsPerros=listaIdsPerros;
+        this.listaObjPerros=listaObjPerros;
 
     }
 
@@ -75,7 +77,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         //Se muestra el nombre del perro en el TextView.
-        holder.tvNombrePerroLista.setText(listaPerros.get(position));
+        holder.tvNombrePerroLista.setText(listaObjPerros.get(position).getNombre());
 
         /*
         Con Glide, se obtiene la imagen guardada en el Storage de Firebase del perro y se muestra en el ImageView.
@@ -86,8 +88,12 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
         */
         GlideApp.with(contexto)
                 .load(FirebaseStorage.getInstance().getReference()
-                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid() +"/"+listaPerros.get(position)+".jpg"))
-                .apply(new RequestOptions().placeholder(R.drawable.icono_mascota).error(R.drawable.icono_mascota))
+                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
+                                +"/perros/"+listaIdsPerros.get(position)
+                                +" "+listaObjPerros.get(position).getFechaFoto()+".jpg"))
+                .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
+                        .error(R.drawable.icono_mascota))
+                .signature(new ObjectKey(listaIdsPerros.get(position)+new Date().getTime()))
                 .into(holder.ivFotoPerroLista);
 
         /*Listeners de los CardViews.*/
@@ -104,7 +110,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 holder.ibEditPerro.setClickable(false);
                 holder.ibBorraPerro.setClickable(false);
 
-                obtieneDatosPerro(position, holder);
+                muestraDatosPerro(position, formateaDatosPerro(listaObjPerros.get(position)), holder);
 
             }
         });
@@ -121,9 +127,9 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
                 holder.ivFotoPerroLista.setClickable(false);
                 holder.ibBorraPerro.setClickable(false);
 
-                //Inicia la activity de registro de perros, pasándole el nombre del perro a editar.
+                //Inicia la activity de registro de perros, pasándole la ID del perro a editar.
                 ((PerrosActivity) contexto).startActivity(new Intent(contexto, RegPerroActivity.class)
-                        .putExtra("nombrePerro", listaPerros.get(position)));
+                        .putExtra("idPerro", listaIdsPerros.get(position)));
 
             }
         });
@@ -142,7 +148,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
                 //Dialogo de alerta que pregunta si se desa borrar el perro seleccionado.
                 new AlertDialog.Builder(contexto, R.style.AppTheme_Dialog)
-                        .setTitle(contexto.getText(R.string.dialogBorraPerro)+" "+listaPerros.get(position)+"?")
+                        .setTitle(contexto.getText(R.string.dialogBorraPerro)+" "+listaObjPerros.get(position).getNombre()+"?")
                         .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -187,27 +193,29 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     private void borraPerro(final int posicion, final ViewHolder holder){
 
         firestore.collection("clientes").document(usuario.getUid())
-                .collection("perros").document(listaPerros.get(posicion))
+                .collection("perros").document(listaIdsPerros.get(posicion))
                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
 
                 borraFotoPerro(posicion);
 
-                Toast.makeText(contexto, listaPerros.get(posicion)+" "+contexto.getText(R.string.mensajePerroBorradoExito),
+                Toast.makeText(contexto, listaObjPerros.get(posicion).getNombre()+" "+contexto.getText(R.string.mensajePerroBorradoExito),
                         Toast.LENGTH_SHORT).show();
 
-                //Si se borra con éxito, se elimina el perro del List y se notifica al RecyclerView.
-                listaPerros.remove(posicion);
+                //Si se borra con éxito, se elimina el perro de los List y se notifica al RecyclerView.
+                listaIdsPerros.remove(posicion);
+                listaObjPerros.remove(posicion);
                 notifyItemRemoved(posicion);
-                notifyItemRangeChanged(posicion, listaPerros.size());
+                notifyItemRangeChanged(posicion, listaIdsPerros.size());
+                notifyItemRangeChanged(posicion, listaObjPerros.size());
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
-                Toast.makeText(contexto, listaPerros.get(posicion)+" "+contexto.getText(R.string.mensajePerroNoBorrado),
+                Toast.makeText(contexto, listaObjPerros.get(posicion).getNombre()+" "+contexto.getText(R.string.mensajePerroNoBorrado),
                         Toast.LENGTH_SHORT).show();
 
                 //Si el borrado falla, se vuelve a activar la posibilidad de pulsación de los botones.
@@ -228,98 +236,18 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     private void borraFotoPerro(int posicion){
 
         FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
-                + "/" + listaPerros.get(posicion) + ".jpg").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
+                + "/perros/" + listaIdsPerros.get(posicion)+" "+listaObjPerros.get(posicion).getFechaFoto() + ".jpg").delete();
 
     }
 
     /**
-     * Método que consulta a Firestore los datos del perro seleccionado.
+     * Método que formatea los datos de un perro guardado en Firestore.
      *
-     * @param posicion Posición en el List donde se ecuentra el perro seleccionado (número entero).
-     * @param holder ViewHolder necesario para el manejo de los elementos de cada CardView.
-     */
-    private void obtieneDatosPerro(final int posicion, final ViewHolder holder){
-
-        //Consulta a Firebase Firestore los datos del perro seleccionado.
-        firestore.collection("clientes").document(usuario.getUid())
-                .collection("perros").document(listaPerros.get(posicion))
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                //Si la consulta ha resultado exitosa...
-                if(task.isSuccessful()){
-
-                    //guarda el resultado en un DocumentSnapshot.
-                    DocumentSnapshot doc = task.getResult();
-
-                    //Si existe un resultado...
-                    if(doc.exists()){
-
-                        muestraDatosPerro(posicion, formateaDatosPerro(doc), holder);
-
-                    //Si no...
-                    }else{
-
-                        //muestra un mensaje...
-                        Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
-                                Toast.LENGTH_SHORT).show();
-
-                        //y se vuelve a activar la posibilidad de pulsación de los botones.
-                        holder.ivFotoPerroLista.setClickable(true);
-                        holder.ibEditPerro.setClickable(true);
-                        holder.ibBorraPerro.setClickable(true);
-
-                    }
-                    //Si no...
-                }else{
-
-                    //muestra un mensaje...
-                    Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
-                            Toast.LENGTH_SHORT).show();
-
-                    //y se vuelve a activar la posibilidad de pulsación de los botones.
-                    holder.ivFotoPerroLista.setClickable(true);
-                    holder.ibEditPerro.setClickable(true);
-                    holder.ibBorraPerro.setClickable(true);
-
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(contexto, contexto.getText(R.string.mensajeErrorCargaDatosPerro)+" "+listaPerros.get(posicion),
-                        Toast.LENGTH_SHORT).show();
-                holder.ivFotoPerroLista.setClickable(true);
-                holder.ibEditPerro.setClickable(true);
-                holder.ibBorraPerro.setClickable(true);
-            }
-        });
-
-    }
-
-    /**
-     * Método que formatea los datos obtenidos de la consulta al document de un perro guardado en Firestore.
-     *
-     * @param datos DocumentSnapshot con los datos obtenidos de la consulta.
+     * @param perro Objeto con los datos del perro.
      *
      * @return Cadena formateada con los datos listos para ser mostrados.
      */
-    private String formateaDatosPerro(DocumentSnapshot datos){
-
-        //Redefine el DS al tipo de objeto del perro.
-        Perro perro = datos.toObject(Perro.class);
+    private String formateaDatosPerro(Perro perro){
 
         //Guarda los datos en cadenas.
         String raza=perro.getRaza(), sexo=perro.getSexo(), comentario=perro.getComentario(), peso=String.valueOf(perro.getPeso());
@@ -363,7 +291,7 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
 
         //Crea un TV para personalizar el título del dialog.
         TextView tituloDialog = new TextView(contexto);
-        tituloDialog.setText(listaPerros.get(posicion));
+        tituloDialog.setText(listaObjPerros.get(posicion).getNombre());
         tituloDialog.setGravity(Gravity.CENTER);
         tituloDialog.setBackgroundColor(Color.GRAY);
         tituloDialog.setTextColor(Color.WHITE);
@@ -394,8 +322,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
     @Override
     public int getItemCount() {
 
-        if(listaPerros!=null) {
-            return listaPerros.size();
+        if(listaIdsPerros!=null) {
+            return listaIdsPerros.size();
         }else{
             return 0;
         }

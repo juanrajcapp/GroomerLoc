@@ -135,7 +135,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onBackPressed() {
-       //Botón de retroceso desactivado en esta activity.
+       finishAffinity();
     }
 
     @Override

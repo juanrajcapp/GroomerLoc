@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorPerros;
+import com.juanrajc.groomerloc.clasesBD.Perro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class PerrosActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
 
     //Objeto del botón para registrar nuevo perro.
-    private Button botonActRegPerro;
+    private Button botonActRegPerro, botonAtrasListPerros;
 
     //Objeto del círculo de carga.
     private ProgressBar circuloCargaPerros;
@@ -51,8 +53,9 @@ public class PerrosActivity extends AppCompatActivity {
         usuario = FirebaseAuth.getInstance().getCurrentUser();
         firestore = FirebaseFirestore.getInstance();
 
-        //Instancia del botón para registrar nuevo perro.
+        //Instancia del botón para registrar nuevo perro y para retroceder.
         botonActRegPerro = (Button) findViewById(R.id.botonActRegPerro);
+        botonAtrasListPerros = (Button) findViewById(R.id.botonAtrasListPerros);
 
         //Instancia del círculo de carga.
         circuloCargaPerros = (ProgressBar) findViewById(R.id.circuloCargaPerros);
@@ -75,13 +78,10 @@ public class PerrosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //Si se vuelve a la activity, se reactivan los botones de la misma...
-        botonActRegPerro.setEnabled(true);
-
-        //Y se oculta el mensaje de la no existencia de perros registrados.
+        //Se oculta el mensaje de la no existencia de perros registrados...
         tvNoPerros.setVisibility(View.INVISIBLE);
 
-        //Se obtienen los perros registrados.
+        //y se obtienen los perros registrados.
         obtienePerros();
 
     }
@@ -93,8 +93,9 @@ public class PerrosActivity extends AppCompatActivity {
      */
     protected void nuevoPerro(View view){
 
-        //Se desactiva el botón para evitar más de una pulsación.
+        //Se desactivan los botones para evitar más de una pulsación.
         botonActRegPerro.setEnabled(false);
+        botonAtrasListPerros.setEnabled(false);
 
         //Inicia la activity que se encarga del registro de un nuevo perro.
         startActivity(new Intent(this, RegPerroActivity.class));
@@ -105,6 +106,10 @@ public class PerrosActivity extends AppCompatActivity {
      * Método que obtiene los perros registrados por el cliente en Firestore y los muestra en un CardView.
      */
     private void obtienePerros(){
+
+        //Si se vuelve a la activity, se reactivan los botones de la misma...
+        botonActRegPerro.setEnabled(false);
+        botonAtrasListPerros.setEnabled(false);
 
         //Se visibiliza el círculo de carga.
         circuloCargaPerros.setVisibility(View.VISIBLE);
@@ -124,18 +129,23 @@ public class PerrosActivity extends AppCompatActivity {
                                 tvNoPerros.setVisibility(View.VISIBLE);
                             }else {
 
-                                //Si contienen datos, se crea un List que contedrá los perros encontrados...
-                                List<String> listaPerros = new ArrayList<String>();
+                                /*
+                                Si contienen datos, se crean dos List, una con las IDs y otra con
+                                los objetos de los perros encontrados...
+                                */
+                                List<String> listaIdsPerros = new ArrayList<String>();
+                                List<Perro> listaObjPerros = new ArrayList<Perro>();
 
-                                //y se introducen sus nombres en dicho list uno a uno.
+                                //y se introducen dichos datos en dichos List.
                                 for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                                    listaPerros.add(doc.getId());
+                                    listaIdsPerros.add(doc.getId());
+                                    listaObjPerros.add(doc.toObject(Perro.class));
 
                                 }
 
                                 //Crea un nuevo adaptador con los perros obtenidos.
-                                rvPerros.setAdapter(new AdaptadorPerros(listaPerros));
+                                rvPerros.setAdapter(new AdaptadorPerros(listaIdsPerros, listaObjPerros));
 
                                 //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
                                 circuloCargaPerros.setVisibility(View.INVISIBLE);
@@ -150,8 +160,20 @@ public class PerrosActivity extends AppCompatActivity {
                             circuloCargaPerros.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultPerros), Toast.LENGTH_SHORT).show();
                         }
+
+                        botonActRegPerro.setEnabled(true);
+                        botonAtrasListPerros.setEnabled(true);
+
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                circuloCargaPerros.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultPerros), Toast.LENGTH_SHORT).show();
+                botonActRegPerro.setEnabled(true);
+                botonAtrasListPerros.setEnabled(true);
+            }
+        });
     }
 
     /**
@@ -161,6 +183,11 @@ public class PerrosActivity extends AppCompatActivity {
      */
     protected void atras(View view){
 
+        //Se desactivan los botones para evitar más de una pulsación...
+        botonActRegPerro.setEnabled(false);
+        botonAtrasListPerros.setEnabled(false);
+
+        //y finaliza la activity.
         finish();
 
     }
