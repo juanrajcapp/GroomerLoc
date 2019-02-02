@@ -88,8 +88,8 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
         */
         GlideApp.with(contexto)
                 .load(FirebaseStorage.getInstance().getReference()
-                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
-                                +"/perros/"+listaIdsPerros.get(position)
+                        .child("clientes/"+usuario.getUid()+"/perros/"+listaIdsPerros.get(position)
+                                +"/fotos/"+listaIdsPerros.get(position)
                                 +" "+listaObjPerros.get(position).getFechaFoto()+".jpg"))
                 .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
                         .error(R.drawable.icono_mascota))
@@ -235,8 +235,9 @@ public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHo
      */
     private void borraFotoPerro(int posicion){
 
-        FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
-                + "/perros/" + listaIdsPerros.get(posicion)+" "+listaObjPerros.get(posicion).getFechaFoto() + ".jpg").delete();
+        FirebaseStorage.getInstance().getReference("clientes/"+usuario.getUid()
+                +"/perros/"+listaIdsPerros.get(posicion)+"/fotos/"+listaIdsPerros.get(posicion)
+                +" "+listaObjPerros.get(posicion).getFechaFoto()+".jpg").delete();
 
     }
 

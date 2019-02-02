@@ -544,8 +544,8 @@ public class RegPerroActivity extends AppCompatActivity {
     private void guardaFoto(String idPerro){
 
         //Crea la referencia de Firebase Storage donde se va a guardar la foto.
-        referenciaFoto = FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
-                + "/perros/" + idPerro+" "+fechaFoto + ".jpg");
+        referenciaFoto = FirebaseStorage.getInstance().getReference("clientes/"+usuario.getUid()
+                +"/perros/"+idPerro+"/fotos/"+idPerro+" "+fechaFoto+".jpg");
 
         //Sube la foto a la referencia previamente creada. Se guarda el return de la acción para controlar la subida.
         UploadTask controlSubida = referenciaFoto.putFile(rutaFoto);
@@ -571,8 +571,8 @@ public class RegPerroActivity extends AppCompatActivity {
      */
     private void borraFotoAnterior(){
 
-        FirebaseStorage.getInstance().getReference("fotos/" + usuario.getUid()
-                + "/perros/" + idPerro+" "+fechaFotoAnterior + ".jpg").delete();
+        FirebaseStorage.getInstance().getReference("clientes/" + usuario.getUid()
+                + "/perros/" + idPerro + "/fotos/" + idPerro+" "+fechaFotoAnterior + ".jpg").delete();
 
     }
 
@@ -617,8 +617,8 @@ public class RegPerroActivity extends AppCompatActivity {
                                 //y obtiene la fotografía desde Firebase Storage (si existe también).
                                 GlideApp.with(getApplicationContext())
                                         .load(FirebaseStorage.getInstance().getReference()
-                                                .child("fotos/"+usuario.getUid() +"/perros/"
-                                                        +idPerro+" "+datosPerro.getFechaFoto()+".jpg"))
+                                                .child("clientes/"+usuario.getUid()+"/perros/"+idPerro
+                                                        +"/fotos/"+idPerro+" "+datosPerro.getFechaFoto()+".jpg"))
                                         .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
                                                 .error(R.drawable.icono_mascota))
                                         .into(ivPerro);

@@ -552,8 +552,8 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
             );
 
             //Descarga la imagen del perro seleccionado desde Firebase Storage y la guarda en el archivo temporal.
-            FirebaseStorage.getInstance().getReference().child("fotos/"+usuario.getUid()
-                    +"/perros/"+idPerro+" "+perro.getFechaFoto()+".jpg").getFile(temp)
+            FirebaseStorage.getInstance().getReference().child("clientes/"+usuario.getUid()
+                    +"/perros/"+idPerro+"/fotos/"+idPerro+" "+perro.getFechaFoto()+".jpg").getFile(temp)
                     .addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
@@ -561,7 +561,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
 
                         //Cuando termina de descargarse, se sube a la ubicación de la cita.
                         FirebaseStorage.getInstance().getReference("citas/" + idCita
-                                + "/perros/" + perro.getNombre() + ".jpg")
+                                + "/perros/" + perro.getNombre()+" "+perro.getFechaFoto() + ".jpg")
                                 .putFile(Uri.parse("file:"+temp.getAbsolutePath()));
 
                     }

@@ -79,8 +79,8 @@ public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCit
         */
         GlideApp.with(contexto)
                 .load(FirebaseStorage.getInstance().getReference()
-                        .child("fotos/"+FirebaseAuth.getInstance().getCurrentUser().getUid()
-                                +"/perros/"+listaIdsPerros.get(position)
+                        .child("clientes/"+usuario.getUid()+"/perros/"+listaIdsPerros.get(position)
+                                +"/fotos/"+listaIdsPerros.get(position)
                                 +" "+listaObjPerros.get(position).getFechaFoto()+".jpg"))
                 .apply(new RequestOptions().placeholder(R.drawable.icono_mascota)
                         .error(R.drawable.icono_mascota))
