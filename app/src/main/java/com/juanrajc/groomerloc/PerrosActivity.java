@@ -107,7 +107,7 @@ public class PerrosActivity extends AppCompatActivity {
      */
     private void obtienePerros(){
 
-        //Si se vuelve a la activity, se reactivan los botones de la misma...
+        //Se desactivan los botones de la activity para evitar dobles pulsaciones.
         botonActRegPerro.setEnabled(false);
         botonAtrasListPerros.setEnabled(false);
 

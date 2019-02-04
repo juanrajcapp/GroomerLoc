@@ -238,7 +238,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
             case R.id.nav_citas:
                 //Inicia la activity de citas del cliente...
-                //startActivity(new Intent(this, CitasCliActivity.class));
+                startActivity(new Intent(this, CitasClienteActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;

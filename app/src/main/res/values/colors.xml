@@ -5,7 +5,7 @@
     <color name="colorAccent">#B8008B</color>
 
     <!-- Color de fondo del Splash -->
-    <color name="fondoSplash">#d6d5db</color>
+    <color name="fondoSplash">#D6D5DB</color>
 
     <!-- Color del título del Action Bar -->
     <color name="tituloActionBar">#d6d5db</color>
@@ -14,5 +14,9 @@
     <color name="tituloLoc">#000000</color>
 
     <color name="colorAlerta">#C70003</color>
+
+    <!-- Colores del estado de la cita -->
+    <color name="colorFechaCitaConf">#009409</color>
+    <color name="colorFechaCitaNoConf">#C70003</color>
 
 </resources>

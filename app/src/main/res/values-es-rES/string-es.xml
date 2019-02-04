@@ -232,4 +232,16 @@
         no olvide acordar la fecha y hora con el peluquero.</string>
     <string name="mensajeCreaCitaCreadaError">No se ha podido crear la cita.</string>
 
+    <!-- Citas -->
+    <string name="citasServicio">Servicio:</string>
+    <string name="citasPrecio">Precio:</string>
+    <string name="mensajeNoResultCitas">No se ha podido cargar la lista de citas.</string>
+    <string name="citasSinConfirmar">SIN ESTABLECER</string>
+    <string name="citasNoExiste">NO EXISTE</string>
+    <string name="citasErrorCargaDato">ERROR AL OBTENERLO</string>
+        <!-- Citas cliente -->
+    <string name="cvCitasClienteFechaConf">Fecha:</string>
+    <string name="cvCitasClienteDescIvConf">Rojo: Sin fecha y hora fijada. Verde: Con fecha y hora fijada.</string>
+    <string name="mensajeNoCitasCliente">No tiene citas.</string>
+
 </resources>

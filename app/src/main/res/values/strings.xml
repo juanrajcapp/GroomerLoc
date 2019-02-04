@@ -232,4 +232,16 @@
         do not forget to arrange the date and time with the groomer.</string>
     <string name="mensajeCreaCitaCreadaError">The appointment could not be created.</string>
 
+    <!-- Citas -->
+    <string name="citasServicio">Service:</string>
+    <string name="citasPrecio">Price:</string>
+    <string name="mensajeNoResultCitas">The appointment list could not be loaded.</string>
+    <string name="citasSinConfirmar">WITHOUT ESTABLISHING</string>
+    <string name="citasNoExiste">DOES NOT EXIST</string>
+    <string name="citasErrorCargaDato">ERROR WHEN OBTAINED</string>
+        <!-- Citas cliente -->
+    <string name="cvCitasClienteFechaConf">Date:</string>
+    <string name="cvCitasClienteDescIvConf">Red: No date and time set. Green: With date and time set.</string>
+    <string name="mensajeNoCitasCliente">You don\'t have appointments.</string>
+
 </resources>
