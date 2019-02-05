@@ -229,7 +229,6 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
                     //comprueba que esos resultados contienen datos.
                     if(task.getResult().isEmpty()){
-                        circuloCargaCitas.setVisibility(View.INVISIBLE);
                         tvNoCitas.setVisibility(View.VISIBLE);
                     }else {
 
@@ -253,23 +252,27 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
                         }
 
-                        //Crea un nuevo adaptador con las citas obtenidas.
-                        rvCitas.setAdapter(new AdaptadorCitasPelu(listaIdsCitas, listaObjCitas));
+                        //Si se ha introducido algún ID en el list de IDs...
+                        if(!listaIdsCitas.isEmpty()) {
 
-                        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
-                        circuloCargaCitas.setVisibility(View.INVISIBLE);
+                            //crea un nuevo adaptador con las citas obtenidas.
+                            rvCitas.setAdapter(new AdaptadorCitasPelu(listaIdsCitas, listaObjCitas));
+
+                        //Si no, visibiliza un mensaje en la activity.
+                        }else{
+                            tvNoCitas.setVisibility(View.VISIBLE);
+                        }
 
                     }
 
-                /*
-                Si ha habido algún problema al obtener resultados,
-                se invisibiliza el círculo de carga y se muestra un toast avisándolo.
-                */
+                //Si ha habido algún problema al obtener resultados, se muestra un toast avisándolo.
                 }else{
-                    circuloCargaCitas.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas),
+                            Toast.LENGTH_SHORT).show();
                 }
 
+                //Finalizada la carga, se vuelve a invisibilizar el círculo de carga y a activar los botones.
+                circuloCargaCitas.setVisibility(View.INVISIBLE);
                 botonRecargarCitas.setEnabled(true);
 
             }
@@ -277,7 +280,8 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onFailure(@NonNull Exception e) {
                 circuloCargaCitas.setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas),
+                        Toast.LENGTH_SHORT).show();
                 botonRecargarCitas.setEnabled(true);
             }
         });

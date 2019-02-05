@@ -30,8 +30,10 @@ import com.juanrajc.groomerloc.clasesBD.Perro;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCheckedChangeListener {
 
@@ -478,55 +480,55 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
     }
 
     /**
-     * Método que crea la descripción del servicio a prestar en la cita.
+     * Método que crea la lista de servicios seleccionados por el cliente.
      *
-     * @return Cadena con la descripción del servicio.
+     * @return List de enteros con el valor correspondiente al servicio.
      */
-    private String creaServicio(){
+    private List<Integer> creaListaServicios(){
 
-        StringBuffer sb=new StringBuffer();
+        List<Integer> listaServicios = new ArrayList<Integer>();
 
         //Baño.
         if(cbCreaCitaBanio.isChecked()){
-            sb.append("| BAÑO |");
+            listaServicios.add(1);
         }
 
         //Arreglo o corte parcial.
         if(cbCreaCitaArreglo.isChecked()){
-            sb.append("| ARREGLO |");
+            listaServicios.add(2);
         }
 
         //Corte completo.
         if(cbCreaCitaCorte.isChecked()){
-            sb.append("| CORTE |");
+            listaServicios.add(3);
         }
 
         //Deslanado.
         if(cbCreaCitaDeslanado.isChecked()){
-            sb.append("| DESLANADO |");
+            listaServicios.add(4);
         }
 
         //Tinte.
         if(cbCreaCitaTinte.isChecked()){
-            sb.append("| TINTE |");
+            listaServicios.add(5);
         }
 
         //Limpieza de oidos.
         if(cbCreaCitaOidos.isChecked()){
-            sb.append("| LIMP. OIDOS |");
+            listaServicios.add(6);
         }
 
         //Corte de uñas.
         if(cbCreaCitaUnias.isChecked()){
-            sb.append("| CORT. UÑAS |");
+            listaServicios.add(7);
         }
 
         //Limpieza de glándulas anales.
         if(cbCreaCitaAnales.isChecked()) {
-            sb.append("| LIMP. GLÁNDULAS |");
+            listaServicios.add(8);
         }
 
-        return sb.toString();
+        return listaServicios;
 
     }
 
@@ -587,7 +589,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
 
         //Crea la cita en Firestore.
         firestore.collection("citas").add(new Cita(idPeluquero, usuario.getUid(),
-                creaServicio(), precioTotal, fechaCreacion, null, perro))
+                precioTotal, fechaCreacion, null, creaListaServicios(), perro))
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

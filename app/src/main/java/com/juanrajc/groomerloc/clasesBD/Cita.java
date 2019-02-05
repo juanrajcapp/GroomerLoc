@@ -1,26 +1,28 @@
 package com.juanrajc.groomerloc.clasesBD;
 
 import java.util.Date;
+import java.util.List;
 
 public class Cita {
 
-    private String idPeluquero, idCliente, servicio;
+    private String idPeluquero, idCliente;
     private Float precioFinal;
     private Date fechaCreacion, fechaConfirmacion;
+    private List<Integer> servicios;
     private Perro perro;
 
     public Cita(){
     }
 
-    public Cita(String idPeluquero, String idCliente, String servicio, Float precioFinal,
-                Date fechaCreacion, Date fechaConfirmacion, Perro perro) {
+    public Cita(String idPeluquero, String idCliente, Float precioFinal, Date fechaCreacion,
+                Date fechaConfirmacion, List<Integer> servicios, Perro perro) {
 
         this.idPeluquero = idPeluquero;
         this.idCliente = idCliente;
-        this.servicio = servicio;
         this.precioFinal = precioFinal;
         this.fechaCreacion = fechaCreacion;
         this.fechaConfirmacion = fechaConfirmacion;
+        this.servicios = servicios;
         this.perro = perro;
 
     }
@@ -39,14 +41,6 @@ public class Cita {
 
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
-    }
-
-    public String getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(String servicio) {
-        this.servicio = servicio;
     }
 
     public Float getPrecioFinal() {
@@ -71,6 +65,14 @@ public class Cita {
 
     public void setFechaConfirmacion(Date fechaConfirmacion) {
         this.fechaConfirmacion = fechaConfirmacion;
+    }
+
+    public List<Integer> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(List<Integer> servicios) {
+        this.servicios = servicios;
     }
 
     public Perro getPerro() {

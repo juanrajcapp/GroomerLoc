@@ -231,6 +231,15 @@
     <string name="mensajeCreaCitaCreadaExito">Appointment created successfully,
         do not forget to arrange the date and time with the groomer.</string>
     <string name="mensajeCreaCitaCreadaError">The appointment could not be created.</string>
+        <!-- Lista servicios cita -->
+    <string name="servicioBanio">| WASH |</string>
+    <string name="servicioArreglo">| PART. HAIRCUT |</string>
+    <string name="servicioCorte">| COMP. HAIRCUT |</string>
+    <string name="servicioDeslanado">| REM. WOOL |</string>
+    <string name="servicioTinte">| DYE |</string>
+    <string name="servicioOidos">| EAR CL. |</string>
+    <string name="servicioUnias">| NAIL CUT |</string>
+    <string name="servicioAnales">| ANAL CL. |</string>
 
     <!-- Citas -->
     <string name="citasCliente">Customer:</string>

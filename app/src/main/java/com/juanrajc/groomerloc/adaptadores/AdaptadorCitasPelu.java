@@ -79,7 +79,7 @@ public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.
 
         //Muestra el nombre del perro, el servicio solicitado y el precio establecido.
         holder.tvCitaPeluMasc.setText(listaObjCitas.get(position).getPerro().getNombre());
-        holder.tvCitaPeluServ.setText(listaObjCitas.get(position).getServicio());
+        holder.tvCitaPeluServ.setText(obtieneServicio(listaObjCitas.get(position).getServicios()));
         holder.tvCitaPeluPrec.setText(listaObjCitas.get(position).getPrecioFinal().toString()+MONEDA);
 
         //Listener de pulsación asignado a la tabla e imagen de la CardView.
@@ -147,6 +147,62 @@ public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.
                 holder.tvCitaPeluCli.setText(contexto.getString(R.string.citasErrorCargaDato));
             }
         });
+
+    }
+
+    /**
+     * Método que traduce la lista de servicios guardada en valores enteros en una cadena con
+     * la descripción de todos los servicios solicitados en la cita.
+     *
+     * @param listaServicios Lista de enteros, los cuales significan un servicio solicitado en la cita.
+     *
+     * @return Cadena con la descripción de todos los servicios solicitados en la cita.
+     */
+    private String obtieneServicio(List<Integer> listaServicios){
+
+        StringBuffer servicio=new StringBuffer();
+
+        for(Integer numServicio:listaServicios){
+
+            switch (numServicio){
+
+                case 1:
+                    servicio.append(contexto.getString(R.string.servicioBanio));
+                    break;
+
+                case 2:
+                    servicio.append(contexto.getString(R.string.servicioArreglo));
+                    break;
+
+                case 3:
+                    servicio.append(contexto.getString(R.string.servicioCorte));
+                    break;
+
+                case 4:
+                    servicio.append(contexto.getString(R.string.servicioDeslanado));
+                    break;
+
+                case 5:
+                    servicio.append(contexto.getString(R.string.servicioTinte));
+                    break;
+
+                case 6:
+                    servicio.append(contexto.getString(R.string.servicioOidos));
+                    break;
+
+                case 7:
+                    servicio.append(contexto.getString(R.string.servicioUnias));
+                    break;
+
+                case 8:
+                    servicio.append(contexto.getString(R.string.servicioAnales));
+                    break;
+
+            }
+
+        }
+
+        return servicio.toString();
 
     }
 

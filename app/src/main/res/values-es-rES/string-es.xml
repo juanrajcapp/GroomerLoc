@@ -231,6 +231,15 @@
     <string name="mensajeCreaCitaCreadaExito">Cita creada con éxito,
         no olvide acordar la fecha y hora con el peluquero.</string>
     <string name="mensajeCreaCitaCreadaError">No se ha podido crear la cita.</string>
+    <!-- Lista servicios cita -->
+    <string name="servicioBanio">| BAÑO |</string>
+    <string name="servicioArreglo">| ARREGLO |</string>
+    <string name="servicioCorte">| CORTE |</string>
+    <string name="servicioDeslanado">| DESLANADO |</string>
+    <string name="servicioTinte">| TINTE |</string>
+    <string name="servicioOidos">| LIMP. OIDOS |</string>
+    <string name="servicioUnias">| CORT. UÑAS |</string>
+    <string name="servicioAnales">| LIMP. GLÁNDULAS |</string>
 
     <!-- Citas -->
     <string name="citasCliente">Cliente:</string>
