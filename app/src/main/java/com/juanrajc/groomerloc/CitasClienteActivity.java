@@ -97,6 +97,7 @@ public class CitasClienteActivity extends AppCompatActivity {
         //Se visibiliza el círculo de carga.
         circuloCargaCitasCliente.setVisibility(View.VISIBLE);
 
+        //Obtiene las citas credas por el cliente actual desde Firestore.
         firestore.collection("citas").whereEqualTo("idCliente", usuario.getUid())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -126,7 +127,7 @@ public class CitasClienteActivity extends AppCompatActivity {
 
                         }
 
-                        //Crea un nuevo adaptador con los perros obtenidos.
+                        //Crea un nuevo adaptador con las citas obtenidas.
                         rvCitasCliente.setAdapter(new AdaptadorCitasCliente(listaIdsCitas, listaObjCitas));
 
                         //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.

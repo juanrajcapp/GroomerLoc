@@ -15,7 +15,7 @@
 
 
         <TableLayout
-            android:id="@+id/tlCvCitaCliente"
+            android:id="@+id/tlCvCitaPelu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -23,7 +23,7 @@
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/ivCitaClienteConf"
+            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent">
 
@@ -32,25 +32,25 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvCvCitaClienteTitPelu"
+                    android:id="@+id/tvCitaPeluTitFech"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:text="@string/creaCitaPelu"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCitaClientePelu"
+                    android:id="@+id/tvCitaPeluFech"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:singleLine="true"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:singleLine="true" />
+                    android:textStyle="bold" />
+
             </TableRow>
 
             <TableRow
@@ -58,7 +58,33 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvCitaClienteTitMasc"
+                    android:id="@+id/tvCvCitaPeluTitCli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/citasCliente"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvCitaPeluCli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvCitaPeluTitMasc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -68,15 +94,15 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCitaClienteMasc"
+                    android:id="@+id/tvCitaPeluMasc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:singleLine="true"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:singleLine="true" />
+                    android:textStyle="bold" />
             </TableRow>
 
             <TableRow
@@ -84,7 +110,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvCitaClienteTitServ"
+                    android:id="@+id/tvCitaPeluTitServ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -94,15 +120,15 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCitaClienteServ"
+                    android:id="@+id/tvCitaPeluServ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:singleLine="true"
                     android:textColor="@color/colorAccent"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:singleLine="true" />
+                    android:textStyle="bold" />
             </TableRow>
 
             <TableRow
@@ -110,7 +136,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvCitaClienteTitPrec"
+                    android:id="@+id/tvCitaPeluTitPrec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -120,56 +146,18 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvCitaClientePrec"
+                    android:id="@+id/tvCitaPeluPrec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:singleLine="true"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:singleLine="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/tvCitaClienteTitFech"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:text="@string/cvCitasClienteFechaConf"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCitaClienteFech"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:singleLine="true" />
-
             </TableRow>
-        </TableLayout>
 
-        <ImageView
-            android:id="@+id/ivCitaClienteConf"
-            android:layout_width="50dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/cvCitasClienteFechaConf" />
+        </TableLayout>
 
     </android.support.constraint.ConstraintLayout>
 

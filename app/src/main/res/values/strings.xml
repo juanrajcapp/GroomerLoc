@@ -233,6 +233,7 @@
     <string name="mensajeCreaCitaCreadaError">The appointment could not be created.</string>
 
     <!-- Citas -->
+    <string name="citasCliente">Customer:</string>
     <string name="citasServicio">Service:</string>
     <string name="citasPrecio">Price:</string>
     <string name="mensajeNoResultCitas">The appointment list could not be loaded.</string>
@@ -243,5 +244,10 @@
     <string name="cvCitasClienteFechaConf">Date:</string>
     <string name="cvCitasClienteDescIvConf">Red: No date and time set. Green: With date and time set.</string>
     <string name="mensajeNoCitasCliente">You don\'t have appointments.</string>
+        <!-- Citas peluquero -->
+    <string name="cvCitasPeluFechaConf">Appointment date:</string>
+    <string name="cvCitasPeluFechaCrea">Request date:</string>
+    <string name="mensajeNoCitasNuevas">You have no unconfirmed appointments.</string>
+    <string name="mensajeNoCitasConf">You have no confirmed appointments.</string>
 
 </resources>

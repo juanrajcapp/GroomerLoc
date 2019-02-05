@@ -233,6 +233,7 @@
     <string name="mensajeCreaCitaCreadaError">No se ha podido crear la cita.</string>
 
     <!-- Citas -->
+    <string name="citasCliente">Cliente:</string>
     <string name="citasServicio">Servicio:</string>
     <string name="citasPrecio">Precio:</string>
     <string name="mensajeNoResultCitas">No se ha podido cargar la lista de citas.</string>
@@ -243,5 +244,10 @@
     <string name="cvCitasClienteFechaConf">Fecha:</string>
     <string name="cvCitasClienteDescIvConf">Rojo: Sin fecha y hora fijada. Verde: Con fecha y hora fijada.</string>
     <string name="mensajeNoCitasCliente">No tiene citas.</string>
+        <!-- Citas peluquero -->
+    <string name="cvCitasPeluFechaConf">Fecha cita:</string>
+    <string name="cvCitasPeluFechaCrea">Fecha solicitud:</string>
+    <string name="mensajeNoCitasNuevas">No tiene citas sin confirmar.</string>
+    <string name="mensajeNoCitasConf">No tiene citas confirmadas.</string>
 
 </resources>

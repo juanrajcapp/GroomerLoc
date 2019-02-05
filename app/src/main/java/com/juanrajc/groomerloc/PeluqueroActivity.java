@@ -11,10 +11,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.juanrajc.groomerloc.adaptadores.AdaptadorCitasPelu;
+import com.juanrajc.groomerloc.clasesBD.Cita;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PeluqueroActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -25,11 +39,17 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
+    //Objeto del botón para recargar las citas.
+    private Button botonRecargarCitas;
+
     //Objeto del panel lateral (menú).
     private DrawerLayout dw;
 
     //Objeto del círculo de carga.
     private ProgressBar circuloCargaCitas;
+
+    //Objeto del EditText que aparece cuando no hay citas.
+    private TextView tvNoCitas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +59,9 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
         //Instancias de la autenticación y la base de datos de Firebase.
         auth=FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
+
+        //Instancia del botón para recargar citas.
+        botonRecargarCitas = (Button) findViewById(R.id.botonRecargarCitas);
 
         //Muestra y habilita la pulsación del icono "Home" del ActionBar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,8 +84,9 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_peluquero);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Instancia del círculo de carga.
+        //Instancia del círculo de carga y mensaje de no existencia de citas.
         circuloCargaCitas = (ProgressBar) findViewById(R.id.circuloCargaCitas);
+        tvNoCitas = (TextView) findViewById(R.id.tvNoCitas);
 
         //Instancia del RecyclerView de citas.
         rvCitas = (RecyclerView) findViewById(R.id.rvCitas);
@@ -82,8 +106,14 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
         //Si al volver a la activity existe un usuario autenticado...
         if(auth.getCurrentUser()!=null) {
 
-            //se actualiza el nombre del peluquero en el ActionBar.
+            //se actualiza el nombre del peluquero en el ActionBar...
             getSupportActionBar().setTitle(auth.getCurrentUser().getDisplayName());
+
+            //se oculta el mensaje de la no existencia de citas...
+            tvNoCitas.setVisibility(View.INVISIBLE);
+
+            //y se obtienen las citas.
+            obtieneCitas();
 
             //Si no...
         }else{
@@ -110,7 +140,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
             case R.id.nav_citas_confirmadas:
                 //Inicia la activity visualiza las citas confirmadas...
-                //startActivity(new Intent(this, CitasConfirmadasPeluActivity.class));
+                startActivity(new Intent(this, CitasConfPeluActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
                 return true;
@@ -162,6 +192,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
 
     /**
      * Método para realizar las acciones del toolbar de la aplicación. Solo realiza la acción de abrir o cerrar el menú lateral.
+     *
      * @return
      */
     @Override
@@ -175,6 +206,93 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
             dw.openDrawer(Gravity.START);
         }
         return super.onSupportNavigateUp();
+    }
+
+    /**
+     * Método que obtiene las citas solicitadas sin fecha establecida.
+     */
+    private void obtieneCitas(){
+
+        //Se desactivan los botones de la activity para evitar dobles pulsaciones.
+        botonRecargarCitas.setEnabled(false);
+
+        //Se visibiliza el círculo de carga.
+        circuloCargaCitas.setVisibility(View.VISIBLE);
+
+        firestore.collection("citas").whereEqualTo("idPeluquero", auth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                //Si se obtienen resultados satisfactoriamente...
+                if(task.isSuccessful()){
+
+                    //comprueba que esos resultados contienen datos.
+                    if(task.getResult().isEmpty()){
+                        circuloCargaCitas.setVisibility(View.INVISIBLE);
+                        tvNoCitas.setVisibility(View.VISIBLE);
+                    }else {
+
+                        /*
+                        Si contienen datos, se crean dos List, una con las IDs y otra con
+                        los objetos de las citas encontrados...
+                        */
+                        List<String> listaIdsCitas = new ArrayList<String>();
+                        List<Cita> listaObjCitas = new ArrayList<Cita>();
+
+                        //y se introducen dichos datos en dichos List.
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+
+                            //Sólo introduce los que no tengan establecida la fecha de confirmación.
+                            if(doc.toObject(Cita.class).getFechaConfirmacion()==null) {
+
+                                listaIdsCitas.add(doc.getId());
+                                listaObjCitas.add(doc.toObject(Cita.class));
+
+                            }
+
+                        }
+
+                        //Crea un nuevo adaptador con las citas obtenidas.
+                        rvCitas.setAdapter(new AdaptadorCitasPelu(listaIdsCitas, listaObjCitas));
+
+                        //Finalizada la carga, se vuelve a invisibilizar el círculo de carga.
+                        circuloCargaCitas.setVisibility(View.INVISIBLE);
+
+                    }
+
+                /*
+                Si ha habido algún problema al obtener resultados,
+                se invisibiliza el círculo de carga y se muestra un toast avisándolo.
+                */
+                }else{
+                    circuloCargaCitas.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas), Toast.LENGTH_SHORT).show();
+                }
+
+                botonRecargarCitas.setEnabled(true);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                circuloCargaCitas.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoResultCitas), Toast.LENGTH_SHORT).show();
+                botonRecargarCitas.setEnabled(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que recarga las citas.
+     *
+     * @param view
+     */
+    protected void recargaCitas(View view){
+
+        obtieneCitas();
+
     }
 
 }
