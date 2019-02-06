@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc.adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class AdaptadorCitasCliente extends RecyclerView.Adapter<AdaptadorCitasCliente.ViewHolder> implements View.OnClickListener {
+public class AdaptadorCitasCliente extends RecyclerView.Adapter<AdaptadorCitasCliente.ViewHolder> {
 
     //Tipo de moneda usada.
     private final String MONEDA = " €";
@@ -82,9 +83,27 @@ public class AdaptadorCitasCliente extends RecyclerView.Adapter<AdaptadorCitasCl
         //Comprueba si se ha establecido fecha y hora para la cita (si es así, la muestra).
         compruebaFechaConfirmacion(listaObjCitas.get(position).getFechaConfirmacion(), holder);
 
-        //Listener de pulsación asignado a la tabla e imagen de la CardView.
-        holder.tlCvCitaCliente.setOnClickListener(this);
-        holder.ivCitaClienteConf.setOnClickListener(this);
+        //Listeners de pulsación asignado a la tabla e imagen de la CardView.
+        holder.tlCvCitaCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Inicia la activity de la cita, pasándole su ID por intent.
+                /*contexto.startActivity(new Intent(contexto.getApplicationContext(),
+                        CitaClienteActivity.class).putExtra("idCita", listaIdsCitas.get(position)));*/
+
+            }
+        });
+        holder.ivCitaClienteConf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Inicia la activity de la cita, pasándole su ID por intent.
+                /*contexto.startActivity(new Intent(contexto.getApplicationContext(),
+                        CitaClienteActivity.class).putExtra("idCita", listaIdsCitas.get(position)));*/
+
+            }
+        });
 
     }
 
@@ -214,13 +233,6 @@ public class AdaptadorCitasCliente extends RecyclerView.Adapter<AdaptadorCitasCl
         }else{
             return 0;
         }
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-
 
     }
 

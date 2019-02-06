@@ -120,7 +120,7 @@
     <string name="comentarios">Comments</string>
     <string name="cajaComentarios">Health problems, allergies...</string>
     <string name="botonFoto">Add photo...</string>
-    <string name="descFotoPerro">Photo of your pet.</string>
+    <string name="descFotoPerro">Photo of the pet.</string>
     <string name="botonGuardarMascota">Save pet</string>
     <string name="mensajeCamposPerro">The fields \'Name\', \'Breed\' and \'Weight\' are required.</string>
     <string name="mensajeSexo">You must select the sex of your pet.</string>
@@ -240,6 +240,20 @@
     <string name="servicioOidos">| EAR CL. |</string>
     <string name="servicioUnias">| NAIL CUT |</string>
     <string name="servicioAnales">| ANAL CL. |</string>
+
+    <!-- Cita -->
+    <string name="citaDatos">APPOINTMENT DATA</string>
+    <string name="citaChat">CHAT</string>
+    <string name="citaCita">APPOINTMENT</string>
+    <string name="citaNombre">Name:</string>
+    <string name="citaTlfn">Phone number:</string>
+    <string name="citaMascota">PET</string>
+    <string name="citaRaza">Breed:</string>
+    <string name="citaSexo">Sex:</string>
+    <string name="citaPeso">Weight:</string>
+    <string name="citaComent">Comments:</string>
+        <!-- Cita peluquero -->
+    <string name="citaPeluBotonFecha">Set date for appointment</string>
 
     <!-- Citas -->
     <string name="citasCliente">Customer:</string>

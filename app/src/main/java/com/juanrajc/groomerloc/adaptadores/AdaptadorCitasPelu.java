@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc.adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.CitaPeluActivity;
 import com.juanrajc.groomerloc.R;
 import com.juanrajc.groomerloc.clasesBD.Cita;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
@@ -24,7 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.ViewHolder> implements View.OnClickListener {
+public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.ViewHolder> {
 
     //Tipo de moneda usada.
     private final String MONEDA = " €";
@@ -82,8 +84,17 @@ public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.
         holder.tvCitaPeluServ.setText(obtieneServicio(listaObjCitas.get(position).getServicios()));
         holder.tvCitaPeluPrec.setText(listaObjCitas.get(position).getPrecioFinal().toString()+MONEDA);
 
-        //Listener de pulsación asignado a la tabla e imagen de la CardView.
-        holder.tlCvCitaPelu.setOnClickListener(this);
+        //Listener de pulsación asignado a la tabla de la CardView.
+        holder.tlCvCitaPelu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Inicia la activity de la cita, pasándole su ID por intent.
+                contexto.startActivity(new Intent(contexto.getApplicationContext(),
+                        CitaPeluActivity.class).putExtra("idCita", listaIdsCitas.get(position)));
+
+            }
+        });
 
     }
 
@@ -214,13 +225,6 @@ public class AdaptadorCitasPelu extends RecyclerView.Adapter<AdaptadorCitasPelu.
         }else{
             return 0;
         }
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-
 
     }
 

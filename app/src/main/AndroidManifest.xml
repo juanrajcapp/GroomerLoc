@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeSinAB">
         <activity
+            android:name=".CitaPeluActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
             android:name=".CitasConfPeluActivity"
             android:configChanges="orientation|screenSize" />
         <activity

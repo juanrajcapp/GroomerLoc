@@ -139,7 +139,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
                 return true;
 
             case R.id.nav_citas_confirmadas:
-                //Inicia la activity visualiza las citas confirmadas...
+                //Inicia la activity que visualiza las citas confirmadas...
                 startActivity(new Intent(this, CitasConfPeluActivity.class));
                 //y cierra el menú lateral.
                 dw.closeDrawers();
