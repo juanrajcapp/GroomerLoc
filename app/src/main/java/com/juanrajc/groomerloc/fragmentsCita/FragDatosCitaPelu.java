@@ -59,8 +59,7 @@ public class FragDatosCitaPelu extends Fragment {
     //ID de la cita a mostrar.
     private String idCita;
 
-    //Objeto del usuario actual y de la BD Firestore.
-    private FirebaseUser usuario;
+    //Objeto de la BD Firestore.
     private FirebaseFirestore firestore;
 
     @Override
@@ -72,8 +71,7 @@ public class FragDatosCitaPelu extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Instancia del usuario actual y de la base de datos Firestore.
-        usuario = FirebaseAuth.getInstance().getCurrentUser();
+        //Instancia de la base de datos Firestore.
         firestore = FirebaseFirestore.getInstance();
 
         //Instancia del círculo de carga.

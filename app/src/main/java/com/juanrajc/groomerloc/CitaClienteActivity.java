@@ -7,43 +7,43 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.juanrajc.groomerloc.adaptadores.AdaptadorPagCitaPelu;
+import com.juanrajc.groomerloc.adaptadores.AdaptadorPagCitaCli;
 
-public class CitaPeluActivity extends AppCompatActivity {
+public class CitaClienteActivity extends AppCompatActivity {
 
     //Objetos del Tab de la activity.
-    private TabLayout tabLayCitaPelu;
-    private TabItem tabItemCitaPeluDatos, tabItemCitaPeluChat;
-    private ViewPager vpCitaPelu;
+    private TabLayout tabLayCitaCliente;
+    private TabItem tabItemCitaClienteDatos, tabItemCitaClienteChat;
+    private ViewPager vpCitaCliente;
 
     //Objeto del adaptador que controla el cambio de página (fragment).
-    private PagerAdapter adPagCitaPelu;
+    private PagerAdapter adPagCitaCliente;
 
     private String idCita;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cita_pelu);
+        setContentView(R.layout.activity_cita_cliente);
 
         //Instancia de los elementos de la vista de la activity.
-        tabLayCitaPelu = findViewById(R.id.tabLayCitaPelu);
-        tabItemCitaPeluDatos = findViewById(R.id.tabItemCitaPeluDatos);
-        tabItemCitaPeluChat = findViewById(R.id.tabItemCitaPeluChat);
-        vpCitaPelu = findViewById(R.id.vpCitaPelu);
+        tabLayCitaCliente = findViewById(R.id.tabLayCitaCliente);
+        tabItemCitaClienteDatos = findViewById(R.id.tabItemCitaClienteDatos);
+        tabItemCitaClienteChat = findViewById(R.id.tabItemCitaClienteChat);
+        vpCitaCliente = findViewById(R.id.vpCitaCliente);
 
         //Instancia y asocia el adaptador para el manejo del cambio de página (fragment).
-        adPagCitaPelu = new AdaptadorPagCitaPelu(getSupportFragmentManager(), tabLayCitaPelu.getTabCount());
+        adPagCitaCliente = new AdaptadorPagCitaCli(getSupportFragmentManager(), tabLayCitaCliente.getTabCount());
         //Asocia el adaptador al ViewPager de la activity.
-        vpCitaPelu.setAdapter(adPagCitaPelu);
+        vpCitaCliente.setAdapter(adPagCitaCliente);
         //Listener que asocia el cambio de página (fragment) a los Tabs de la vista.
-        vpCitaPelu.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayCitaPelu));
+        vpCitaCliente.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayCitaCliente));
         //Listener que asocia la pulsación en los Tabs al cambio de página (fragment).
-        tabLayCitaPelu.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayCitaCliente.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                vpCitaPelu.setCurrentItem(tab.getPosition());
+                vpCitaCliente.setCurrentItem(tab.getPosition());
 
             }
 

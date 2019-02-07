@@ -56,7 +56,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap map;
 
     //Geocoder para la traducción de coordenadas en direciones y viceversa.
-    Geocoder gc;
+    private Geocoder gc;
 
     //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
@@ -69,7 +69,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     private SharedPreferences preferencias;
 
     //Objeto del campo de texto que va a recoger el nombre de un peluquero para su búsqueda.
-    EditText entradaNombrePelu;
+    private EditText entradaNombrePelu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +285,7 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
     /**
      * Método para realizar las acciones del toolbar de la aplicación. Solo realiza la acción de abrir o cerrar el menú lateral.
+     *
      * @return
      */
     @Override
