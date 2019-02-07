@@ -263,6 +263,11 @@
     <string name="citasSinConfirmar">SIN ESTABLECER</string>
     <string name="citasNoExiste">NO EXISTE</string>
     <string name="citasErrorCargaDato">ERROR AL OBTENERLO</string>
+    <string name="mensajeCitaNoExiste">La cita seleccionada no existe.</string>
+    <string name="mensajeCitaNoCarga">No se ha podido cargar la cita seleccionada.</string>
+    <string name="mensajeCitaFechaExito">Se ha establecido una nueva fecha y hora para la cita.</string>
+    <string name="mensajeCitaFechaFallo">No se ha podido establecer una nueva fecha y hora para la cita.</string>
+    <string name="botonCitaEstablecerFecha">Establecer</string>
         <!-- Citas cliente -->
     <string name="cvCitasClienteFechaConf">Fecha:</string>
     <string name="cvCitasClienteDescIvConf">Rojo: Sin fecha y hora fijada. Verde: Con fecha y hora fijada.</string>
