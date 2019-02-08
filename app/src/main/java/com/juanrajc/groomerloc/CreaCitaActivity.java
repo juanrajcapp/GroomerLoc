@@ -594,7 +594,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
 
-                        //Si el perro seleccionado tiene foto, se guarda en la ubicación de la cita.
+                        //Si el perro seleccionado tiene foto, se guarda en la ubicación de la cita...
                         if(perro.getFechaFoto()!=null){
                             guardaFotoPerro(documentReference.getId());
                         }
@@ -602,9 +602,11 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
                         Toast.makeText(getApplicationContext(), getString(R.string.mensajeCreaCitaCreadaExito),
                                 Toast.LENGTH_LONG).show();
 
-                        /*startActivity(new Intent(getApplicationContext(), ChatCitaActivity.class)
-                                .putExtra("refCita", documentReference.getId()));*/
+                        //se inicia la activity que muestra los datos de la cita y el chat...
+                        startActivity(new Intent(getApplicationContext(), CitaClienteActivity.class)
+                                .putExtra("idCita", documentReference.getId()));
 
+                        //y se cierra esta activity.
                         finish();
 
                     }
