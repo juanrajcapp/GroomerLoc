@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorCitasPelu;
@@ -219,7 +220,9 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
         //Se visibiliza el círculo de carga.
         circuloCargaCitas.setVisibility(View.VISIBLE);
 
+        //Obtiene las citas credas por el peluquero actual en orden de fecha de creación descendente desde Firestore.
         firestore.collection("citas").whereEqualTo("idPeluquero", auth.getCurrentUser().getUid())
+                .orderBy("fechaCreacion", Query.Direction.DESCENDING)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

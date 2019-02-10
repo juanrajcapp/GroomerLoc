@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorCitasCliente;
@@ -97,8 +98,9 @@ public class CitasClienteActivity extends AppCompatActivity {
         //Se visibiliza el círculo de carga.
         circuloCargaCitasCliente.setVisibility(View.VISIBLE);
 
-        //Obtiene las citas credas por el cliente actual desde Firestore.
+        //Obtiene las citas credas por el cliente actual en orden de creación descendente desde Firestore.
         firestore.collection("citas").whereEqualTo("idCliente", usuario.getUid())
+                .orderBy("fechaCreacion", Query.Direction.DESCENDING)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
