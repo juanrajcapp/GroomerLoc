@@ -95,9 +95,9 @@ public class CitasConfPeluActivity extends AppCompatActivity {
         //Se visibiliza el círculo de carga.
         circuloCargaCitasConfPelu.setVisibility(View.VISIBLE);
 
-        //Obtiene las citas credas por el peluquero actual en orden de fecha de confirmación descendente desde Firestore.
+        //Obtiene las citas credas por el peluquero actual en orden de fecha de confirmación desde Firestore.
         firestore.collection("citas").whereEqualTo("idPeluquero", auth.getCurrentUser().getUid())
-                .orderBy("fechaConfirmacion", Query.Direction.DESCENDING)
+                .orderBy("fechaConfirmacion")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

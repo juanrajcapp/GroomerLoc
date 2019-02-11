@@ -16,8 +16,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.CitaClienteActivity;
@@ -82,10 +85,8 @@ public class FragChatCitaCli extends Fragment {
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
 
-                                //Si se guarda correctamente, borra el campo de entrada de texto...
+                                //Si se guarda correctamente, borra el campo de entrada de texto.
                                 inputChatCli.setText("");
-                                //y vuelve a cargar y mostrar los mensajes guardados.
-                                muestraMensajes();
 
                             } else {
                                 Toast.makeText(getActivity(), getActivity().getString(R.string.mensajeNoEnviado),
@@ -106,6 +107,8 @@ public class FragChatCitaCli extends Fragment {
         });
 
         muestraMensajes();
+
+        listenerMensajes();
 
     }
 
@@ -144,6 +147,56 @@ public class FragChatCitaCli extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    /**
+     * Método que crea el lístener con el que el chat de la cita se actualizará en tiempo real.
+     */
+    private void listenerMensajes(){
+
+        /*
+        Crea el listener que se ejecutará cada vez que haya una modificación en la colección del
+        chat de la cita.
+        */
+        firestore.collection("citas").document(idClita).collection("chat")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @javax.annotation.Nullable FirebaseFirestoreException e) {
+
+                        //Comprueba si el QDS está vacío.
+                        if(queryDocumentSnapshots.isEmpty()){
+
+                        }else{
+
+                            //Obtiene los cambios producidos.
+                            for(DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
+
+                                switch (doc.getType()){
+
+                                    //Si se añadió un elemento.
+                                    case ADDED:
+                                        muestraMensajes();
+                                        break;
+
+                                    //Si se modificó un elemento.
+                                    case MODIFIED:
+                                        muestraMensajes();
+                                        break;
+
+                                    //Si se eliminó un elemento.
+                                    case REMOVED:
+                                        muestraMensajes();
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                });
 
     }
 
