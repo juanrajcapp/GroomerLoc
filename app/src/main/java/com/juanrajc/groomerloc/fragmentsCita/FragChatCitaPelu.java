@@ -177,17 +177,28 @@ public class FragChatCitaPelu extends Fragment {
 
                                     //Si se añadió un elemento.
                                     case ADDED:
-                                        muestraMensajes();
+
+                                        if(getActivity()!=null) {
+                                            muestraMensajes();
+                                        }
+
                                         break;
 
                                     //Si se modificó un elemento.
                                     case MODIFIED:
-                                        muestraMensajes();
+
+                                        if(getActivity()!=null) {
+                                            muestraMensajes();
+                                        }
+
                                         break;
 
                                     //Si se eliminó un elemento.
                                     case REMOVED:
-                                        muestraMensajes();
+
+                                        if(getActivity()!=null) {
+                                            muestraMensajes();
+                                        }
 
                                 }
 

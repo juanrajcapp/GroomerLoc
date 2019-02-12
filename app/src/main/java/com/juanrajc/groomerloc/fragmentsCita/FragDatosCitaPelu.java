@@ -400,9 +400,20 @@ public class FragDatosCitaPelu extends Fragment {
                 //y establece la fecha y hora del Date pasándole los milisegundos del anterior Calendar.
                 fechaCita.setTime(calendar.getTimeInMillis());
 
-                estableceFechaCita(fechaCita);
+                //Comprueba que sea una fecha válida.
+                if(compruebaValidezFecha(fechaCita)){
 
-                adFechaHora.dismiss();
+                    estableceFechaCita(fechaCita);
+
+                    adFechaHora.dismiss();
+
+                }else{
+
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            getText(R.string.mensajeCitaFechaNoValida),
+                            Toast.LENGTH_LONG).show();
+
+                }
 
             }});
 
@@ -416,6 +427,27 @@ public class FragDatosCitaPelu extends Fragment {
 
         adFechaHora.setView(dvFechaHora);
         adFechaHora.show();
+
+    }
+
+    /**
+     * Método que compueba que la fecha y hora recibida es posterior a la actual.
+     *
+     * @param fecha Date con la fecha y hora a comprobar.
+     *
+     * @return Boolean true si la fecha es válida (es posterior a la actual).
+     */
+    private boolean compruebaValidezFecha(Date fecha){
+
+        //Obtiene la diferencia de tiempo en milisegundos entre la fecha actual y la recibida.
+        long tiempo = Calendar.getInstance().getTime().getTime() - fecha.getTime();
+
+        //Si es un valor negativo significa que la fecha es posterior a la actual.
+        if(tiempo<0){
+            return true;
+        }else{
+            return false;
+        }
 
     }
 

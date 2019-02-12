@@ -270,6 +270,7 @@
     <string name="citasErrorCargaDato">ERROR WHEN OBTAINED</string>
     <string name="mensajeCitaNoExiste">The selected appointment does not exist.</string>
     <string name="mensajeCitaNoCarga">The selected appointment could not be loaded.</string>
+    <string name="mensajeCitaFechaNoValida">The selected date and time can not be earlier than the current one.</string>
     <string name="mensajeCitaFechaExito">A new date and time has been set for the appointment.</string>
     <string name="mensajeCitaFechaFallo">Could not set a new date and time for the appointment.</string>
     <string name="botonCitaEstablecerFecha">Set</string>

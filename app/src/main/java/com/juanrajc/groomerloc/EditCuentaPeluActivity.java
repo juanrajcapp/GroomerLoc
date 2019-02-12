@@ -812,11 +812,11 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que elimina la cuenta del usuario actual.
+     * Método que pregunta si se desea eliminar la cuenta del usuario actual.
      *
      * @param view
      */
-    protected void eliminaCuenta(View view){
+    protected void preguntaEliminarCuenta(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -826,6 +826,9 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //Visibiliza el círculo de carga.
+                        circuloCargaEdCuPelu.setVisibility(View.VISIBLE);
 
                         //Guarda la ID del usuario actual en una variable.
                         final String idUsuario = auth.getCurrentUser().getUid();
@@ -837,7 +840,21 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
 
                                     //y sus datos en Firestore.
-                                    firestore.collection("peluqueros").document(idUsuario).delete();
+                                    firestore.collection("peluqueros").document(idUsuario)
+                                            .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+
+                                                firestore.collection("peluqueros")
+                                                        .document(idUsuario)
+                                                        .collection("peluqueria")
+                                                        .document("tarifas")
+                                                        .delete();
+
+                                            }
+                                        }
+                                    });
 
                                     Toast.makeText(getApplicationContext(),
                                             getText(R.string.mensajeEditCuentaBorrada)+" "+emailPeluquero+" "+
@@ -861,7 +878,13 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                                                 getString(R.string.mensajeEditCuentaErrorBorrar),
                                                 Toast.LENGTH_SHORT).show();
 
+                                    }finally {
+                                        circuloCargaEdCuPelu.setVisibility(View.INVISIBLE);
+                                        activaBotones(true);
                                     }
+
+                                    circuloCargaEdCuPelu.setVisibility(View.INVISIBLE);
+                                    activaBotones(true);
 
                                 }
 
@@ -872,6 +895,9 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),
                                         getString(R.string.mensajeEditCuentaErrorBorrar),
                                         Toast.LENGTH_SHORT).show();
+
+                                circuloCargaEdCuPelu.setVisibility(View.INVISIBLE);
+                                activaBotones(true);
                             }
                         });
 
@@ -879,13 +905,8 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                 }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Cierra el dialog.
+                //Cierra el dialog y vuelve a activar los botones.
                 dialogInterface.dismiss();
-            }
-        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //Activa los botones al salir del AlertDialog.
                 activaBotones(true);
             }
         }).show();

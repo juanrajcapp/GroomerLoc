@@ -28,7 +28,14 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.clasesBD.Cliente;
+import com.juanrajc.groomerloc.clasesBD.Perro;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditCuentaCliActivity extends AppCompatActivity {
 
@@ -642,11 +649,11 @@ public class EditCuentaCliActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que elimina la cuenta del usuario actual.
+     * Método que pregunta si se desea eliminar la cuenta del usuario actual.
      *
      * @param view
      */
-    protected void eliminaCuenta(View view){
+    protected void preguntaEliminarCuenta(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -657,68 +664,191 @@ public class EditCuentaCliActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        //Guarda la ID del usuario actual en una variable.
-                        final String idUsuario = auth.getCurrentUser().getUid();
-
-                        //Elimina el usuario actual...
-                        auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-
-                                    //y sus datos en Firestore.
-                                    firestore.collection("clientes").document(idUsuario).delete();
-
-                                    Toast.makeText(getApplicationContext(),
-                                            getText(R.string.mensajeEditCuentaBorrada)+" "+emailCliente+" "+
-                                            getString(R.string.mensajeEditCuentaBorrada2),
-                                            Toast.LENGTH_SHORT).show();
-
-                                    //Finalmente cierra la activity.
-                                    finish();
-
-                                }else{
-
-                                    try{
-
-                                        throw task.getException();
-
-                                    }catch (FirebaseAuthRecentLoginRequiredException necesitaRelogueo) {
-                                        dialogAvisoAutenticacion();
-                                    }catch (Exception ex){
-
-                                        Toast.makeText(getApplicationContext(),
-                                                getString(R.string.mensajeEditCuentaErrorBorrar),
-                                                Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                }
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(),
-                                        getString(R.string.mensajeEditCuentaErrorBorrar),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        obtienePerros(auth.getCurrentUser().getUid());
 
                     }
                 }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Cierra el dialog.
+                //Cierra el dialog y vuelve a activar los botones.
                 dialogInterface.dismiss();
-            }
-        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //Activa los botones al salir del AlertDialog.
                 activaBotones(true);
             }
         }).show();
+
+    }
+
+    /**
+     * Método que obtiene los ID y las rutas de las fotos de los perros del cliente (si tiene alguno).
+     *
+     * @param idCliente Cadena con la ID del cliente.
+     */
+    private void obtienePerros(final String idCliente){
+
+        //Visibiliza el círculo de carga.
+        circuloCargaEdCuCli.setVisibility(View.VISIBLE);
+
+        //Obtiene los perros del cliente desde Firestore.
+        firestore.collection("clientes").document(idCliente)
+                .collection("perros").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                    //Crea el List que contendrá el ID del perro y las rutas de las fotos.
+                    List<String> listIdPerros;
+                    List<String> listRutasFotosPerros;
+
+                    //Comprueba que ha obtenido algún perro.
+                    if(task.getResult().isEmpty()){
+                        listIdPerros = null;
+                        listRutasFotosPerros = null;
+                    }else{
+
+                        //Si ha obtenido alguno, instancia los List.
+                        listIdPerros = new ArrayList<String>();
+                        listRutasFotosPerros = new ArrayList<String>();
+
+                        //Carga cada perro y guarda su ID y ruta en los List.
+                        for(QueryDocumentSnapshot doc:task.getResult()){
+
+                            listIdPerros.add(doc.getId());
+                            listRutasFotosPerros.add("clientes/"+idCliente +"/perros/"+doc.getId()
+                                    +"/fotos/"+doc.getId() +" "+doc.toObject(Perro.class)
+                                    .getFechaFoto()+".jpg");
+
+                        }
+
+                    }
+
+                    borraCliente(idCliente, listIdPerros, listRutasFotosPerros);
+
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.mensajeEditCuentaErrorBorrar),
+                            Toast.LENGTH_SHORT).show();
+
+                    circuloCargaEdCuCli.setVisibility(View.INVISIBLE);
+                    activaBotones(true);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.mensajeEditCuentaErrorBorrar),
+                        Toast.LENGTH_SHORT).show();
+
+                circuloCargaEdCuCli.setVisibility(View.INVISIBLE);
+                activaBotones(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que borra la cuenta del cliente actual.
+     *
+     * @param idCliente Cadena con la ID del cliente.
+     * @param listaIdPerros List con las IDs de los perros del cliente (si tiene alguno).
+     * @param listaRutasFotosPerros List con las rutas de las fotos de los perros del cliente (si tiene alguno).
+     */
+    private void borraCliente(final String idCliente, final List<String> listaIdPerros, final List<String> listaRutasFotosPerros){
+
+        //Elimina el usuario actual...
+        auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                    //sus datos en Firestore...
+                    firestore.collection("clientes").document(idCliente)
+                            .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                                //y si tenía perros registrados...
+                                if(listaIdPerros!=null) {
+
+                                    //sus registros y fotos.
+                                    borraPerros(idCliente, listaIdPerros, listaRutasFotosPerros);
+
+                                }
+
+                            }
+                        }
+                    });
+
+                    Toast.makeText(getApplicationContext(),
+                            getText(R.string.mensajeEditCuentaBorrada)+" "+emailCliente+" "+
+                                    getString(R.string.mensajeEditCuentaBorrada2),
+                            Toast.LENGTH_SHORT).show();
+
+                    //Finalmente cierra la activity.
+                    finish();
+
+                }else{
+
+                    try{
+
+                        throw task.getException();
+
+                    }catch (FirebaseAuthRecentLoginRequiredException necesitaRelogueo) {
+                        dialogAvisoAutenticacion();
+                    }catch (Exception ex){
+
+                        Toast.makeText(getApplicationContext(),
+                                getString(R.string.mensajeEditCuentaErrorBorrar),
+                                Toast.LENGTH_SHORT).show();
+
+                    }finally {
+                        circuloCargaEdCuCli.setVisibility(View.INVISIBLE);
+                        activaBotones(true);
+                    }
+
+                    circuloCargaEdCuCli.setVisibility(View.INVISIBLE);
+                    activaBotones(true);
+
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.mensajeEditCuentaErrorBorrar),
+                        Toast.LENGTH_SHORT).show();
+
+                circuloCargaEdCuCli.setVisibility(View.INVISIBLE);
+                activaBotones(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que borra todas las fotos de los perros del cliente eliminado almacenadas en Storage.
+     *
+     * @param idCliente Cadena con la ID del cliente dueño de los perros.
+     * @param listaIdPerros List con las IDs de cada perro.
+     * @param listaRutasFotosPerros List con las rutas de las fotos de cada perro.
+     */
+    private void borraPerros(String idCliente, List<String> listaIdPerros, List<String> listaRutasFotosPerros){
+
+        for(String perro:listaIdPerros){
+
+            firestore.collection("clientes").document(idCliente)
+                    .collection("perros").document(perro).delete();
+
+        }
+
+        for(String rutaFotoPerro:listaRutasFotosPerros){
+
+            FirebaseStorage.getInstance().getReference(rutaFotoPerro).delete();
+
+        }
 
     }
 

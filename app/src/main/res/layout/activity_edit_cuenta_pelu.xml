@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/botonEditCuentaEliCu"
                 android:textColor="@color/colorAlerta"
-                android:onClick="eliminaCuenta"/>
+                android:onClick="preguntaEliminarCuenta"/>
         </LinearLayout>
 
         <Button

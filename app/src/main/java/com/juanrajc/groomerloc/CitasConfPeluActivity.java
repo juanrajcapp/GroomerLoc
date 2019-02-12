@@ -19,11 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 import com.juanrajc.groomerloc.adaptadores.AdaptadorCitasPelu;
 import com.juanrajc.groomerloc.clasesBD.Cita;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class CitasConfPeluActivity extends AppCompatActivity {
 
@@ -107,6 +111,7 @@ public class CitasConfPeluActivity extends AppCompatActivity {
 
                     //comprueba que esos resultados contienen datos.
                     if(task.getResult().isEmpty()){
+                        rvCitasConfPelu.setAdapter(new AdaptadorCitasPelu(null, null));
                         tvNoCitasConfPelu.setVisibility(View.VISIBLE);
                     }else {
 
@@ -117,29 +122,38 @@ public class CitasConfPeluActivity extends AppCompatActivity {
                         List<String> listaIdsCitas = new ArrayList<String>();
                         List<Cita> listaObjCitas = new ArrayList<Cita>();
 
-                        //y se introducen dichos datos en dichos List.
+                        //y se introducen dichos datos en dichos List...
                         for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                            //Sólo introduce los que tengan establecida la fecha de confirmación.
-                            if(doc.toObject(Cita.class).getFechaConfirmacion()!=null) {
+                            //comprobando antes la vigencia de cada cita.
+                            if(compruebaVigenciaCita(doc.toObject(Cita.class))) {
 
-                                listaIdsCitas.add(doc.getId());
-                                listaObjCitas.add(doc.toObject(Cita.class));
+                                //Sólo se van a mostrar los que tengan establecida la fecha de confirmación.
+                                if (doc.toObject(Cita.class).getFechaConfirmacion() != null) {
+
+                                    listaIdsCitas.add(doc.getId());
+                                    listaObjCitas.add(doc.toObject(Cita.class));
+
+                                }
+
+                            }else{
+
+                                borraCita(doc.getId(), doc.toObject(Cita.class));
 
                             }
 
                         }
 
-                        //Si se ha introducido algún ID en el list de IDs...
-                        if(!listaIdsCitas.isEmpty()) {
-
-                            //crea un nuevo adaptador con las citas obtenidas.
-                            rvCitasConfPelu.setAdapter(new AdaptadorCitasPelu(listaIdsCitas, listaObjCitas));
-
-                        //Si no, visibiliza un mensaje en la activity.
-                        }else{
+                        /*
+                        Si no se ha añadido ninguna cita al list, se muestra un mensaje en
+                        la vista de la activity.
+                        */
+                        if(listaIdsCitas.isEmpty()) {
                             tvNoCitasConfPelu.setVisibility(View.VISIBLE);
                         }
+
+                        //Crea un nuevo adaptador con las citas obtenidas.
+                        rvCitasConfPelu.setAdapter(new AdaptadorCitasPelu(listaIdsCitas, listaObjCitas));
 
                     }
 
@@ -163,6 +177,134 @@ public class CitasConfPeluActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 botonRecargarCitasConfPelu.setEnabled(true);
                 botonAtrasCitasConfPelu.setEnabled(true);
+            }
+        });
+
+    }
+
+    /**
+     * Método que comprueba si la cita es válida en el tiempo (que ha sido confirmada en el espacio
+     * de tiempo de una semana desde su creación, y en el caso de que ya haya sido confirmada, que
+     * la fecha de confirmación no haya expirado en un periodo de más de 6 horas).
+     *
+     * @param cita Objeto de la cita, el cual contiene sus datos.
+     *
+     * @return Booleano true si la cita está vigente.
+     */
+    private boolean compruebaVigenciaCita(Cita cita){
+
+        if(cita.getFechaConfirmacion()==null){
+            return compruebaVigenciaCitaNoConfirmada(cita.getFechaCreacion());
+        }else{
+            return compruebaVigenciaCitaConfirmada(cita.getFechaConfirmacion());
+        }
+
+    }
+
+    /**
+     * Método que comprueba si una cita sin fecha de confirmación ha sido creada hace menos de una semana.
+     *
+     * @param fechaCreacion Date con la fecha de creación de la cita.
+     *
+     * @return Booleano true si la cita ha sido creada hace menos de una semana.
+     */
+    private boolean compruebaVigenciaCitaNoConfirmada(Date fechaCreacion){
+
+        //Obtiene los días pasados entre la fecha de creación y la fecha actual.
+        long dias = TimeUnit.DAYS.convert(Calendar.getInstance().getTime().getTime()
+                - fechaCreacion.getTime(), TimeUnit.MILLISECONDS);
+
+        //Comprueba si han pasado más de 7 días.
+        if(dias>7){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    /**
+     * Método que comprueba si ha pasado menos de 6 horas desde que expiró la fecha confirmada de
+     * realización del servicio de una cita (o sigue vigente).
+     *
+     * @param fechaConfirmacion Date con la fecha confirmada para la realización del servicio de la cita.
+     *
+     * @return Booleano true si han pasado menos de 6 horas desde la realización del servicio de la cita
+     * (o sigue vigente).
+     */
+    private boolean compruebaVigenciaCitaConfirmada(Date fechaConfirmacion){
+
+        //Obtiene las horas pasadas entre la fecha de confirmación y la fecha actual.
+        long horas = TimeUnit.HOURS.convert(Calendar.getInstance().getTime().getTime()
+                - fechaConfirmacion.getTime(), TimeUnit.MILLISECONDS);
+
+        //Comprueba si han pasado más de 6 horas.
+        if(horas>6){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    /**
+     * Método que se encarga de borrar la cita recibida en Firestore, y su respectiva foto en Storage
+     * (si existe).
+     *
+     * @param idCita Cadena con la ID de la cita a borrar.
+     */
+    private void borraCita(final String idCita, final Cita cita){
+
+        //Borra la cita recibida mediante su ID en Firestore.
+        firestore.collection("citas").document(idCita).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            //Si se ha borrado la cita con éxito, se borra también el chat (si existe)...
+                            borraChat(idCita);
+
+                            //y los ficheros de la cita en Storage.
+                            FirebaseStorage.getInstance().getReference("citas/"+idCita +"/perros/"
+                                    +cita.getPerro().getNombre()+" "+cita.getPerro().getFechaFoto()+".jpg")
+                                    .delete();
+
+                        }
+                    }
+                });
+
+    }
+
+    /**
+     * Método que borra el chat de la cita (si existe).
+     *
+     * @param idCita Cadena con la ID de la cita.
+     */
+    private void borraChat(final String idCita){
+
+        //Obtiene todos los mensajes del chat de la cita en Firestore.
+        firestore.collection("citas").document(idCita).collection("chat")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                    //Si el chat no está vacío...
+                    if(!task.getResult().isEmpty()){
+
+                        //borra uno por uno dichos mensajes.
+                        for(QueryDocumentSnapshot doc:task.getResult()){
+
+                            firestore.collection("citas").document(idCita)
+                                    .collection("chat").document(doc.getId())
+                                    .delete();
+
+                        }
+
+                    }
+
+                }
             }
         });
 

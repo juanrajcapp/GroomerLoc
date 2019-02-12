@@ -1,9 +1,9 @@
 package com.juanrajc.groomerloc.adaptadores;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -29,7 +29,8 @@ public class AdaptadorMensajes extends ArrayAdapter<Mensaje> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         if(convertView == null){
-            convertView = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.mensaje, parent, false);
+            convertView = ((FragmentActivity)getContext()).getLayoutInflater()
+                    .inflate(R.layout.mensaje, parent, false);
         }
 
         //Instancias de los elementos del mensaje.
