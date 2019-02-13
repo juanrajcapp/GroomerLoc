@@ -3,16 +3,11 @@ package com.juanrajc.groomerloc.servicios;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.clasesBD.Cita;
 import com.juanrajc.groomerloc.clasesBD.Mensaje;
@@ -31,6 +26,9 @@ public class ServicioNotificaciones extends Service {
     //Tipo e ID del usuario actual.
     private String tipoUsuario, idUsuario;
 
+    //Fecha y hora de creación del servicio.
+    private Date dateServicio;
+
     //Objeto de la instancia de Firestore.
     private FirebaseFirestore firestore;
 
@@ -48,6 +46,9 @@ public class ServicioNotificaciones extends Service {
 
         //Instancia de la BD de Firestore.
         firestore = FirebaseFirestore.getInstance();
+
+        //Instancia de la fecha y hora de creación del servicio.
+        dateServicio = Calendar.getInstance().getTime();
 
     }
 
@@ -197,21 +198,27 @@ public class ServicioNotificaciones extends Service {
     }
 
     /**
-     * Método que comprueba si ha pasado menos de 1 minuto entre la fecha y hora del elemento y
-     * la actual.
+     * Método que comprueba si la fecha y hora de creación del elemento es posterior a la fecha
+     * y hora de creación del servicio.
      *
      * @param dateElemento Date con la fecha y hora que se va a comprobar.
      *
-     * @return Booleano true si ha pasado menos de 1 minuto.
+     * @return Booleano true si la fecha y hora recibida es posterior a la de creación del servicio.
      */
     private boolean controlaActualidadElemento(Date dateElemento) {
 
-        //Obtiene los minutos pasados entre la fecha y hora del elemento y la actual.
-        long minutos = TimeUnit.MINUTES.convert(Calendar.getInstance().getTime().getTime()
-                - dateElemento.getTime(), TimeUnit.MILLISECONDS);
+        /*
+        Obtiene los minutos pasados entre la fecha y hora de creación del servicio y la
+        fecha y hora de creación del elemento.
+        */
+        long minutos = TimeUnit.MINUTES.convert(dateElemento.getTime()
+                - dateServicio.getTime(), TimeUnit.MILLISECONDS);
 
-        //Comprueba si han pasado más de 1 minuto.
-        if (minutos > 1) {
+        /*
+        Comprueba si los minutos pasados son negativos (en ese caso retornaría falso porque
+        significaría que la fecha del elemento es posterior a la creación del servicio).
+        */
+        if (minutos < 0) {
             return false;
         } else {
             return true;
