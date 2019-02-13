@@ -33,7 +33,7 @@ import java.util.Calendar;
 
 public class FragChatCitaPelu extends Fragment {
 
-    private String idClita;
+    private String idCita;
 
     //Objetos de los elementos de la vista.
     private FloatingActionButton fabMensajePelu;
@@ -66,7 +66,7 @@ public class FragChatCitaPelu extends Fragment {
         firestore = FirebaseFirestore.getInstance();
 
         //Recoge la ID de la cita desde la activity que carga este fragment.
-        idClita = ((CitaPeluActivity)getContext()).getIdCita();
+        idCita = ((CitaPeluActivity)getContext()).getIdCita();
 
         //Listener del FAB que se utiliza para regoger el texto introducido.
         fabMensajePelu.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +77,7 @@ public class FragChatCitaPelu extends Fragment {
                 if(inputChatPelu.getText().length()>0) {
 
                     //Añade el mensaje al chat de la cita recibida.
-                    firestore.collection("citas").document(idClita)
+                    firestore.collection("citas").document(idCita)
                             .collection("chat").add(new Mensaje(usuario.getCurrentUser()
                             .getDisplayName(), inputChatPelu.getText().toString(), Calendar.getInstance()
                             .getTime())).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -118,7 +118,7 @@ public class FragChatCitaPelu extends Fragment {
     private void muestraMensajes(){
 
         //Obtiene los mensajes del chat de la cita, ordenados por fecha.
-        firestore.collection("citas").document(idClita).collection("chat")
+        firestore.collection("citas").document(idCita).collection("chat")
                 .orderBy("fecha").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -159,16 +159,14 @@ public class FragChatCitaPelu extends Fragment {
         Crea el listener que se ejecutará cada vez que haya una modificación en la colección del
         chat de la cita.
         */
-        firestore.collection("citas").document(idClita).collection("chat")
+        firestore.collection("citas").document(idCita).collection("chat")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
                                         @javax.annotation.Nullable FirebaseFirestoreException e) {
 
                         //Comprueba si el QDS está vacío.
-                        if(queryDocumentSnapshots.isEmpty()){
-
-                        }else{
+                        if(!queryDocumentSnapshots.isEmpty()){
 
                             //Obtiene los cambios producidos.
                             for(DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){

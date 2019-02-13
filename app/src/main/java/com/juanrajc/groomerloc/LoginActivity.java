@@ -1,5 +1,7 @@
 package com.juanrajc.groomerloc;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +19,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.juanrajc.groomerloc.servicios.ServicioNotificaciones;
+
 import java.util.regex.Pattern;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
+
+    //Constantes del tipo de usuario autenticado.
+    private static final String USU_PELUQUERO="idPeluquero", USU_CLIENTE="idCliente";
 
     //Objetos de Firebase (Autenticación y BD Firestore).
     private FirebaseAuth auth;
@@ -89,7 +96,12 @@ public class LoginActivity extends AppCompatActivity {
         //Si se vuelve a la activity, comprueba si hay un usuario autenticado.
         if (auth.getCurrentUser() == null) {
 
-            //si no lo hay, se invisibiliza el círulo de carga...
+            //si no lo hay, se para el servicio de notificaciones (si está iniciado)...
+            if(isMyServiceRunning(ServicioNotificaciones.class)){
+                stopService(new Intent(this, ServicioNotificaciones.class));
+            }
+
+            //se invisibiliza el círulo de carga...
             circuloCarga.setVisibility(View.INVISIBLE);
 
             //y se reactivan los botones de la activity.
@@ -173,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Método que se encarga de iniciar la activity correspondiente al rol del usuario autenticado.
+     * Método que se encarga de iniciar la activity y servicio correspondiente al rol del usuario autenticado.
      */
     private void tipoUsuario(){
 
@@ -184,18 +196,53 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
 
+                    String tipoUsuario="";
+
                     //si existe (es un peluquero), inicia la activity del peluquero...
                     if(task.getResult().exists()){
+                        tipoUsuario=USU_PELUQUERO;
                         activityPeluquero();
 
                     //si no (por descarte es un cliente), se inicia la activity del cliente.
                     }else{
                         activityCliente();
+                        tipoUsuario=USU_CLIENTE;
                     }
+
+                    //Comprueba si el servicio de notificaciones está activo. Lo para si es así...
+                    if(isMyServiceRunning(ServicioNotificaciones.class)){
+                        stopService(new Intent(getApplicationContext(), ServicioNotificaciones.class));
+                    }
+
+                    //crea el intent del servicio con los datos que va a necesitar para su ejecución...
+                    Intent intentServicio = new Intent(getApplicationContext(), ServicioNotificaciones.class);
+                    intentServicio.putExtra("tipoUsuario", tipoUsuario);
+                    intentServicio.putExtra("idUsuario", auth.getCurrentUser().getUid());
+
+                    //y lo inicia.
+                    startService(intentServicio);
+
                 }
             }
         });
 
+    }
+
+    /**
+     * Método que comprueba si un servicio está en ejecución o no.
+     *
+     * @param serviceClass Clase del servicio a comprobar.
+     *
+     * @return Booleano true si el servicio está en ejecución.
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

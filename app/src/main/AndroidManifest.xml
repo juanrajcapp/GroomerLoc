@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.juanrajc.groomerloc">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -20,43 +21,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/fg_logo_groomerloc"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeSinAB">
-        <activity
-            android:name=".CitaClienteActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".CitaPeluActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".CitasConfPeluActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".CitasClienteActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".PerrosCitaActivity"
-            android:configChanges="orientation|screenSize" />
+        android:theme="@style/AppThemeSinAB"
+        android:configChanges="orientation|screenSize">
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.android.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        <service
+            android:name=".servicios.ServicioNotificaciones"
+            android:enabled="true"
+            android:exported="false" />
 
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppThemeSinAB.SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -70,55 +42,72 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeSinAB.SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ClienteActivity"
-            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".RegistroActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".RegistroLocActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".RegPerroActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".PerrosActivity"
-            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".PeluqueroActivity"
-            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".BusqPeluActivity"
-            android:configChanges="orientation|screenSize" />
+            android:name=".CitaClienteActivity" />
         <activity
-            android:name=".FichaPeluqActivity"
-            android:configChanges="orientation|screenSize" />
+            android:name=".CitaPeluActivity" />
         <activity
-            android:name=".EditTarifasPeluActivity"
-            android:configChanges="orientation|screenSize" />
+            android:name=".CitasConfPeluActivity" />
         <activity
-            android:name=".TarifasPeluActivity"
-            android:configChanges="orientation|screenSize" />
+            android:name=".CitasClienteActivity" />
+        <activity
+            android:name=".PerrosCitaActivity" />
+        <activity
+            android:name=".RegistroActivity" />
+        <activity
+            android:name=".RegistroLocActivity" />
+        <activity
+            android:name=".RegPerroActivity" />
+        <activity
+            android:name=".PerrosActivity" />
+        <activity
+            android:name=".BusqPeluActivity" />
+        <activity
+            android:name=".FichaPeluqActivity" />
+        <activity
+            android:name=".EditTarifasPeluActivity" />
+        <activity
+            android:name=".TarifasPeluActivity" />
+        <activity
+            android:name=".PrefClienteActivity" />
+        <activity
+            android:name=".PrefPeluqueroActivity" />
+        <activity
+            android:name=".EditCuentaCliActivity" />
+        <activity
+            android:name=".EditCuentaPeluActivity" />
+        <activity
+            android:name=".CreaCitaActivity" />
         <activity
             android:name=".AcercaDeActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".PrefClienteActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".PrefPeluqueroActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".EditCuentaCliActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".EditCuentaPeluActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".CreaCitaActivity"
-            android:configChanges="orientation|screenSize" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>
