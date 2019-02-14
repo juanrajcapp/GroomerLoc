@@ -258,7 +258,6 @@
     <!-- Chat -->
     <string name="hintMensajeEntrada">Escribe un mensaje:</string>
     <string name="mensajeNoEnviado">No se ha podido enviar el mensaje.</string>
-    <string name="mensajesNoCargados">No se han podido cargar los mensajes.</string>
 
     <!-- Citas -->
     <string name="citasCliente">Cliente:</string>

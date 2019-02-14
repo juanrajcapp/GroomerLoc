@@ -21,7 +21,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.CitaPeluActivity;
 import com.juanrajc.groomerloc.R;
@@ -106,61 +105,25 @@ public class FragChatCitaPelu extends Fragment {
             }
         });
 
-        muestraMensajes();
-
         listenerMensajes();
 
     }
 
     /**
-     * Método que muestra los mensajes guardados en la cita recibida.
-     */
-    private void muestraMensajes(){
-
-        //Obtiene los mensajes del chat de la cita, ordenados por fecha.
-        firestore.collection("citas").document(idCita).collection("chat")
-                .orderBy("fecha").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    //Crea una lista de mensajes...
-                    listaMensajes = new ArrayList<Mensaje>();
-
-                    //y los guarda en el uno a uno.
-                    for(QueryDocumentSnapshot doc:task.getResult()){
-                        listaMensajes.add(doc.toObject(Mensaje.class));
-                    }
-
-                    //Finalmente setea el adaptador con los mensajes obtenidos.
-                    listMensajesPelu.setAdapter( new AdaptadorMensajes(getActivity(), listaMensajes));
-
-                }else{
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.mensajesNoCargados),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.mensajesNoCargados),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    /**
-     * Método que crea el lístener con el que el chat de la cita se actualizará en tiempo real.
+     * Método que crea el lístener con el que se mostrará y actualizará el chat de la cita
+     * en tiempo real.
      */
     private void listenerMensajes(){
 
+        //Crea una lista de mensajes.
+        listaMensajes = new ArrayList<Mensaje>();
+
         /*
-        Crea el listener que se ejecutará cada vez que haya una modificación en la colección del
-        chat de la cita.
+        Crea el listener que se ejecutará al ser creado y cada vez que haya una modificación en
+        la colección del chat de la cita en Firestore. Mostrará los mensajes ordenados por fecha.
         */
         firestore.collection("citas").document(idCita).collection("chat")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .orderBy("fecha").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
                                         @javax.annotation.Nullable FirebaseFirestoreException e) {
@@ -168,37 +131,35 @@ public class FragChatCitaPelu extends Fragment {
                         //Comprueba si el QDS está vacío.
                         if(!queryDocumentSnapshots.isEmpty()){
 
-                            //Obtiene los cambios producidos.
-                            for(DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
+                            //Comprueba que la activity no sea nula.
+                            if(getActivity()!=null) {
 
-                                switch (doc.getType()){
+                                //Obtiene los cambios producidos.
+                                for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
 
-                                    //Si se añadió un elemento.
-                                    case ADDED:
+                                    switch (doc.getType()) {
 
-                                        if(getActivity()!=null) {
-                                            muestraMensajes();
-                                        }
+                                        //Si se añadió un elemento.
+                                        case ADDED:
 
-                                        break;
+                                            //Guarda cada mensaje uno a uno en la lista.
+                                            listaMensajes.add(doc.getDocument().toObject(Mensaje.class));
 
-                                    //Si se modificó un elemento.
-                                    case MODIFIED:
+                                            break;
 
-                                        if(getActivity()!=null) {
-                                            muestraMensajes();
-                                        }
+                                        //Si se modificó un elemento.
+                                        case MODIFIED:
+                                            break;
 
-                                        break;
+                                        //Si se eliminó un elemento.
+                                        case REMOVED:
 
-                                    //Si se eliminó un elemento.
-                                    case REMOVED:
-
-                                        if(getActivity()!=null) {
-                                            muestraMensajes();
-                                        }
+                                    }
 
                                 }
+
+                                //Finalmente setea el adaptador con los mensajes obtenidos.
+                                listMensajesPelu.setAdapter( new AdaptadorMensajes(getActivity(), listaMensajes));
 
                             }
 

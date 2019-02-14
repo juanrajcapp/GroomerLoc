@@ -258,7 +258,6 @@
     <!-- Chat -->
     <string name="hintMensajeEntrada">Type a message:</string>
     <string name="mensajeNoEnviado">The message could not be sent.</string>
-    <string name="mensajesNoCargados">Messages could not be loaded.</string>
 
     <!-- Citas -->
     <string name="citasCliente">Customer:</string>

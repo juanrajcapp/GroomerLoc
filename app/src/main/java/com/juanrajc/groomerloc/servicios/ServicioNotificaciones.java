@@ -1,6 +1,8 @@
 package com.juanrajc.groomerloc.servicios;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -14,6 +16,7 @@ import com.juanrajc.groomerloc.clasesBD.Mensaje;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
@@ -162,9 +165,14 @@ public class ServicioNotificaciones extends Service {
                                     //Si se añadió un elemento.
                                     case ADDED:
 
-                                        //Controla la actualidad del evento.
+                                        /*
+                                        Controla la actualidad del evento y si la aplicación
+                                        está o no en primer plano.
+                                        */
                                         if (controlaActualidadElemento(doc.getDocument()
-                                                .toObject(Mensaje.class).getFecha())) {
+                                                .toObject(Mensaje.class).getFecha()) &&
+                                        !isAppOnForeground(getApplicationContext(),
+                                                "com.juanrajc.groomerloc")) {
 
                                             /*Notification notificacion = new NotificationCompat
                                                     .Builder(getApplicationContext(), ¿?)
@@ -224,6 +232,30 @@ public class ServicioNotificaciones extends Service {
             return true;
         }
 
+    }
+
+    /**
+     * Comprueba si la aplicación recibida está o no en primer plano.
+     *
+     * @param context Contexto de la aplicación.
+     * @param appPackageName Cadena con el nombre del paquete de la aplicación.
+     *
+     * @return Booleano true si la aplicación está en primer plano.
+     */
+    private boolean isAppOnForeground(Context context, String appPackageName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = appPackageName;
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
