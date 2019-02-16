@@ -283,4 +283,13 @@
     <string name="mensajeNoCitasNuevas">You have no unconfirmed appointments.</string>
     <string name="mensajeNoCitasConf">You have no confirmed appointments.</string>
 
+    <!-- Notificaciones -->
+    <string name="categoriaCanalCitas">New appointments</string>
+    <string name="categoriaCanalFechas">New appointment date</string>
+    <string name="categoriaCanalMensajes">New messages</string>
+    <string name="tituloCitaNueva">New appointment:</string>
+    <string name="tituloFechaEstablecida">Date and time assigned:</string>
+    <string name="mensajeFechaEstablecidaPelu">Groomer:</string>
+    <string name="tituloMensajeNuevo">Message from:</string>
+
 </resources>

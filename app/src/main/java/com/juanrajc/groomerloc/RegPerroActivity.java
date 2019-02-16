@@ -51,7 +51,7 @@ import java.util.Date;
 public class RegPerroActivity extends AppCompatActivity {
 
     //Constantes con los posibles resultados devueltos a la activity actual.
-    private static final int REQUEST_CAMARA=1, REQUEST_GALERIA=2;
+    private final int REQUEST_CAMARA=1, REQUEST_GALERIA=2;
 
     //Objetos de la vista de la activity.
     private RadioGroup grupoSexo;

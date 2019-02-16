@@ -38,7 +38,7 @@ import java.util.List;
 public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCheckedChangeListener {
 
     //Constantes con los posibles resultados devueltos a la activity actual.
-    private static final int REQUEST_PERRO=1;
+    private final int REQUEST_PERRO=1;
 
     //Tipo de moneda usada en las tarifas.
     private final String MONEDA=" €";

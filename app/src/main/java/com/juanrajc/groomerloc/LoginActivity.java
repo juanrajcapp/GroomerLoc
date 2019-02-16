@@ -1,6 +1,7 @@
 package com.juanrajc.groomerloc;
 
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -98,7 +99,13 @@ public class LoginActivity extends AppCompatActivity {
 
             //si no lo hay, se para el servicio de notificaciones (si está iniciado)...
             if(isMyServiceRunning(ServicioNotificaciones.class)){
+
                 stopService(new Intent(this, ServicioNotificaciones.class));
+
+                //se eliminan todas las notificaciones de la aplicación existentes...
+                NotificationManager nManager = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+                nManager.cancelAll();
+
             }
 
             //se invisibiliza el círulo de carga...

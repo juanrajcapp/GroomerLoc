@@ -27,7 +27,7 @@ import static android.app.Activity.RESULT_OK;
 public class AdaptadorPerrosCita extends RecyclerView.Adapter<AdaptadorPerrosCita.ViewHolder>  {
 
     //Objeto del contexto de la aplicación.
-    Context contexto;
+    private Context contexto;
 
     //Objeto del usuario actual y de la BD Firestore.
     private FirebaseUser usuario;

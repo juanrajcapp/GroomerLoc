@@ -50,7 +50,7 @@ import java.util.List;
 public class ClienteActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     //Constantes con los posibles resultados devueltos a la activity actual.
-    private static final int REQUEST_BUSQUEDA_PELUQUERO = 1;
+    private final int REQUEST_BUSQUEDA_PELUQUERO = 1;
 
     //Objeto del mapa que se muestra en la activity.
     private GoogleMap map;

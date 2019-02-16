@@ -36,7 +36,7 @@ import java.util.List;
 public class AdaptadorPerros extends RecyclerView.Adapter<AdaptadorPerros.ViewHolder>  {
 
     //Objeto del contexto de la aplicación.
-    Context contexto;
+    private Context contexto;
 
     //Objeto del usuario actual y de la BD Firestore.
     private FirebaseUser usuario;

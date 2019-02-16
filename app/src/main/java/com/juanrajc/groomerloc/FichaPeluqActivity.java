@@ -61,25 +61,15 @@ public class FichaPeluqActivity extends AppCompatActivity {
         ivImagenPelu = findViewById(R.id.ivImagenPelu);
 
         tvTitDir2Pelu = findViewById(R.id.tvTitDir2Pelu);
-        /*Inicia invisible el título de la información adicional, solo se mostrará
-        si el peluquero ha introducido algún dato en dicho campo.*/
-        tvTitDir2Pelu.setVisibility(View.INVISIBLE);
 
         bTarifasPelu = findViewById(R.id.bTarifasPelu);
         bAtrasFichaPelu = findViewById(R.id.bAtrasFichaPelu);
-        /*Inician desactivados los botones de la activity. No se podrán usar hasta
-        que los datos se hayan cargado.*/
-        bTarifasPelu.setEnabled(false);
-        bAtrasFichaPelu.setEnabled(false);
 
         //Instancia del Geocoder.
         gc=new Geocoder(this);
 
-        //Recoge y guarda el ID del peluquero...
+        //Recoge y guarda el ID del peluquero.
         idPeluquero = getIntent().getStringExtra("idPeluquero");
-
-        //y se pasa al método que carga los datos.
-        cargaInfoPelu(idPeluquero);
 
     }
 
@@ -87,9 +77,8 @@ public class FichaPeluqActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //Al volver a la activity, se vuelven a activar los botones de la misma.
-        bTarifasPelu.setEnabled(true);
-        bAtrasFichaPelu.setEnabled(true);
+        //Carga los datos del peluquero.
+        cargaInfoPelu(idPeluquero);
 
     }
 
@@ -99,6 +88,11 @@ public class FichaPeluqActivity extends AppCompatActivity {
      * @param idPeluquero Cadena con la ID del peluquero.
      */
     private void cargaInfoPelu(String idPeluquero){
+
+        /*Desactiva los botones de la activity. No se podrán usar hasta
+        que los datos se hayan cargado.*/
+        bTarifasPelu.setEnabled(false);
+        bAtrasFichaPelu.setEnabled(false);
 
         //Se visibiliza el círculo de carga.
         circuloCargaPelu.setVisibility(View.VISIBLE);

@@ -283,4 +283,13 @@
     <string name="mensajeNoCitasNuevas">No tiene citas sin confirmar.</string>
     <string name="mensajeNoCitasConf">No tiene citas confirmadas.</string>
 
+    <!-- Notificaciones -->
+    <string name="categoriaCanalCitas">Citas nuevas</string>
+    <string name="categoriaCanalFechas">Nueva fecha de cita</string>
+    <string name="categoriaCanalMensajes">Mensajes nuevos</string>
+    <string name="tituloCitaNueva">Nueva cita:</string>
+    <string name="tituloFechaEstablecida">Fecha y hora asignada:</string>
+    <string name="mensajeFechaEstablecidaPelu">Peluquero:</string>
+    <string name="tituloMensajeNuevo">Mensaje de:</string>
+
 </resources>

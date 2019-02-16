@@ -68,18 +68,14 @@ public class TarifasPeluActivity extends AppCompatActivity {
         tvTarifasPelu.setText(getString(R.string.tituloTarifasPelu)
                 +" "+nombrePeluquero);
 
-        //y se pasa al método que muestra los datos.
-        cargaTarifas(idPeluquero);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        //Al volver a la activity, se vuelven a activar los botones de la misma.
-        bTarifasAtras.setEnabled(true);
-        bTarifasPedirCita.setEnabled(true);
+        //Muestra las tarifas del peluquero.
+        cargaTarifas(idPeluquero);
 
     }
 
@@ -87,6 +83,11 @@ public class TarifasPeluActivity extends AppCompatActivity {
      * Método que se encarga de obtener las tarifas del peluquero seleccionado desde su BDen Firebase (si existen).
      */
     private void cargaTarifas(String idPeluquero){
+
+        /*Desactiva los botones de la activity. No se podrán usar hasta
+        que los datos se hayan cargado.*/
+        bTarifasAtras.setEnabled(false);
+        bTarifasPedirCita.setEnabled(false);
 
         //Se visibiliza el círculo de carga.
         circuloCargaTarPelu.setVisibility(View.VISIBLE);
@@ -302,10 +303,6 @@ public class TarifasPeluActivity extends AppCompatActivity {
 
         bTarifasAtras = findViewById(R.id.bTarifasAtras);
         bTarifasPedirCita = findViewById(R.id.bTarifasPedirCita);
-        /*Inician desactivados los botones de la activity. No se podrán usar hasta
-        que los datos se hayan cargado.*/
-        bTarifasAtras.setEnabled(false);
-        bTarifasPedirCita.setEnabled(false);
 
     }
 
