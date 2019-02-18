@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.juanrajc.groomerloc.R;
 import com.juanrajc.groomerloc.clasesBD.Cita;
@@ -24,6 +25,7 @@ import com.juanrajc.groomerloc.clasesBD.Peluquero;
 import com.juanrajc.groomerloc.notificaciones.AsistenteNotificaciones;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +46,9 @@ public class ServicioNotificaciones extends Service {
 
     //Fecha y hora de creación del servicio.
     private Date dateServicio;
+
+    //Lista de listeners iniciados por el servicio.
+    private List<ListenerRegistration> listaListenersCitas, listaListenersChats;
 
     //Objeto de la instancia de Firestore.
     private FirebaseFirestore firestore;
@@ -69,8 +74,9 @@ public class ServicioNotificaciones extends Service {
         //Instancia de la BD de Firestore.
         firestore = FirebaseFirestore.getInstance();
 
-        //Instancia de la fecha y hora de creación del servicio.
-        dateServicio = Calendar.getInstance().getTime();
+        //Instancias de las listas de listeners.
+        listaListenersCitas = new ArrayList<ListenerRegistration>();
+        listaListenersChats = new ArrayList<ListenerRegistration>();
 
         //Instancia del asistente de notificaciones.
         asistenteNotificaciones = new AsistenteNotificaciones(getApplicationContext());
@@ -79,6 +85,9 @@ public class ServicioNotificaciones extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //Instancia de la fecha y hora de creación del servicio.
+        dateServicio = Calendar.getInstance().getTime();
 
         //Obtiene el tipo e ID del usuario del intent recibido.
         tipoUsuario = intent.getStringExtra("tipoUsuario");
@@ -93,14 +102,33 @@ public class ServicioNotificaciones extends Service {
         return START_REDELIVER_INTENT;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        //Elimina todos los listeners de chats registrados.
+        for(ListenerRegistration listenerChat:listaListenersChats){
+            listenerChat.remove();
+        }
+
+        //Elimina todos los listeners de citas registradas.
+        for(ListenerRegistration listenerCita:listaListenersCitas){
+            listenerCita.remove();
+        }
+
+    }
+
     /**
      * Método que se encarga de crear el listener que recoge los eventos producidos en las citas
      * del usuario actual.
      */
     private void listenerCitas() {
 
-        //Crea el listener que recoge los eventos producidos en las citas del usuario especificado.
-        firestore.collection("citas").whereEqualTo(tipoUsuario, idUsuario)
+        /*
+        Crea el listener que recoge los eventos producidos en las citas del usuario especificado y
+        lo añade a la lista de listeners de citas.
+        */
+        listaListenersCitas.add(firestore.collection("citas").whereEqualTo(tipoUsuario, idUsuario)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -173,7 +201,7 @@ public class ServicioNotificaciones extends Service {
 
                     }
 
-                });
+                }));
 
     }
 
@@ -186,8 +214,11 @@ public class ServicioNotificaciones extends Service {
      */
     private void listenerChatCita(final String idCita, final String idUsuarioEmisor) {
 
-        //Crea el listener que recoge los eventos producidos en el chat de la cita especificada.
-        firestore.collection("citas").document(idCita).collection("chat")
+        /*
+        Crea el listener que recoge los eventos producidos en el chat de la cita especificada y
+        lo añade a la lista de listeners de chats.
+        */
+        listaListenersChats.add(firestore.collection("citas").document(idCita).collection("chat")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -262,7 +293,7 @@ public class ServicioNotificaciones extends Service {
 
                     }
 
-                });
+                }));
 
     }
 
