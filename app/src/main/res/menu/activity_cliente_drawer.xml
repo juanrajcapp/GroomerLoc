@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="@string/menuCabeceraMenu">
+            <menu>
+                <item
+                    android:id="@+id/nav_buscPelu"
+                    android:icon="@drawable/icono_busqueda"
+                    android:title="@string/menuCliBuscPelu" />
+                <item
+                    android:id="@+id/nav_perro"
+                    android:icon="@drawable/icono_mascota"
+                    android:title="@string/menuCliPerro" />
+                <item
+                    android:id="@+id/nav_citas"
+                    android:icon="@drawable/icono_cita"
+                    android:title="@string/menuCliCitas" />
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:title="@string/menuCabeceraInfo">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_ayuda"
+                    android:icon="@android:drawable/ic_menu_help"
+                    android:title="@string/menuAyuda" />
+                <item
+                    android:id="@+id/nav_acercaDe"
+                    android:icon="@android:drawable/ic_menu_info_details"
+                    android:title="@string/menuAcercaDe" />
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:title="@string/menuCabeceraOpcion">
+            <menu>
+                <item
+                    android:id="@+id/nav_preferencias"
+                    android:icon="@android:drawable/ic_menu_preferences"
+                    android:title="@string/menuPreferencias" />
+                <item
+                    android:id="@+id/nav_cuenta"
+                    android:icon="@drawable/icono_cuenta"
+                    android:title="@string/menuMiCuenta" />
+                <item
+                    android:id="@+id/nav_log_off"
+                    android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                    android:title="@string/menuSesion" />
+                <item
+                    android:id="@+id/nav_salir"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:title="@string/menuSalir" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

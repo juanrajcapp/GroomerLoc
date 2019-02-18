@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditTarifasPeluActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvEditTarifasPelu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/tituloEditTarifasPelu"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAvisoEditTarifas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/avisoEditTarifas"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEditTarifasPelu" />
+
+        <TableLayout
+            android:id="@+id/tlEdTaPeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAvisoEditTarifas">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaServicios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tituloEdTaServicios"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEdTaBase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edTaBase"
+                    android:textAlignment="center"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvEdTaExtra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edTaExtra"
+                    android:textAlignment="center"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaBanio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editBanio"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaBanio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editBanio" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+                <EditText
+                    android:id="@+id/etEdTaBanioExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editBanio" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro1b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaArreglo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editArreglo"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaArreglo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editArreglo" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+                <EditText
+                    android:id="@+id/etEdTaArregloExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editArreglo" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro2b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaCompleto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editCompleto"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaCompleto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editCompleto" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+                <EditText
+                    android:id="@+id/etEdTaCompletoExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editCompleto" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro3b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaDeslanado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editDeslanado"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaDeslanado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editDeslanado" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+                <EditText
+                    android:id="@+id/etEdTaDeslanadoExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editDeslanado" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro4b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaTinte"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editTinte"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaTinte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editTinte" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+                <EditText
+                    android:id="@+id/etEdTaTinteExtra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editTinte" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro5b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+        </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/llPeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tlEdTaPeso">
+
+            <TextView
+                android:id="@+id/tvEdTaPeso1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edTaPeso1" />
+
+            <EditText
+                android:id="@+id/etEdTaPeso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="4"
+                android:inputType="numberDecimal"
+                android:textAlignment="textEnd"
+                android:autofillHints="@string/tituloEdTaServicios" tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/tvEdTaPeso2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edTaPeso2" />
+
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/tlEdTaFijos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/bEditTarifasAtras"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llPeso">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvEdTaPeFijas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tituloEdTaFijas"
+                    android:textAlignment="center"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaOidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editOidos"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaOidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editOidos" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaUnias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editUnias"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaUnias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editUnias" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end">
+
+                <TextView
+                    android:id="@+id/tvEdTaAnales"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editAnales"
+                    android:textAppearance="@android:style/TextAppearance.Material.Small"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etEdTaAnales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="4"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="@string/editAnales" tools:targetApi="o" />
+
+                <TextView
+                    android:id="@+id/tvEdTaEuro8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/euro"
+                    android:textAppearance="@android:style/TextAppearance.Material.Large" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/bEditTarifasAtras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/botonAtras"
+            android:onClick="atras"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/bEditTarifasGuardar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/botonGuardarTarifas"
+            android:onClick="guardaTarifas"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bEditTarifasAtras" />
+
+        <ProgressBar
+            android:id="@+id/circuloCargaEdTarPelu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:color="@color/colorPrimary"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

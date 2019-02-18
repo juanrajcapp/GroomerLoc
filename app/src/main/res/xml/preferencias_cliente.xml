@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="preferencias_cliente">
+
+    <PreferenceCategory
+        android:key="prefCliMapa"
+        android:title="@string/prefCliCatMapa" >
+
+        <EditTextPreference
+            android:key="prefCliZoomMapa"
+            android:title="@string/prefCliZoomMapa"
+            android:summary="@string/prefCliZoomMapaDesc"
+            android:inputType="number"
+            android:defaultValue="1000"
+            android:singleLine="true"
+            android:selectAllOnFocus="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

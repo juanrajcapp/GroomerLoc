@@ -1,12 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GroomerLoc</string>
+
+    <!-- general -->
+    <string name="botonAtras">Atrás</string>
+    <string name="botonSiguiente">Siguiente</string>
+    <string name="menuCabeceraMenu">Menú</string>
+    <string name="menuCabeceraInfo">Información</string>
+    <string name="menuCabeceraOpcion">Opciones</string>
+    <string name="menuAyuda">Ayuda</string>
+    <string name="menuAcercaDe">Acerca de...</string>
+    <string name="menuPreferencias">Preferencias</string>
+    <string name="menuMiCuenta">Mi cuenta</string>
+    <string name="menuSesion">Cerrar sesión</string>
+    <string name="menuSalir">Salir de la aplicación</string>
+
     <!-- login -->
-    <string name="saludo">Bienvenido </string>
+    <string name="botonLogin">Iniciar sesión</string>
+    <string name="botonRegistro">Registrarse</string>
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="toast_faltaMailPw">Se requieren un Email y Contraseña correctos</string>
     <string name="error_autenticar">Error de autenticación</string>
+    <string name="descLogo">Logo de la aplicación.</string>
 
-    <string name="title_activity_cliente">Mapa</string>
+    <!-- cliente -->
+    <string name="saludo">Bienvenido</string>
+    <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
+    <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <string name="mensajeErrorCargaMarcas">No se han podido cargar las localizaciones de los peluqueros.</string>
+        <!-- menu cliente -->
+    <string name="menuCliBuscPelu">Buscador de peluqueros</string>
+    <string name="menuCliPerro">Mis mascotas</string>
+    <string name="menuCliCitas">Mis citas</string>
+        <!-- preferencias cliente -->
+    <string name="prefCliCatMapa">Mapa</string>
+    <string name="prefCliZoomMapa">Radio de visión:</string>
+    <string name="prefCliZoomMapaDesc">Radio de visión aproximado (en metros) con el que
+        se va a visualizar el mapa al iniciar la aplicación.</string>
+
+    <!-- peluquero -->
+    <string name="mensajeNoCitas">No tiene citas próximas.</string>
+    <string name="botonRecargaCitas">RECARGAR CITAS</string>
+        <!-- menu peluquero -->
+    <string name="menuPeluTarifas">Mis tarifas</string>
+    <string name="menuPeluCitasConfirmadas">Mis citas confirmadas</string>
+
+    <!-- editar cuenta cliente -->
+    <string name="editCuentaNuevoPw">Nueva contraseña</string>
+    <string name="editCuentaNuevoPw2">Repite la nueva contraseña</string>
+    <string name="botonEditCuentaMail">Cambiar email</string>
+    <string name="botonEditCuentaNombre">Cambiar nombre</string>
+    <string name="botonEditCuentaTlfn">Cambiar teléfono</string>
+    <string name="botonEditCuentaPw">Cambiar contraseña</string>
+    <string name="botonEditCuentaEliCu">Eliminar cuenta</string>
+    <string name="botonEditCuentaGuardar">Guardar</string>
+    <string name="alDiEditCuentaTituloEmail">Introduzca el nuevo email:</string>
+    <string name="alDiEditCuentaTituloNombre">Introduzca el nuevo nombre:</string>
+    <string name="alDiEditCuentaTituloTlfn">Introduzca el nuevo teléfono:</string>
+    <string name="alDiEditCuentaTituloPw">Introduzca la nueva contraseña de 6 o más caracteres (dos veces):</string>
+    <string name="alDiEditCuentaAvisoAut">Para cambiar el email, contraseña o borrar el usuario,
+        es necesario haberse autenticado recientemente. Para hacerlo, introduzca su contraseña y vuelva a intentarlo:</string>
+    <string name="alDiEditCuentaAutenticar">Autenticar</string>
+    <string name="alDiEditCuentaBorrar">¿Está seguro de que desea eliminar esta cuenta?</string>
+    <string name="mensajeEditCuentaAutExito">Se ha autenticado con éxito.</string>
+    <string name="mensajeEditCuentaAutPwIncorrecto">La contraseña introducida es incorrecta.</string>
+    <string name="mensajeEditCuentaAutFallo">Autenticación fallida.</string>
+    <string name="mensajeEditCuentaNada">No se ha introducido ningún valor.</string>
+    <string name="mensajeEditCuentaEmailExito">Se ha cambiado el email con éxito.</string>
+    <string name="mensajeEditCuentaErrorCarga">Se ha producido un error al cargar sus datos.</string>
+    <string name="mensajeEditCuentaMismoEmail">El email introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaExisteEmail">ya está registrado.</string>
+    <string name="mensajeEditCuentaErrorMail">No se ha podido cambiar el email.</string>
+    <string name="mensajeEditCuentaNombreExito">Se ha cambiado el nombre con éxito.</string>
+    <string name="mensajeEditCuentaMismoNombre">El nombre introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaErrorNombre">No se ha podido cambiar el nombre.</string>
+    <string name="mensajeEditCuentaTlfnExito">Se ha cambiado el teléfono con éxito.</string>
+    <string name="mensajeEditCuentaMismoTlfn">El teléfono introducido es igual al existente.</string>
+    <string name="mensajeEditCuentaErrorTlfn">No se ha podido cambiar el teléfono.</string>
+    <string name="mensajeEditCuentaExitoPw">Se ha cambiado la contraseña con éxito.</string>
+    <string name="mensajeEditCuentaPwVacio">No se ha introducido valor en uno o ambos campos de la contraseña.</string>
+    <string name="mensajeEditCuentaMismoPw">La contraseña introducida es igual a la existente.</string>
+    <string name="mensajeEditCuentaErrorPw">No se ha podido cambiar la contraseña.</string>
+    <string name="mensajeEditCuentaBorrada">La cuenta</string>
+    <string name="mensajeEditCuentaBorrada2">ha sido eliminada.</string>
+    <string name="mensajeEditCuentaErrorBorrar">No se ha podido eliminar la cuenta.</string>
+        <!-- editar cuenta cliente -->
+    <string name="botonEditCuentaLoc">Cambiar localización</string>
+    <string name="mensajeEditCuentaErrorLoc">No se ha podido actualizar la localización.</string>
+    <string name="mensajeEditCuentaExitoLoc">La localización se ha actualizado con éxito.</string>
+
+    <!-- acerca de -->
+    <string name="descAplicacion">Esta aplicación se ideó para facilitar la comunicación y gestión de citas
+        entre peluqueros de mascotas y clientes, con la inestimable ayuda de la geolocalización.</string>
+    <string name="desarrolladores">Desarrolladores:</string>
+    <string name="nombreJuanrajc">Juan Ramón Jover Cruz</string>
+    <string name="aniosAplicacion">2018 - 2019</string>
+
+    <!-- lista perros -->
+    <string name="mensajeNoPerros">No tiene mascotas registradas.</string>
+    <string name="mensajeNoResultPerros">No se ha podido cargar la lista de mascotas.</string>
+    <string name="descIvEditPerro">Editar datos de la mascota.</string>
+    <string name="descIvBorrarPerro">>Borrar mascota.</string>
+    <string name="dialogBorraPerro">¿Desea borrar a</string>
+    <string name="mensajePerroBorradoExito">ha sido borrado con éxito.</string>
+    <string name="mensajePerroNoBorrado">no se ha podido eliminar.</string>
+    <string name="salir">SALIR</string>
+    <string name="nuevoPerro">AÑADIR NUEVA MASCOTA</string>
+
+    <!-- registro perro -->
+    <string name="tituloRegPerro">DATOS DE SU MASCOTA</string>
+    <string name="raza">Raza</string>string>
+    <string name="peso">Peso</string>
+    <string name="kg">Kg</string>
+    <string name="cajaPeso">Por ejemplo: 12.5</string>
+    <string name="sexo">Sexo</string>
+    <string name="macho">MACHO</string>
+    <string name="hembra">HEMBRA</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="cajaComentarios">Problemas de salud, alergias...</string>
+    <string name="botonFoto">Añadir fotografía...</string>
+    <string name="descFotoPerro">Fotografía de la mascota.</string>
+    <string name="botonGuardarMascota">Guardar mascota</string>
+    <string name="mensajeCamposPerro">Los campos  \'Nombre\', \'Raza\' y \'Peso\' son obligatorios.</string>
+    <string name="mensajeSexo">Debe seleccionar el sexo de su mascota.</string>
+    <string name="mensajeRequestFoto">No ha sido posible cargar la imagen.</string>
+    <string name="mensajeNoEspecificado">No especificado.</string>
+    <string name="mensajeSubidaCorrecta">La imagen se ha subido correctamente.</string>
+    <string name="mensajeSubidaFallida">Fallo al subir la imagen.</string>
+    <string name="mensajeFalloRegPerro">No se ha podido registrar a</string>
+    <string name="mensajeFalloActuPerro">No se han podido actualizar los datos de la mascota.</string>
+    <string name="mensajePerroNoExiste">No se han podido cargar los datos de la mascota.</string>
+        <!--dialog perro-->
+    <string name="tituloDialog">Seleccione una opción:</string>
+    <string name="opCamara">Haga una foto...</string>
+    <string name="opGaleria">Seleccione desde la galería...</string>
+    <string name="opCancelar">Cancelar</string>
+    <string name="mensajeSobreescrituraPerro">¿Está seguro de que desea actualizar los datos de</string>
+    <string name="mensajeSobreescrituraPerro2">\?</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
+
+    <!-- registro -->
+    <string name="tituloRegistro">REGISTRO</string>
+    <string name="rol">¿Qué eres?</string>
+    <string name="cliente">Cliente</string>
+    <string name="peluquero">Peluquero</string>
+    <string name="password2">Repite la contraseña</string>
+    <string name="nombre">Nombre</string>
+    <string name="tlfn">Teléfono</string>
+    <string name="mensajeRol">Debes seleccionar un rol (cliente o peluquero).</string>
+    <string name="mensajeCampos">Debes completar todos los campos.</string>
+    <string name="mensajeEmail">Debes introducir un Email válido.</string>
+    <string name="mensajePw">Las contraseñas no son iguales.</string>
+    <string name="mensajePw2">La contraseña debe ser al menos de 6 caracteres.</string>
+    <string name="regCompletado">Registro completado.</string>
+    <string name="error_registro">Error al registrarse.</string>
+
+    <!-- registro2 -->
+    <string name="tituloLoc">Pinche en su localización o...</string>
+    <string name="dir">Introduca su dirección</string>
+    <string name="datAdi">Indicaciones adicionales (piso, puerta, etc)</string>
+    <string name="mensajeMarca">Localización:</string>
+    <string name="mensajeNoDireccion">Dirección no encontrada.</string>
+    <string name="mensajeDirVacia">Debes buscar una dirección o realizar una marca en el mapa.</string>
+    <string name="mensajeNoLoc">No se ha podido obtener su localización actual.</string>
+    <string name="botonRegistrar">Completar registro</string>
+
+    <!-- buscador peluquero -->
+    <string name="tituloADBuscadorPelu">Introduzca el nombre del peluquero:</string>
+    <string name="botonBuscar">Buscar</string>
+    <string name="mensajeBusqSinRes">La búsqueda no ha dado resultado.</string>
+    <string name="mensajeBusqError">Se produjo un error al realizar la búsqueda.</string>
+    <string name="mensajeBusqNoComp">No se ha podido realizar la búsqueda.</string>
+    <string name="descFotoPelu">Imagen del peluquero.</string>
+
+    <!-- ficha peluquero -->
+    <string name="fichaPeluTel">Teléfono:</string>
+    <string name="fichaPeluDir">Dirección:</string>
+    <string name="fichaPeluDir2">Indicaciones adicionales:</string>
+    <string name="botonTarifas">TARIFAS</string>
+    <string name="botonPedirCita">PEDIR CITA</string>
+    <string name="mensajeErrorCargaDatosPelu">Se ha producido un error al cargar los datos del peluquero.</string>
+
+    <!-- ficha editar tarifas -->
+    <string name="tituloEditTarifasPelu">MIS TARIFAS</string>
+    <string name="avisoEditTarifas">Los servicios con precio en blanco no aparecerán en tu oferta de servicios.</string>
+    <string name="euro">€</string>
+    <string name="tituloEdTaServicios">SERVICIOS</string>
+    <string name="edTaBase">BASE</string>
+    <string name="edTaExtra">* EXTRA</string>
+    <string name="editBanio">Baño:</string>
+    <string name="editArreglo">Arreglo (Corte parcial):</string>
+    <string name="editCompleto">Corte completo:</string>
+    <string name="editDeslanado">Deslanado:</string>
+    <string name="editTinte">Tinte:</string>
+    <string name="edTaPeso1">* A partir de y por cada</string>
+    <string name="edTaPeso2">Kg de peso, se suma un extra al precio base.</string>
+    <string name="tituloEdTaFijas">TARIFAS FIJAS</string>
+    <string name="editOidos">Limpieza de oídos:</string>
+    <string name="editUnias">Corte de uñas:</string>
+    <string name="editAnales">Limpieza glándulas anales:</string>
+    <string name="botonGuardarTarifas">Guardar tarifas</string>
+    <string name="mensajeTarGuardadas">Las tarifas se han guardado con éxito.</string>
+    <string name="mensajeTarNoGuardadas">No se han podido guardar las tarifas.</string>
+    <string name="mensajeErrorCargaTarifas">Se ha producido un error al cargar las tarifas.</string>
+    <string name="mensajeAvisoPesoExtra">Si incluye un extra por peso, debe especificar también el peso.</string>
+
+    <!-- ficha tarifas -->
+    <string name="tituloTarifasPelu">Tarifas de</string>
+    <string name="cabeceraPrecioTarifa">PRECIO</string>
+    <string name="mensajeTarifasNoConfig">El peluquero no ha fijado aún ninguna tarifa.</string>
+
+    <!-- crea cita -->
+    <string name="creaCitaTitulo">NUEVA CITA</string>
+    <string name="creaCitaPelu">Peluquero:</string>
+    <string name="creaCitaFechaSol">Fecha de solicitud:</string>
+    <string name="creaCitaCbBanio">Baño</string>
+    <string name="creaCitaCbArreglo">Arreglo (Corte parcial)</string>
+    <string name="creaCitaCbCorte">Corte completo</string>
+    <string name="creaCitaCbDeslanado">Deslanado</string>
+    <string name="creaCitaCbTinte">Tinte</string>
+    <string name="creaCitaCbOidos">Limpieza de oídos</string>
+    <string name="creaCitaCbUnias">Corte de uñas</string>
+    <string name="creaCitaCbAnales">Limpieza gándulas anales</string>
+    <string name="creaCitaMascota">Mascota:</string>
+    <string name="creaCitaSeleccionar">Seleccionar</string>
+    <string name="botonCreaCitaConfirmar">Crear cita</string>
+    <string name="mensajeCreaCitaPerroNoRecibido">No se ha seleccionado mascota.</string>
+    <string name="mensajeCreaCitaCreadaExito">Cita creada con éxito,
+        no olvide acordar la fecha y hora con el peluquero.</string>
+    <string name="mensajeCreaCitaCreadaError">No se ha podido crear la cita.</string>
+    <!-- Lista servicios cita -->
+    <string name="servicioBanio">| BAÑO |</string>
+    <string name="servicioArreglo">| ARREGLO |</string>
+    <string name="servicioCorte">| CORTE |</string>
+    <string name="servicioDeslanado">| DESLANADO |</string>
+    <string name="servicioTinte">| TINTE |</string>
+    <string name="servicioOidos">| LIMP. OIDOS |</string>
+    <string name="servicioUnias">| CORT. UÑAS |</string>
+    <string name="servicioAnales">| LIMP. GLÁNDULAS |</string>
+
+    <!-- Cita -->
+    <string name="citaDatos">DATOS CITA</string>
+    <string name="citaChat">CHAT</string>
+    <string name="citaCita">CITA</string>
+    <string name="citaNombre">Nombre:</string>
+    <string name="citaTlfn">Teléfono:</string>
+    <string name="citaMascota">MASCOTA</string>
+    <string name="citaRaza">Raza:</string>
+    <string name="citaSexo">Sexo:</string>
+    <string name="citaPeso">Peso:</string>
+    <string name="citaComent">Comentarios:</string>
+        <!-- Cita peluquero -->
+    <string name="citaPeluBotonFecha">Establecer fecha para la cita</string>
+
+    <!-- Chat -->
+    <string name="hintMensajeEntrada">Escribe un mensaje:</string>
+    <string name="mensajeNoEnviado">No se ha podido enviar el mensaje.</string>
+
+    <!-- Citas -->
+    <string name="citasCliente">Cliente:</string>
+    <string name="citasServicio">Servicio:</string>
+    <string name="citasPrecio">Precio:</string>
+    <string name="mensajeNoResultCitas">No se ha podido cargar la lista de citas.</string>
+    <string name="citasSinConfirmar">SIN ESTABLECER</string>
+    <string name="citasNoExiste">NO EXISTE</string>
+    <string name="citasErrorCargaDato">ERROR AL OBTENERLO</string>
+    <string name="mensajeCitaNoExiste">La cita seleccionada no existe.</string>
+    <string name="mensajeCitaNoCarga">No se ha podido cargar la cita seleccionada.</string>
+    <string name="mensajeCitaFechaNoValida">La fecha y hora seleccionada no puede ser anterior a la actual.</string>
+    <string name="mensajeCitaFechaExito">Se ha establecido una nueva fecha y hora para la cita.</string>
+    <string name="mensajeCitaFechaFallo">No se ha podido establecer una nueva fecha y hora para la cita.</string>
+    <string name="botonCitaEstablecerFecha">Establecer</string>
+        <!-- Citas cliente -->
+    <string name="cvCitasClienteFechaConf">Fecha:</string>
+    <string name="cvCitasClienteDescIvConf">Rojo: Sin fecha y hora fijada. Verde: Con fecha y hora fijada.</string>
+    <string name="mensajeNoCitasCliente">No tiene citas.</string>
+        <!-- Citas peluquero -->
+    <string name="cvCitasPeluFechaConf">Fecha cita:</string>
+    <string name="cvCitasPeluFechaCrea">Fecha solicitud:</string>
+    <string name="mensajeNoCitasNuevas">No tiene citas sin confirmar.</string>
+    <string name="mensajeNoCitasConf">No tiene citas confirmadas.</string>
+
+    <!-- Notificaciones -->
+    <string name="categoriaCanalCitas">Citas nuevas</string>
+    <string name="categoriaCanalFechas">Nueva fecha de cita</string>
+    <string name="categoriaCanalMensajes">Mensajes nuevos</string>
+    <string name="tituloCitaNueva">Nueva cita:</string>
+    <string name="tituloFechaEstablecida">Fecha y hora asignada:</string>
+    <string name="mensajeFechaEstablecidaPelu">Peluquero:</string>
+    <string name="tituloMensajeNuevo">Mensaje de:</string>
+
 </resources>

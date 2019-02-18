@@ -1,15 +1,39 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/TemaActionBar</item>
+        <item name="drawerArrowStyle">@style/TemaDrawer</item>
+    </style>
+
+    <!-- Base application theme without ActionBar. -->
+    <style name="AppThemeSinAB" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Tema splash -->
-    <style name="SplashTheme" parent="AppTheme">
+    <!-- Tema Splash -->
+    <style name="AppThemeSinAB.SplashTheme" parent="AppThemeSinAB">
         <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <!-- Tema Action Bar -->
+    <style name="TemaActionBar" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="android:textColorPrimary">@color/tituloActionBar</item>
+    </style>
+
+    <!-- Tema Dialog -->
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <!-- Tema Drawer -->
+    <style name="TemaDrawer" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/fondoSplash</item>
     </style>
 
 </resources>

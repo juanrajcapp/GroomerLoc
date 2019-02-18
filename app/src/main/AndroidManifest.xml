@@ -5,48 +5,110 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permiso para acceso a internet -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Permiso para acceso a la cámara del dispositivo -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permiso para lectura de los archivos almacenados externamente -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/cut8_foreground"
+        android:icon="@mipmap/app_logo_groomerloc"
+        android:roundIcon="@mipmap/app_logo_groomerloc"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:theme="@style/AppThemeSinAB"
+        android:configChanges="orientation|screenSize">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <service
+            android:name=".servicios.ServicioNotificaciones"
+            android:enabled="true"
+            android:exported="false" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ClienteActivity"
-            android:label="@string/title_activity_cliente">
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeSinAB.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ClienteActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PeluqueroActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CitaClienteActivity" />
+        <activity
+            android:name=".CitaPeluActivity" />
+        <activity
+            android:name=".CitasConfPeluActivity" />
+        <activity
+            android:name=".CitasClienteActivity" />
+        <activity
+            android:name=".PerrosCitaActivity" />
+        <activity
+            android:name=".RegistroActivity" />
+        <activity
+            android:name=".RegistroLocActivity" />
+        <activity
+            android:name=".RegPerroActivity" />
+        <activity
+            android:name=".PerrosActivity" />
+        <activity
+            android:name=".BusqPeluActivity" />
+        <activity
+            android:name=".FichaPeluqActivity" />
+        <activity
+            android:name=".EditTarifasPeluActivity" />
+        <activity
+            android:name=".TarifasPeluActivity" />
+        <activity
+            android:name=".PrefClienteActivity" />
+        <activity
+            android:name=".PrefPeluqueroActivity" />
+        <activity
+            android:name=".EditCuentaCliActivity" />
+        <activity
+            android:name=".EditCuentaPeluActivity" />
+        <activity
+            android:name=".CreaCitaActivity" />
+        <activity
+            android:name=".AcercaDeActivity"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>
