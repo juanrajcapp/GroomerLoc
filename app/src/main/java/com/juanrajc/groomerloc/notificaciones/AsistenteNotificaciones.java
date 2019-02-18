@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
@@ -55,6 +56,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 getString(R.string.categoriaCanalCitas), notificationManager.IMPORTANCE_DEFAULT);
         notificationChannelCitas.enableLights(true);
         notificationChannelCitas.setLightColor(Color.RED);
+        notificationChannelCitas.setSound(RingtoneManager
+                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null);
         notificationChannelCitas.enableVibration(true);
         notificationChannelCitas.setShowBadge(true);
         notificationChannelCitas.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
@@ -65,6 +68,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 getString(R.string.categoriaCanalFechas), notificationManager.IMPORTANCE_DEFAULT);
         notificationChannelFechas.enableLights(true);
         notificationChannelFechas.setLightColor(Color.YELLOW);
+        notificationChannelFechas.setSound(RingtoneManager
+                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null);
         notificationChannelFechas.enableVibration(true);
         notificationChannelFechas.setShowBadge(true);
         notificationChannelFechas.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
@@ -75,6 +80,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 getString(R.string.categoriaCanalMensajes), notificationManager.IMPORTANCE_DEFAULT);
         notificationChannelMensajes.enableLights(true);
         notificationChannelMensajes.setLightColor(Color.GREEN);
+        notificationChannelMensajes.setSound(RingtoneManager
+                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null);
         notificationChannelMensajes.enableVibration(false);
         notificationChannelMensajes.setShowBadge(false);
         notificationChannelMensajes.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
@@ -137,6 +144,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 .setGroup(CANAL_CITAS_ID)
                 //Icono que se muestra en la barra de notificaciones.
                 .setSmallIcon(R.drawable.logo_groomerloc_notificacion_mas)
+                //Sonido que se reproducirá al mostrar la notificación.
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 //Notificación con texto expandible.
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 //Se autoelimina cuando se pulsa sobre ella.
@@ -202,6 +211,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 .setGroup(CANAL_FECHAS_ID)
                 //Icono que se muestra en la barra de notificaciones.
                 .setSmallIcon(R.drawable.logo_groomerloc_notificacion)
+                //Sonido que se reproducirá al mostrar la notificación.
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 //Notificación con texto expandible.
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 //Se autoelimina cuando se pulsa sobre ella.
@@ -268,6 +279,8 @@ public class AsistenteNotificaciones extends ContextWrapper {
                 .setGroup(CANAL_MENSAJES_ID)
                 //Icono que se muestra en la barra de notificaciones.
                 .setSmallIcon(R.drawable.logo_groomerloc_notificacion)
+                //Sonido que se reproducirá al mostrar la notificación.
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 //Notificación con texto expandible.
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 //Se autoelimina cuando se pulsa sobre ella.
