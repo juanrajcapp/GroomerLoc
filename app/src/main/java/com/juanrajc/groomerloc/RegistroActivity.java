@@ -167,7 +167,7 @@ public class RegistroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void siguiente(View view){
+    public void siguiente(View view){
 
         //Comprueba que los campos están correctamente completados.
         if(compruebaCampos()){
@@ -265,7 +265,7 @@ public class RegistroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         finish();
 

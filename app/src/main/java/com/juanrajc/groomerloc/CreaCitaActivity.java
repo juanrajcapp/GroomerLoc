@@ -580,7 +580,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
      *
      * @param view
      */
-    protected void creaCita(View view){
+    public void creaCita(View view){
 
         //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);
@@ -628,7 +628,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
      *
      * @param view
      */
-    protected void seleccionaMascota(View view){
+    public void seleccionaMascota(View view){
 
         //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);
@@ -645,7 +645,7 @@ public class CreaCitaActivity extends AppCompatActivity implements CheckBox.OnCh
      *
      * @param view
      */
-    protected void atras (View view){
+    public void atras (View view){
 
         //Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bCreaCitaSelecMascota.setEnabled(false);

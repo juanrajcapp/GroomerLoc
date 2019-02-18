@@ -469,7 +469,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      *
      * @param view
      */
-    protected void buscaDireccion(View view){
+    public void buscaDireccion(View view){
 
         buscaCoordenadas();
 
@@ -480,7 +480,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      *
      * @param view
      */
-    protected void registro(View view){
+    public void registro(View view){
 
         //Comprueba que se ha guardado previamente unas coordenadas.
         if(loc!=null) {
@@ -570,7 +570,7 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         finish();
 

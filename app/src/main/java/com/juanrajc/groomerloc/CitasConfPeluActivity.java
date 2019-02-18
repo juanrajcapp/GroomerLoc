@@ -315,7 +315,7 @@ public class CitasConfPeluActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void recargaCitas(View view){
+    public void recargaCitas(View view){
 
         obtieneCitas();
 
@@ -326,7 +326,7 @@ public class CitasConfPeluActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         //Se desactivan los botones para evitar más de una pulsación...
         botonAtrasCitasConfPelu.setEnabled(false);

@@ -237,7 +237,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void cambiaEmail(View view){
+    public void cambiaEmail(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -355,7 +355,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void cambiaNombre(View view){
+    public void cambiaNombre(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -447,7 +447,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void cambiaTlfn(View view){
+    public void cambiaTlfn(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -535,7 +535,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void cambiaPw(View view){
+    public void cambiaPw(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -653,7 +653,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void preguntaEliminarCuenta(View view){
+    public void preguntaEliminarCuenta(View view){
 
         //Deactiva los botones.
         activaBotones(false);
@@ -857,7 +857,7 @@ public class EditCuentaCliActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         //Se desactivan los botones...
         activaBotones(false);

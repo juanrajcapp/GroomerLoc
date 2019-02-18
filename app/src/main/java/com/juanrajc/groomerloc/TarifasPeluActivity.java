@@ -311,7 +311,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void iniciaPedirCita(View view){
+    public void iniciaPedirCita(View view){
 
         //Desactiva los botones de la activity actual...
         bTarifasPedirCita.setEnabled(false);
@@ -331,7 +331,7 @@ public class TarifasPeluActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras (View view){
+    public void atras (View view){
 
         ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bTarifasAtras.setEnabled(false);

@@ -437,7 +437,7 @@ public class PeluqueroActivity extends AppCompatActivity implements NavigationVi
      *
      * @param view
      */
-    protected void recargaCitas(View view){
+    public void recargaCitas(View view){
 
         obtieneCitas();
 

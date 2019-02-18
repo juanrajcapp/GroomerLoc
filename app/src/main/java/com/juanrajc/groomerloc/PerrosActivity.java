@@ -91,7 +91,7 @@ public class PerrosActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void nuevoPerro(View view){
+    public void nuevoPerro(View view){
 
         //Se desactivan los botones para evitar más de una pulsación.
         botonActRegPerro.setEnabled(false);
@@ -181,7 +181,7 @@ public class PerrosActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         //Se desactivan los botones para evitar más de una pulsación...
         botonActRegPerro.setEnabled(false);

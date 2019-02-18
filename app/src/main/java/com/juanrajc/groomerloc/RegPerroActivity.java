@@ -165,7 +165,7 @@ public class RegPerroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void dialogoImagen(View view){
+    public void dialogoImagen(View view){
 
         /*
         Se desactiva la posibilidad de pulsación de los botones para evitar
@@ -661,7 +661,7 @@ public class RegPerroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void regPerro (View view){
+    public void regPerro (View view){
 
         if(compruebaCampos()){
 
@@ -686,7 +686,7 @@ public class RegPerroActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras (View view){
+    public void atras (View view){
 
         //Desactiva el botón de registro de perro, añadir fotografía y atrás.
         botonRegPerro.setEnabled(false);

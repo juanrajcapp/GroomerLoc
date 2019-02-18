@@ -238,7 +238,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void iniciaVistaTarifas(View view){
+    public void iniciaVistaTarifas(View view){
 
         //Desactiva los botones de la activity actual...
         bTarifasPelu.setEnabled(false);
@@ -256,7 +256,7 @@ public class FichaPeluqActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras (View view){
+    public void atras (View view){
 
         ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bTarifasPelu.setEnabled(false);

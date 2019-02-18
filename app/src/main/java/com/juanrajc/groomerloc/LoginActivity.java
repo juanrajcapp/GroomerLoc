@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void login(View view) {
+    public void login(View view) {
 
         //Si los campos de login no están correctamente rellenados...
         if (email.length() < 1 || pw.length() < 1 || !validarEmail(email.getText().toString())) {
@@ -257,7 +257,7 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void activityRegistro(View view){
+    public void activityRegistro(View view){
 
         //Se desactiva el botón de registro y login para evitar más de una pulsación.
         botonRegistro.setEnabled(false);

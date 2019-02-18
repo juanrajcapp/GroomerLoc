@@ -166,7 +166,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      *
      * @param view
      */
-    protected void guardaTarifas (View view){
+    public void guardaTarifas (View view){
 
         //Comprueba que, si se introduce un precio de extra, se haya introducido también el rango de peso.
         if((etEdTaBanioExtra.getText().toString().length()>0 || etEdTaArregloExtra.getText().toString().length()>0
@@ -227,7 +227,7 @@ public class EditTarifasPeluActivity extends AppCompatActivity implements TextWa
      *
      * @param view
      */
-    protected void atras (View view){
+    public void atras (View view){
 
         ////Se desactivan los botones de la activity para evitar varias pulsaciones simultáneas.
         bEditTarifasGuardar.setClickable(false);

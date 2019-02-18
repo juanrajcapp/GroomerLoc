@@ -316,7 +316,7 @@ public class CitasClienteActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void recargaCitasCliente(View view){
+    public void recargaCitasCliente(View view){
 
         obtieneCitasCliente();
 
@@ -327,7 +327,7 @@ public class CitasClienteActivity extends AppCompatActivity {
      *
      * @param view
      */
-    protected void atras(View view){
+    public void atras(View view){
 
         //Se desactivan los botones para evitar más de una pulsación...
         botonAtrasCitasCliente.setEnabled(false);
