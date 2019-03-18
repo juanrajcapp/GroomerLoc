@@ -107,12 +107,12 @@ public class ServicioNotificaciones extends Service {
         super.onDestroy();
 
         //Elimina todos los listeners de chats registrados.
-        for(ListenerRegistration listenerChat:listaListenersChats){
+        for (ListenerRegistration listenerChat : listaListenersChats) {
             listenerChat.remove();
         }
 
         //Elimina todos los listeners de citas registradas.
-        for(ListenerRegistration listenerCita:listaListenersCitas){
+        for (ListenerRegistration listenerCita : listaListenersCitas) {
             listenerCita.remove();
         }
 
@@ -151,23 +151,23 @@ public class ServicioNotificaciones extends Service {
                                         //Cadena que contendrá la ID del emisor respecto al usuario actual.
                                         String idUsuarioEmisor = "";
 
-                                        //Controla la actualidad del evento.
-                                        if (controlaActualidadElemento(cita.getFechaCreacion())) {
+                                        //Comprueba el tipo de usuario actualmente autenticado.
+                                        if (tipoUsuario.equals(USU_PELUQUERO)) {
 
-                                            //Comprueba el tipo de usuario actualmente autenticado.
-                                            if (tipoUsuario.equals(USU_PELUQUERO)) {
+                                            //Controla la actualidad del evento.
+                                            if (controlaActualidadElemento(cita.getFechaCreacion())) {
 
                                                 cargaNombreUsuario("clientes",
                                                         cita.getIdCliente(), cita.getFechaCreacion(),
                                                         doc.getDocument().getId());
 
-                                                idUsuarioEmisor = cita.getIdCliente();
-
-                                            } else if (tipoUsuario.equals(USU_CLIENTE)) {
-
-                                                idUsuarioEmisor = cita.getIdPeluquero();
-
                                             }
+
+                                            idUsuarioEmisor = cita.getIdCliente();
+
+                                        } else if (tipoUsuario.equals(USU_CLIENTE)) {
+
+                                            idUsuarioEmisor = cita.getIdPeluquero();
 
                                         }
 
@@ -302,9 +302,9 @@ public class ServicioNotificaciones extends Service {
      * realización del servicio (peluquero). Se obtiene el nombre.
      *
      * @param usuarioFirestore Cadena con el nombre de la colección del tipo de usuario en Firestore.
-     * @param idUsuario Cadena con la ID del usuario del cual vamos a obtener los datos.
-     * @param fecha Date con la fecha y hora de realización del evento.
-     * @param idCita Cadena con la ID de la cita donde se produce el evento.
+     * @param idUsuario        Cadena con la ID del usuario del cual vamos a obtener los datos.
+     * @param fecha            Date con la fecha y hora de realización del evento.
+     * @param idCita           Cadena con la ID de la cita donde se produce el evento.
      */
     private void cargaNombreUsuario(String usuarioFirestore, final String idUsuario, final Date fecha,
                                     final String idCita) {
@@ -460,8 +460,7 @@ public class ServicioNotificaciones extends Service {
      * Método que genera un entero a partir del tipo de notificación y la ID del usuario.
      *
      * @param tipoNotificacion Entero con el valor del tipo de notificación.
-     * @param idUsuario Cadena con la ID del usuario.
-     *
+     * @param idUsuario        Cadena con la ID del usuario.
      * @return Entero con el valor calculado.
      */
     private int generaEnteroUsuario(int tipoNotificacion, String idUsuario) {

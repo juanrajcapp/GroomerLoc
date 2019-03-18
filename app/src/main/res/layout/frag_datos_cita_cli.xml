@@ -19,6 +19,7 @@
             android:layout_marginEnd="8dp"
             android:text="@string/citaCita"
             android:textAlignment="center"
+            android:gravity="center"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,6 +101,7 @@
                 android:id="@+id/tvCitaCliServTit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:gravity="center"
                 android:paddingStart="0dp"
                 android:paddingEnd="5dp"
@@ -291,8 +293,7 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".CitaClienteActivity"
-                tools:layout="@layout/maps_fragment" />
+                tools:context=".CitaClienteActivity" />
 
         </FrameLayout>
 
@@ -440,6 +441,7 @@
                 android:id="@+id/tvCitaCliComentTit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:gravity="center"
                 android:paddingStart="0dp"
                 android:paddingEnd="5dp"

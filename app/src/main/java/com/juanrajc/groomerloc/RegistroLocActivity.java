@@ -505,15 +505,15 @@ public class RegistroLocActivity extends AppCompatActivity implements OnMapReady
                                             .Builder().setDisplayName(nombre).build());
 
                                     /*
-                                    crea en la base de datos una colección de clientes (si aún no existe)
-                                    y un registro (documento) con la id del cliente registrado. Se añaden
+                                    crea en la base de datos una colección de peluqueros (si aún no existe)
+                                    y un registro (documento) con la id del peluquero registrado. Se añaden
                                     también sus datos de registro mediante un POJO...
                                     */
                                     firestore.collection("peluqueros").document(auth.getCurrentUser()
                                             .getUid()).set(new Peluquero(nombre, telefono, new MiLatLng(loc.latitude,
                                             loc.longitude), etDatAdi.getText().toString()));
 
-                                    //y le muestra un saludo con su nombre.
+                                    //y muestra un mensaje.
                                     Toast.makeText(getApplicationContext(), getString(R.string.regCompletado),
                                             Toast.LENGTH_SHORT).show();
 

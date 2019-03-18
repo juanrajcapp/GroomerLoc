@@ -419,10 +419,7 @@ public class RegPerroActivity extends AppCompatActivity {
 
                     //si no...
                     case DialogInterface.BUTTON_NEGATIVE:
-                        //vuelve a activar el botón de registro de perro, añadir fotografía y atrás.
-                        botonRegPerro.setEnabled(true);
-                        botonRegImg.setEnabled(true);
-                        botonRegAtras.setEnabled(true);
+
                 }
 
             }
@@ -432,7 +429,21 @@ public class RegPerroActivity extends AppCompatActivity {
         //Crea y muestra el diálogo de alerta.
         new AlertDialog.Builder(this).setMessage(getString(R.string.mensajeSobreescrituraPerro)
                 +" "+nombrePerro.getText()+getString(R.string.mensajeSobreescrituraPerro2))
-                .setPositiveButton(getString(R.string.si), dialogo).setNegativeButton(getString(R.string.no), dialogo).show();
+                .setPositiveButton(getString(R.string.si), dialogo)
+                .setNegativeButton(getString(R.string.no), dialogo)
+                .setOnDismissListener(new DialogInterface.OnDismissListener(){
+
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+
+                        //Al salir del diálogo, vuelve a activar los botones de la activity.
+                        botonRegPerro.setEnabled(true);
+                        botonRegImg.setEnabled(true);
+                        botonRegAtras.setEnabled(true);
+
+                    }
+
+                }).show();
 
     }
 
