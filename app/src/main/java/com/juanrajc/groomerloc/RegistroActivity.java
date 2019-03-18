@@ -58,7 +58,10 @@ public class RegistroActivity extends AppCompatActivity {
         botonSiguiente=(Button) findViewById(R.id.botonSiguienteReg);
         botonAtras=(Button) findViewById(R.id.botonAtrasReg);
 
-        //Listener para el grupo de botones de radio que se encarga de cambiar el texto del botón para seguir dependiendo del rol seleccionado.
+        /*
+        Listener para el grupo de botones de radio que se encarga de cambiar el texto
+        del botón para seguir dependiendo del rol seleccionado.
+        */
         rgRegistro.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -197,7 +200,8 @@ public class RegistroActivity extends AppCompatActivity {
                             con la id del cliente registrado. Se añaden también sus datos de registro mediante un POJO...
                             */
                             firestore.collection("clientes").document(auth.getCurrentUser()
-                                    .getUid()).set(new Cliente(etRegNombre.getText().toString(), Long.parseLong(etRegTlfn.getText().toString())));
+                                    .getUid()).set(new Cliente(etRegNombre.getText().toString(),
+                                    Long.parseLong(etRegTlfn.getText().toString())));
 
                             //y le muestra un saludo con su nombre.
                             Toast.makeText(getApplicationContext(), getString(R.string.regCompletado), Toast.LENGTH_SHORT).show();

@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Le asigna el tema que mostrará la pantalla de carga.
+        //Asigna el tema que mostrará al iniciar la vista de la activity.
         setTheme(R.style.AppThemeSinAB);
 
         super.onCreate(savedInstanceState);

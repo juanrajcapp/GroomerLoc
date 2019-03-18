@@ -19,14 +19,16 @@
     <string name="botonRegistro">Sign in</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="direccion">Address</string>
+    <string name="indicaciones">Additional indications</string>
     <string name="toast_faltaMailPw">A correct Email and Password are required</string>
     <string name="error_autenticar">Authentication error</string>
     <string name="descLogo">Application logo.</string>
 
     <!-- cliente -->
     <string name="saludo">Welcome</string>
-    <string name="abrir_navegacion_lateral">Abrir menu lateral</string>
-    <string name="cerrar_navegacion_lateral">Cerrar menu lateral</string>
+    <string name="abrir_navegacion_lateral">Open side menu</string>
+    <string name="cerrar_navegacion_lateral">Close side menu</string>
     <string name="mensajeErrorCargaMarcas">Groomers locations could not be loaded.</string>
         <!-- menu cliente -->
     <string name="menuCliBuscPelu">Groomers finder</string>

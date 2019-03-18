@@ -21,6 +21,7 @@
             android:layout_marginEnd="8dp"
             android:text=""
             android:textAlignment="center"
+            android:gravity="center"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,13 +59,15 @@
                 android:layout_marginEnd="5dp"
                 android:text="@string/fichaPeluTel"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTelPelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:gravity="center" />
         </TableRow>
 
         <TableRow
@@ -82,13 +85,15 @@
                 android:layout_marginEnd="5dp"
                 android:text="@string/fichaPeluDir"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDirPelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:gravity="center" />
 
         </TableRow>
 
@@ -111,13 +116,15 @@
                 android:text="@string/fichaPeluDir2"
                 android:visibility="invisible"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDir2Pelu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:gravity="center" />
         </TableRow>
 
         <Button

@@ -187,23 +187,25 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
                                 location.getLongitude()), leePreferenciaZoom()));
 
                     }else{
-                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(this, new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.mensajeNoLoc),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
 
-            //Finalmente crea el listener para las marcas del mapa...
-            map.setOnInfoWindowClickListener(this);
-
-            //y ejecuta el método que muestra los peluqueros de alrededor,
-            marcaPeluqueros();
-
         }
+
+        //Finalmente crea el listener para las marcas del mapa...
+        map.setOnInfoWindowClickListener(this);
+
+        //y ejecuta el método que muestra los peluqueros de alrededor,
+        marcaPeluqueros();
 
     }
 
@@ -284,7 +286,8 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     /**
-     * Método para realizar las acciones del toolbar de la aplicación. Solo realiza la acción de abrir o cerrar el menú lateral.
+     * Método para realizar las acciones del toolbar de la aplicación.
+     * Solo realiza la acción de abrir o cerrar el menú lateral.
      *
      * @return
      */
@@ -317,7 +320,8 @@ public class ClienteActivity extends AppCompatActivity implements OnMapReadyCall
 
             }
         } else{
-            Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.mensajeBusqError),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

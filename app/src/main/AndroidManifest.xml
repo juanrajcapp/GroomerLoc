@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.juanrajc.groomerloc">
 
     <!--
@@ -21,9 +22,10 @@
         android:label="@string/app_name"
         android:icon="@mipmap/app_logo_groomerloc"
         android:roundIcon="@mipmap/app_logo_groomerloc"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppThemeSinAB"
-        android:configChanges="orientation|screenSize">
+        android:configChanges="orientation|screenSize"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <service
             android:name=".servicios.ServicioNotificaciones"

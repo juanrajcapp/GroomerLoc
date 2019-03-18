@@ -905,8 +905,13 @@ public class EditCuentaPeluActivity extends AppCompatActivity {
                 }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Cierra el dialog y vuelve a activar los botones.
+                //Cierra el dialog.
                 dialogInterface.dismiss();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                //Activa los botones al salir del AlertDialog.
                 activaBotones(true);
             }
         }).show();
