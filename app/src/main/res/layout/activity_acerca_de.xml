@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleAcercaDe"
-        app:srcCompat="@drawable/splash" />
+        app:srcCompat="@drawable/logogroomerloc" />
 
     <TextView
         android:id="@+id/tvAcercaDeDescAplicacion"

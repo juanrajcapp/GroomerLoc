@@ -95,14 +95,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="b8008b" />
                                       <entry key="backgroundLayerName" value="bg_logo_groomerloc" />
-                                      <entry key="foregroundImage" value="C:\Users\juanrajc\Dropbox\PRIVADO\PROYECTO DAM\RECURSOS\logogroomerloc.png" />
+                                      <entry key="foregroundImage" value="C:\Users\juanrajc\Dropbox\PRIVADO\PROYECTO GROOMERLOC\RECURSOS\LOGO\PRINCIPAL\VERSIONES FINALES\v2\logogroomerloc.png" />
                                       <entry key="foregroundLayerName" value="fg_logo_groomerloc" />
-                                      <entry key="legacyIconShape" value="CIRCLE" />
                                       <entry key="outputName" value="logo_groomerloc" />
-                                      <entry key="previewDensity" value="XXXHIGH" />
-                                      <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -140,9 +136,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="backgroundColor" value="b8008b" />
+                                      <entry key="backgroundColor" value="d6d5db" />
                                       <entry key="iconShape" value="CIRCLE" />
-                                      <entry key="imageAsset" value="C:\Users\juanrajc\Dropbox\PRIVADO\PROYECTO DAM\RECURSOS\logogroomerloc.png" />
+                                      <entry key="imageAsset" value="C:\Users\juanrajc\Dropbox\PRIVADO\PROYECTO GROOMERLOC\RECURSOS\LOGO\PRINCIPAL\VERSIONES FINALES\v2\logogroomerloc.png" />
                                       <entry key="outputName" value="app_logo_groomerloc" />
                                     </map>
                                   </option>

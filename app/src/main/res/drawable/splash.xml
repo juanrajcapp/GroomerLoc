@@ -2,7 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/fondoSplash"/>
     <item android:gravity="center">
-        <bitmap android:src="@mipmap/fg_logo_groomerloc"
-            android:gravity="fill_horizontal"/>
+        <bitmap android:src="@mipmap/fg_logo_groomerloc"/>
     </item>
 </layer-list>
